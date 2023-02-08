@@ -18,6 +18,17 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontWeight: 'bold'
   },
+  button: {
+    width: 300,
+    height: 40,
+    backgroundColor: '#86bf3e',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    marginBottom: 0,
+    marginTop: 20,
+    flexDirection: 'row',
+  },
   container: RecipeCard.container,
   photo: RecipeCard.photo,
   title: RecipeCard.title,
