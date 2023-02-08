@@ -4,11 +4,13 @@
 
 
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Text, View, Image, TouchableHighlight, Pressable } from "react-native";
+import { FlatList, Text, View, Image, TouchableHighlight, Pressable, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import MenuImage from "../../components/MenuImage/MenuImage";
 import { getCategoryName, getRecipesByRecipeName, getRecipesByCategoryName, getRecipesByIngredientName } from "../../data/MockDataAPI";
 import { TextInput } from "react-native-gesture-handler";
+import pantryScreen from "../Pantry/PantryScreen";
+import { getIngredientName, getAllIngredients } from "../../data/MockDataAPI";
 
 export default function SearchScreen(props) {
   const { navigation } = props;
@@ -60,7 +62,12 @@ export default function SearchScreen(props) {
   };
 
   const onPressRecipe = (item) => {
-    navigation.navigate("Recipe", { item });
+    let name = getIngredientName(item.ingredientId);
+    let ingredient = item.ingredientId;
+    <TouchableOpacity style={styles.button} onPress={pantryScreen}>
+        <Text style={styles.buttonText}>Add To Pantry</Text>
+      </TouchableOpacity>
+    navigation.navigate("Pantry", { ingredient, name });
   };
 
   const renderRecipes = ({ item }) => (
