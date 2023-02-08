@@ -5,9 +5,11 @@
 
 
 import React, { useLayoutEffect } from "react";
-import { FlatList, ScrollView, Text, View, Image, TouchableHighlight } from "react-native";
+import { FlatList, ScrollView, Text, View, Image, TouchableHighlight,TouchableOpacity, Button } from "react-native";
 import styles from "./styles";
 import { getIngredientUrl, getRecipesByIngredient, getCategoryName } from "../../data/MockDataAPI";
+import pantryScreen from "../Pantry/PantryScreen";
+
 
 export default function IngredientScreen(props) {
   const { navigation, route } = props;
@@ -43,9 +45,12 @@ export default function IngredientScreen(props) {
       <View style={{ borderBottomWidth: 0.4, marginBottom: 10, borderBottomColor: "grey" }}>
         <Image style={styles.photoIngredient} source={{ uri: "" + ingredientUrl }} />
       </View>
+      <TouchableOpacity style={styles.button} onPress={(pantryScreen) => pantryScreen()}>
+        <Text style={styles.buttonText}>Add to Pantry</Text>
+      </TouchableOpacity>
       <Text style={styles.ingredientInfo}>Recipes with {ingredientName}:</Text>
       <View>
-        <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={getRecipesByIngredient(ingredientId)} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
+        <ScrollView vertical showsVerticalScrollIndicator={false} numColumns={2} data={getRecipesByIngredient(ingredientId)} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
       </View>
     </ScrollView>
   );

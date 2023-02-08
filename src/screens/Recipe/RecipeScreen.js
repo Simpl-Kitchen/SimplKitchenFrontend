@@ -40,7 +40,7 @@ export default function RecipeScreen(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTransparent: "true",
-      headerLeft: () => (
+      headerRight: () => (
         <BackButton
           onPress={() => {
             navigation.goBack();
