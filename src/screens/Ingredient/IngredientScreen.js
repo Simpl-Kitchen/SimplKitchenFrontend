@@ -45,7 +45,7 @@ export default function IngredientScreen(props) {
       </View>
       <Text style={styles.ingredientInfo}>Recipes with {ingredientName}:</Text>
       <View>
-        <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={getRecipesByIngredient(ingredientId)} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
+        <ScrollView vertical showsVerticalScrollIndicator={false} numColumns={2} data={getRecipesByIngredient(ingredientId)} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
       </View>
     </ScrollView>
   );
