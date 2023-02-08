@@ -22,7 +22,7 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="DEVELOPERS"
+          title="Developers"
           source={require("../../../assets/icons/category.png")}
           onPress={() => {
             navigation.navigate("Categories");
@@ -38,10 +38,18 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="DEVELOPERS"
+          title="Search"
           source={require("../../../assets/icons/search.png")}
           onPress={() => {
             navigation.navigate("Search");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Pantry"
+          source={require("../../../assets/icons/search.png")}
+          onPress={() => {
+            navigation.navigate("Pantry");
             navigation.closeDrawer();
           }}
         />

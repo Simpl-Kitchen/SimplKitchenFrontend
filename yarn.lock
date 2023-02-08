@@ -5471,7 +5471,7 @@
     "warn-once" "^0.1.0"
 
 "react-native-snap-carousel@https://github.com/ram33z/react-native-snap-carousel":
-  "integrity" "sha512-h9+DtpGS6uDX2FpuHmQlM29jGeDb8YO7/iEFolIY5BNT/F1gQd1V0fdf66Qfsh1JLZEu7trEytCeDcfPpdYJZQ=="
+  "integrity" "sha512-Uycu+uMWJfX/9xmZtrNWKiyZQoEcG2RJtjbnVriGb56Y5lUtoMmbXseMMSAguACJ5DIeZbf5fXzGzmFoFJWHqg=="
   "resolved" "git+ssh://git@github.com/ram33z/react-native-snap-carousel.git"
   "version" "3.9.1"
   dependencies:

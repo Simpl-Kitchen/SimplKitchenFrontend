@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#66E59D',
+        color: '#86bf3e',
         marginBottom: 20,
     },
     input: {
@@ -29,11 +29,13 @@ const styles = StyleSheet.create({
     button: {
         width: 300,
         height: 40,
-        backgroundColor: '#66E59D',
+        backgroundColor: '#86bf3e',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 20,
-        marginBottom: 10,
+        marginBottom: 0,
+        marginTop: 20,
+        flexDirection: 'row',
     },
     buttonText: {
         color: 'white',
@@ -43,6 +45,13 @@ const styles = StyleSheet.create({
         width: 300,
         height: 300,
         marginBottom: 20,
+    },
+    image: {
+        width: 500,
+        height: 300,
+        marginBottom: 10,
+        alignContent: 'center',
+        justifyContent: 'center',
     },
 });
 

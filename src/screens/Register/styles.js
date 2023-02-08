@@ -28,14 +28,21 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 10,
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 300,
+    },
+    
     button: {
         width: 200,
         height: 40,
-        backgroundColor: '#66E59D',
+        backgroundColor: '#86bf3e',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 20,
         marginBottom: 10,
+        marginTop: 10,
         
     },
     buttonText: {
@@ -46,6 +53,13 @@ const styles = StyleSheet.create({
         width: 300,
         height: 300,
         marginBottom: 20,
+    },
+    image: {
+        width: 500,
+        height: 300,
+        marginBottom: 10,
+        alignContent: 'center',
+        justifyContent: 'center',
     },
 });
 
