@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { RecipeCard } from "../../AppStyles";
 
 const styles = StyleSheet.create({
   container: RecipeCard.container,
@@ -10,25 +9,25 @@ const styles = StyleSheet.create({
     height: 14,
     width: 14,
   },
-  searchContainer: { 
-    flexDirection: "row", 
-    alignItems: "center", 
-    backgroundColor: "#EDEDED", 
-    borderRadius: 10, 
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#9A1D1D",
+    borderRadius: 100,
     width: 250,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
-  searchIcon: { 
-    width: 20, 
-    height: 20, 
-    tintColor: 'grey' 
+  searchIcon: {
+    width: 20,
+    height: 20,
+    tintColor: "black",
   },
   searchInput: {
     backgroundColor: "#EDEDED",
     color: "black",
     width: 180,
     height: 50,
-  }
+  },
 });
 
 export default styles;
