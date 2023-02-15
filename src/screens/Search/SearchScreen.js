@@ -6,22 +6,6 @@ const IngredientList = () => {
   const [ingredients, setIngredients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Text, View, Image, TouchableHighlight, Pressable } from "react-native";
-import styles from "./styles";
-import MenuImage from "../../components/MenuImage/MenuImage";
-import { getCategoryName, getRecipesByRecipeName, getRecipesByCategoryName, getRecipesByIngredientName } from "../../data/MockDataAPI";
-import { TextInput } from "react-native-gesture-handler";
-
-        setIngredients(response.data.ingredients);
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
-    };
-
-    fetchIngredients();
-  }, []);
-
   const handleSearch = (text) => {
     setSearchTerm(text);
   };
