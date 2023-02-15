@@ -1,70 +1,85 @@
-// Description: Search screen
-// This screen is used to search for recipes by name, category, or ingredient.
-// The user can click on a recipe to see the details of that recipe.
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  TouchableHighlight,
+  Image,
+} from "react-native";
 
+const IngredientList = ({ categories, navigation }) => {
+  const [ingredients, setIngredients] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Text, View, Image, TouchableHighlight, Pressable } from "react-native";
-import styles from "./styles";
-import MenuImage from "../../components/MenuImage/MenuImage";
-import { getCategoryName, getRecipesByRecipeName, getRecipesByCategoryName, getRecipesByIngredientName } from "../../data/MockDataAPI";
-import { TextInput } from "react-native-gesture-handler";
-
-export default function SearchScreen(props) {
-  const { navigation } = props;
-
-  const [value, setValue] = useState("");
-  const [data, setData] = useState([]);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <MenuImage
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
-      ),
-      headerTitle: () => (
-        <View style={styles.searchContainer}>
-          <Image style={styles.searchIcon} source={require("../../../assets/icons/search.png")} />
-          <TextInput
-            style={styles.searchInput}
-            onChangeText={handleSearch}
-            value={value}
-          />
-          <Pressable onPress={() => handleSearch("")}>
-          <Image style={styles.searchIcon} source={require("../../../assets/icons/close.png")} />
-          </Pressable>
-        </View>
-      ),
-      headerRight: () => <View />,
-    });
-  }, [value]);
-
-  useEffect(() => {}, [value]);
-
-  const handleSearch = (text) => {
-    setValue(text);
-    var recipeArray1 = getRecipesByRecipeName(text);
-    var recipeArray2 = getRecipesByCategoryName(text);
-    var recipeArray3 = getRecipesByIngredientName(text);
-    var aux = recipeArray1.concat(recipeArray2);
-    var recipeArray = [...new Set(aux)];
-
-    if (text == "") {
-      setData([]);
-    } else {
-      setData(recipeArray);
+  const fetchIngredients = async () => {
+    try {
+      const response = await axios.get(
+        `https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${searchTerm}`
+      );
+      console.log(searchTerm);
+      setIngredients(response.data.ingredients);
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
   };
 
-  const onPressRecipe = (item) => {
-    navigation.navigate("Recipe", { item });
+  useEffect(() => {
+    fetchIngredients();
+  }, [searchTerm]);
+
+  const getCategoryName = (id) => {
+    let name = "";
+    // Assuming categories is a prop passed to this component
+    categories.forEach((category) => {
+      if (category.id === id) {
+        name = category.name;
+      }
+    });
+    return name;
   };
 
-  const renderRecipes = ({ item }) => (
-    <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
+  const onPressRecipe = (item) => {
+    let name = getIngredientName(item.ingredientId);
+    let ingredient = item.ingredientId;
+    navigation.navigate("Pantry", { ingredient, name });
+  };
+
+  const onPressIngredient = (item) => {
+    let name = getIngredientName(item.ingredientId);
+    let ingredient = item.ingredientId;
+    navigation.navigate("IngredientsDetail", { ingredient, name });
+  };
+
+  const getIngredientName = (id) => {
+    let name = "";
+    ingredients.forEach((ingredient) => {
+      if (ingredient.id === id) {
+        name = ingredient.name;
+      }
+    });
+    return name;
+  };
+
+  const renderRecipe = ({ item }) => (
+    <TouchableHighlight
+      underlayColor="rgba(73,182,77,0.9)"
+      onPress={() => onPressRecipe(item)}
+    >
+      <View style={styles.container}>
+        <Image style={styles.photo} source={{ uri: item.photo_url }} />
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
+      </View>
+    </TouchableHighlight>
+  );
+
+  const renderIngredient = ({ item }) => (
+    <TouchableHighlight
+      underlayColor="rgba(73,182,77,0.9)"
+      onPress={() => onPressIngredient(item)}
+    >
       <View style={styles.container}>
         <Image style={styles.photo} source={{ uri: item.photo_url }} />
         <Text style={styles.title}>{item.title}</Text>
@@ -75,7 +90,18 @@ export default function SearchScreen(props) {
 
   return (
     <View>
-      <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={data} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
+      <TextInput
+        placeholder="Search for ingredients"
+        onChangeText={(text) => setSearchTerm(text)}
+        value={searchTerm}
+      />
+      <FlatList
+        data={ingredients}
+        renderItem={renderIngredient}
+        keyExtractor={(item) => item.id.toString()}
+      />
     </View>
   );
-}
+};
+
+export default IngredientList;
