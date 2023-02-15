@@ -36,6 +36,9 @@ export default function IngredientsDetailsScreen(props) {
   const onPressIngredient = (item) => {
     let name = getIngredientName(item.ingredientId);
     let ingredient = item.ingredientId;
+    <TouchableOpacity style={styles.button} onPress={pantryScreen}>
+        <Text style={styles.buttonText}>Add To Pantry</Text>
+      </TouchableOpacity>
     navigation.navigate("Ingredient", { ingredient, name });
   };
 

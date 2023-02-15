@@ -6,12 +6,12 @@ const IngredientList = () => {
   const [ingredients, setIngredients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    const fetchIngredients = async () => {
-      try {
-        const response = await axios.get(
-          "https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search"
-        );
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { FlatList, Text, View, Image, TouchableHighlight, Pressable } from "react-native";
+import styles from "./styles";
+import MenuImage from "../../components/MenuImage/MenuImage";
+import { getCategoryName, getRecipesByRecipeName, getRecipesByCategoryName, getRecipesByIngredientName } from "../../data/MockDataAPI";
+import { TextInput } from "react-native-gesture-handler";
 
         setIngredients(response.data.ingredients);
       } catch (error) {
@@ -26,8 +26,18 @@ const IngredientList = () => {
     setSearchTerm(text);
   };
 
-  const filteredIngredients = ingredients.filter((ingredient) =>
-    ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const onPressRecipe = (item) => {
+    navigation.navigate("Recipe", { item });
+  };
+
+  const renderRecipes = ({ item }) => (
+    <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
+      <View style={styles.container}>
+        <Image style={styles.photo} source={{ uri: item.photo_url }} />
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
+      </View>
+    </TouchableHighlight>
   );
 
   return (
