@@ -23,7 +23,7 @@ export function getIngredientName(ingredientID) {
 }
 
 export function getIngredientUrl(ingredientID) {
-  let url;
+  let url;z
   ingredients.map(data => {
     if (data.ingredientId == ingredientID) {
       url = data.photo_url;

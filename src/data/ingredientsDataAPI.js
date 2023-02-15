@@ -1,36 +1,31 @@
-// import ingredients throug axios and display them in a list
-
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Button } from "react-native";
 import axios from "axios";
 
-export default function IngredientsDataApi(props){
-    const [ingredients, setIngredients] = useState([]);
-    const [loading, setLoading] = useState(true);
+const getIngredients = async () => {
+  const response = await axios.get(
+    "https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=lettuce%27"
+  );
+  return response.data.drinks;
+};
 
-    useEffect(() => {
-        axios.get("http://localhost:3000/ingredients") // change with simplekitchen api request for ingredients
-        .then(res => {
-            setIngredients(res.data);
-            setLoading(false);
-        })
-        .catch(err => {
-            console.log(err);
-            setLoading(false);
-        })
-    }, []);
+const IngredientsDataAPI = () => {
+  const [ingredients, setIngredients] = useState([]);
 
-    if(loading){
-        return <Text>Loading...</Text>
-    }
+  useEffect(() => {
+    getIngredients().then((ingredients) => setIngredients(ingredients));
+  }, []);
 
-    return (
-        <View style={styles.container}>
-            <FlatList
-                data={ingredients}
-                renderItem={({item}) => <Text>{item.name}</Text>}
-                keyExtractor={(item) => item.ingredientId}
-            />
-        </View>
-    )
-}
+  return (
+    <View>
+      <Text>Ingredients</Text>
+      <FlatList
+        data={ingredients}
+        keyExtractor={(item) => item.idIngredient}
+        renderItem={({ item }) => {
+          return <Text>{item.strIngredient}</Text>;
+        }}
+      />
+    </View>
+  );
+};
