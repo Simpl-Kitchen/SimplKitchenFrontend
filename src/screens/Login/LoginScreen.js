@@ -25,7 +25,7 @@ export default function LoginScreen(props) {
 
   const handleLogin = () => {
     axios
-      .post("https://simplkitchen-api.onrender.com/api/v1/auth/login", {
+      .post("https://simplkitchenapi.onrender.com/api/v1/auth/login", {
         email: email,
         password: password,
       })
@@ -34,7 +34,7 @@ export default function LoginScreen(props) {
           Alert.alert("Incorrect email or password");
         } else {
           Alert.alert("Login successful");
-          props.navigation.navigate("Home");
+          props.navigation.navigate("");
           console.response("response", response);
         }
       })
