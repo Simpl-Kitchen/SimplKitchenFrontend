@@ -16,6 +16,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     width: 250,
     justifyContent: "space-around",
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   searchIcon: {
     width: 20,
@@ -27,6 +29,8 @@ const styles = StyleSheet.create({
     color: "black",
     width: 180,
     height: 50,
+    paddingHorizontal: 10,
+    borderRadius: 25,
   },
 });
 
