@@ -20,15 +20,49 @@ class SearchScreen extends Component {
   componentDidMount() {
     this.fetchData();
   }
+
   // axios get request for ingredient entered by user
   fetchData = async () => {
-    const result = await axios(
-      `https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${this.state.search}`
-    );
-    result = JSON.parse(result);
-    console.log(result);
-    this.setState({ recipes: result.data.meals });
+    // const result = await axios(
+    //   `https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${this.state.search}`
+    // );
+    
+    const queryObject = {}
+    queryObject.search = this.state.search;
+
+    const options = {
+      method: "GET",
+      url: `https://simplkitchenapi.onrender.com/api/v1/search/ingredients`,
+      params: queryObject
+  }
+
+  const searchResults = await axios.request(options).then(function (response) {
+      //console.log(response.data);
+      return response.data;
+  }).catch(function (error) {
+    console.log(error);
+  })
+  console.log(JSON.stringify(searchResults.foodData));
+
+  // const renderUser = ({item}) => {
+  //   return (
+  //     <View style={{margin:10, borderWidth:0.5,padding:10 }}>
+  //       <Text style={{color:"black", fontsize:16,fontWeight:"bold"}}>
+          
+  //       </Text>
+  //   );
+  // }
+    
+    // const result = axios.get(`https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${this.state.search}`).then(function (response) {
+    //   console.log(response.data);
+    //   return response.data;
+    // }).catch(function(error){
+    //   console.log(error);
+    // })
+    //console.log(result);
+    // this.setState({ recipes: result.data.meals });//This is for recipes
   };
+
   render() {
     return (
       <View style={styles.container}>
@@ -68,6 +102,7 @@ class SearchScreen extends Component {
   }
 }
 
+
 const styles = StyleSheet.create({
   btnIcon: {
     height: 14,
@@ -97,8 +132,8 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
 });
-
 export default SearchScreen;
+// export default SearchScreen;
 
 // // creat classes for search screen
 // const SearchScreen = (props) => {
