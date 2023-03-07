@@ -1,28 +1,21 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: RecipeCard.container,
-  photo: RecipeCard.photo,
-  title: RecipeCard.title,
-  category: RecipeCard.category,
-  btnIcon: {
-    height: 14,
-    width: 14,
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   searchContainer: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
-    backgroundColor: "#9A1D1D",
+    backgroundColor: "#FFFCFC",
     borderRadius: 100,
-    width: 250,
+    width: 300,
     justifyContent: "space-around",
     marginVertical: 10,
     paddingHorizontal: 10,
-  },
-  searchIcon: {
-    width: 20,
-    height: 20,
-    tintColor: "black",
   },
   searchInput: {
     backgroundColor: "#EDEDED",
@@ -31,6 +24,22 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 10,
     borderRadius: 25,
+  },
+  photo: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#9A1D1D",
+    marginTop: 10,
+  },
+  category: {
+    fontSize: 14,
+    color: "#9A1D1D",
+    marginTop: 10,
   },
 });
 

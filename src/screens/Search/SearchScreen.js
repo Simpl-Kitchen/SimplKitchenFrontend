@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Button,
 } from "react-native";
+import styles from "./styles";
 
 class SearchScreen extends Component {
   state = {
@@ -17,31 +18,47 @@ class SearchScreen extends Component {
     recipes: [],
   };
 
-  componentDidMount() {
-    this.fetchData();
-  }
   // axios get request for ingredient entered by user
+
+  // axios call to spoonacular recipe db api
+
   fetchData = async () => {
-    const result = await axios(
-      `https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${this.state.search}`
-    );
-    result = JSON.parse(result);
-    console.log(result);
-    this.setState({ recipes: result.data.meals });
+    try {
+      const queryObject = { search: this.state.search };
+      const options = {
+        method: "GET",
+        url: "https://simplkitchenapi.onrender.com/api/v1/search/ingredients",
+        params: queryObject,
+      };
+      const response = await axios.request(options);
+      console.log("API call success: ", response.data);
+      // throw alert with ingredient text
+      alert(JSON.stringify(response.data.foodData));
+      this.setState({ recipes: response.data.foodData });
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  // render food data response onto screen
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
-          <Button title="Search" onPress={this.fetchData} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search"
             onChangeText={(text) => this.setState({ search: text })}
           />
+          <Button
+            title="Search"
+            onPress={() => {
+              this.fetchData();
+            }}
+          />
         </View>
         <FlatList
-          data={this.state.recipes}
+          data={this.state.data}
           renderItem={({ item }) => (
             <TouchableHighlight
               onPress={() =>
@@ -53,52 +70,93 @@ class SearchScreen extends Component {
               <View style={styles.container}>
                 <Image
                   style={styles.photo}
-                  source={{ uri: item.strMealThumb }}
+                  source={{
+                    uri: item.image.endsWith(".png")
+                      ? item.image
+                      : item.image + ".jpg",
+                  }}
                 />
-                <Text style={styles.title}>{item.strMeal}</Text>
-                <Text style={styles.category}>{item.strCategory}</Text>
+                <Text style={styles.title}>{item.name}</Text>
+                <Text style={styles.category}>{item.category}</Text>
+                <Text style={styles.category}>
+                  {item.ingredients.join(", ")}
+                </Text>
               </View>
             </TouchableHighlight>
           )}
           numColumns={2}
-          keyExtractor={(index) => index.toString()}
+          keyExtractor={(item) => item.id.toString()}
         />
       </View>
     );
   }
-}
+}  
 
-const styles = StyleSheet.create({
-  btnIcon: {
-    height: 14,
-    width: 14,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#9A1D1D",
-    borderRadius: 100,
-    width: 250,
-    justifyContent: "space-around",
-    marginVertical: 10,
-    paddingHorizontal: 10,
-  },
-  searchIcon: {
-    width: 20,
-    height: 20,
-    tintColor: "black",
-  },
-  searchInput: {
-    backgroundColor: "#EDEDED",
-    color: "black",
-    width: 180,
-    height: 50,
-    paddingHorizontal: 10,
-    borderRadius: 25,
-  },
-});
+//   fetchData = async () => {
+//     try {
+//       const queryObject = { search: this.state.search };
+//       const options = {
+//         method: "GET",
+//         url: "https://simplkitchenapi.onrender.com/api/v1/search/ingredients",
+//         params: queryObject,
+//       };
+//       const response = await axios.request(options);
+//       console.log("API call success: ", response.data);
+//       // throw alert with api text
+//       alert(JSON.stringify(response.data.foodData));
+//       this.setState({ recipes: response.data.foodData });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   // render food data response onto screen
+//   render() {
+//     return (
+//       <View style={styles.container}>
+//         <View style={styles.searchContainer}>
+//           <TextInput
+//             style={styles.searchInput}
+//             placeholder="Search"
+//             onChangeText={(text) => this.setState({ search: text })}
+//           />
+//           <Button
+//             title="Search"
+//             onPress={() => {
+//               this.fetchData();
+//             }}
+//           />
+//         </View>
+//         <FlatList
+//           data={this.state.data}
+//           renderItem={({ item }) => (
+//             <TouchableHighlight
+//               onPress={() =>
+//                 this.props.navigation.navigate("Recipe", {
+//                   recipe: item,
+//                 })
+//               }
+//             >
+//               <View style={styles.container}>
+//                 <Image style={styles.photo} source={{ uri: item.image }} />
+//                 <Text style={styles.title}>{item.name}</Text>
+//                 <Text style={styles.category}>{item.category}</Text>
+//                 <Text style={styles.category}>
+//                   {item.ingredients.join(", ")}
+//                 </Text>
+//               </View>
+//             </TouchableHighlight>
+//           )}
+//           numColumns={2}
+//           keyExtractor={(item) => item.id.toString()}
+//         />
+//       </View>
+//     );
+//   }
+// }
 
 export default SearchScreen;
+// export default SearchScreen;
 
 // // creat classes for search screen
 // const SearchScreen = (props) => {
