@@ -14,30 +14,6 @@ export default function DrawerContainer(props) {
     <View style={styles.content}>
       <View style={styles.container}>
         <MenuButton
-          title="DEVELOPERS"
-          source={require("../../../assets/icons/home.png")}
-          onPress={() => {
-            navigation.navigate("Home");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
-          title="Developers"
-          source={require("../../../assets/icons/category.png")}
-          onPress={() => {
-            navigation.navigate("Categories");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
-          title="Profile"
-          source={require("../../../assets/icons/home1.png")}
-          onPress={() => {
-            navigation.navigate("Profile");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
           title="Search"
           source={require("../../../assets/icons/search.png")}
           onPress={() => {
@@ -46,18 +22,34 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
+          title="Home"
+          source={require("../../../assets/icons/home.png")}
+          onPress={() => {
+            navigation.navigate("Home");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Recipes"
+          source={require("../../../assets/icons/category.png")}
+          onPress={() => {
+            navigation.navigate("Categories");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
           title="Pantry"
-          source={require("../../../assets/icons/search.png")}
+          source={require("../../../assets/icons/Pantry.png")}
           onPress={() => {
             navigation.navigate("Pantry");
             navigation.closeDrawer();
           }}
         />
         <MenuButton
-          title="Recipes"
-          source={require("../../../assets/icons/cookie50.png")}
+          title="Profile"
+          source={require("../../../assets/icons/profile.png")}
           onPress={() => {
-            navigation.navigate("Recipes");
+            navigation.navigate("Profile");
             navigation.closeDrawer();
           }}
         />

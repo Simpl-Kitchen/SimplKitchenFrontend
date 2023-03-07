@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Button,
 } from "react-native";
+import styles from "./styles";
 
 class SearchScreen extends Component {
   state = {
@@ -17,65 +18,47 @@ class SearchScreen extends Component {
     recipes: [],
   };
 
-  componentDidMount() {
-    this.fetchData();
-  }
-
   // axios get request for ingredient entered by user
+
+  // axios call to spoonacular recipe db api
+
   fetchData = async () => {
-    // const result = await axios(
-    //   `https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${this.state.search}`
-    // );
-    
-    const queryObject = {}
-    queryObject.search = this.state.search;
-
-    const options = {
-      method: "GET",
-      url: `https://simplkitchenapi.onrender.com/api/v1/search/ingredients`,
-      params: queryObject
-  }
-
-  const searchResults = await axios.request(options).then(function (response) {
-      //console.log(response.data);
-      return response.data;
-  }).catch(function (error) {
-    console.log(error);
-  })
-  console.log(JSON.stringify(searchResults.foodData));
-
-  // const renderUser = ({item}) => {
-  //   return (
-  //     <View style={{margin:10, borderWidth:0.5,padding:10 }}>
-  //       <Text style={{color:"black", fontsize:16,fontWeight:"bold"}}>
-          
-  //       </Text>
-  //   );
-  // }
-    
-    // const result = axios.get(`https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${this.state.search}`).then(function (response) {
-    //   console.log(response.data);
-    //   return response.data;
-    // }).catch(function(error){
-    //   console.log(error);
-    // })
-    //console.log(result);
-    // this.setState({ recipes: result.data.meals });//This is for recipes
+    try {
+      const queryObject = { search: this.state.search };
+      const options = {
+        method: "GET",
+        url: "https://simplkitchenapi.onrender.com/api/v1/search/ingredients",
+        params: queryObject,
+      };
+      const response = await axios.request(options);
+      console.log("API call success: ", response.data);
+      // throw alert with ingredient text
+      alert(JSON.stringify(response.data.foodData));
+      this.setState({ recipes: response.data.foodData });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  // render food data response onto screen
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
-          <Button title="Search" onPress={this.fetchData} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search"
             onChangeText={(text) => this.setState({ search: text })}
           />
+          <Button
+            title="Search"
+            onPress={() => {
+              this.fetchData();
+            }}
+          />
         </View>
         <FlatList
-          data={this.state.recipes}
+          data={this.state.data}
           renderItem={({ item }) => (
             <TouchableHighlight
               onPress={() =>
@@ -87,51 +70,91 @@ class SearchScreen extends Component {
               <View style={styles.container}>
                 <Image
                   style={styles.photo}
-                  source={{ uri: item.strMealThumb }}
+                  source={{
+                    uri: item.image.endsWith(".png")
+                      ? item.image
+                      : item.image + ".jpg",
+                  }}
                 />
-                <Text style={styles.title}>{item.strMeal}</Text>
-                <Text style={styles.category}>{item.strCategory}</Text>
+                <Text style={styles.title}>{item.name}</Text>
+                <Text style={styles.category}>{item.category}</Text>
+                <Text style={styles.category}>
+                  {item.ingredients.join(", ")}
+                </Text>
               </View>
             </TouchableHighlight>
           )}
           numColumns={2}
-          keyExtractor={(index) => index.toString()}
+          keyExtractor={(item) => item.id.toString()}
         />
       </View>
     );
   }
-}
+}  
 
+//   fetchData = async () => {
+//     try {
+//       const queryObject = { search: this.state.search };
+//       const options = {
+//         method: "GET",
+//         url: "https://simplkitchenapi.onrender.com/api/v1/search/ingredients",
+//         params: queryObject,
+//       };
+//       const response = await axios.request(options);
+//       console.log("API call success: ", response.data);
+//       // throw alert with api text
+//       alert(JSON.stringify(response.data.foodData));
+//       this.setState({ recipes: response.data.foodData });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
 
-const styles = StyleSheet.create({
-  btnIcon: {
-    height: 14,
-    width: 14,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#9A1D1D",
-    borderRadius: 100,
-    width: 250,
-    justifyContent: "space-around",
-    marginVertical: 10,
-    paddingHorizontal: 10,
-  },
-  searchIcon: {
-    width: 20,
-    height: 20,
-    tintColor: "black",
-  },
-  searchInput: {
-    backgroundColor: "#EDEDED",
-    color: "black",
-    width: 180,
-    height: 50,
-    paddingHorizontal: 10,
-    borderRadius: 25,
-  },
-});
+//   // render food data response onto screen
+//   render() {
+//     return (
+//       <View style={styles.container}>
+//         <View style={styles.searchContainer}>
+//           <TextInput
+//             style={styles.searchInput}
+//             placeholder="Search"
+//             onChangeText={(text) => this.setState({ search: text })}
+//           />
+//           <Button
+//             title="Search"
+//             onPress={() => {
+//               this.fetchData();
+//             }}
+//           />
+//         </View>
+//         <FlatList
+//           data={this.state.data}
+//           renderItem={({ item }) => (
+//             <TouchableHighlight
+//               onPress={() =>
+//                 this.props.navigation.navigate("Recipe", {
+//                   recipe: item,
+//                 })
+//               }
+//             >
+//               <View style={styles.container}>
+//                 <Image style={styles.photo} source={{ uri: item.image }} />
+//                 <Text style={styles.title}>{item.name}</Text>
+//                 <Text style={styles.category}>{item.category}</Text>
+//                 <Text style={styles.category}>
+//                   {item.ingredients.join(", ")}
+//                 </Text>
+//               </View>
+//             </TouchableHighlight>
+//           )}
+//           numColumns={2}
+//           keyExtractor={(item) => item.id.toString()}
+//         />
+//       </View>
+//     );
+//   }
+// }
+
 export default SearchScreen;
 // export default SearchScreen;
 
