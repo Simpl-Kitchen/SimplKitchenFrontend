@@ -1,8 +1,3 @@
-// Description: This file contains the code for the RecipesListScreen component.
-// This component is used to display the list of recipes in a category.
-// The user can click on a recipe to see the details of that recipe.
-
-
 import React, { useLayoutEffect } from "react";
 import { FlatList, Text, View, TouchableHighlight, Image } from "react-native";
 import styles from "./styles";
