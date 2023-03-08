@@ -34,7 +34,7 @@ export default function LoginScreen(props) {
           Alert.alert("Incorrect email or password");
         } else {
           Alert.alert("Login successful");
-          props.navigation.navigate("");
+          props.navigation.navigate("Categories");
           console.response("response", response);
         }
       })
