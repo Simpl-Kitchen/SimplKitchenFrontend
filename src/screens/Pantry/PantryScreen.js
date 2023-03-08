@@ -7,3 +7,43 @@
 // search function for ingredients at the top of screen and barcode scanner 
 // needs to have a button to add ingredients to the shopping list
 // needs to have a button to add ingredients to the pantry
+
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList } from 'react-native';
+import axios from 'axios';
+
+const PantryScreen = () => {
+  const [ingredients, setIngredients] = useState([]);
+
+  useEffect(() => {
+    // Fetch ingredients from the database
+    axios.get(`https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${search}`)
+      .then(response => {
+        setIngredients(response.data.results);
+      })
+      .catch(error => {
+        console.log(error);
+        setIngredients([]);
+      });
+  }, []);
+
+  const renderIngredient = ({ item }) => {
+    return (
+      <View>
+        <Text>{item.name}</Text>
+      </View>
+    );
+  };
+
+  return (
+    <View>
+      <FlatList
+        data={ingredients}
+        renderItem={renderIngredient}
+        keyExtractor={(item) => item.id.toString()}
+      />
+    </View>
+  );
+};
+
+export default PantryScreen;
