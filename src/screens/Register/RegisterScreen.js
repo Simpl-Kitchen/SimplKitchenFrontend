@@ -17,7 +17,7 @@ export default function RegisterScreen(props) {
 
   const handleRegister = () => {
     axios
-      .post("https://simplkitchenapi.onrender.com/api/v1/auth/register", {
+      .post("https://simplkitchen-api.onrender.com/api/v1/auth/register", {
         name: name,
         email: email,
         password: password,
@@ -32,7 +32,6 @@ export default function RegisterScreen(props) {
       })
       .catch((error) => {
         console.log(error);
-        Alert.alert("Error registering user");
       });
   };
 
