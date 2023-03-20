@@ -9,7 +9,7 @@
     "icon": "./assets/SKLogo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/SKLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
