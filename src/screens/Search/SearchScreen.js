@@ -6,6 +6,7 @@ import {
   FlatList,
   TextInput,
   Button,
+  TouchableHighlight,
 } from "react-native";
 
 import styles from "./styles";
@@ -34,23 +35,34 @@ class SearchScreen extends Component {
         params: queryObject,
       };
       const response = await axios.request(options);
-      console.log("API call success: ", response.data);
-      // throw alert with ingredient text
-      alert(JSON.stringify(response.data.foodData));
-      this.setState({ recipes: response.data.foodData });
+      const results = response.data.foodData.results;
+
+      // Loop through the results array and display the properties in a cleaner format
+      results.forEach((item, index) => {
+        console.log(
+          `${index + 1}. ID: ${item.id}, Name: ${item.name}, Image: ${
+            item.image
+          }`
+        );
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   // render ingredients using the data inputed from the api call using axios
-  renderIngredients = ({ item }) => {
-    return (
-      <View style={styles.searchContainer}>
-        <Text style={styles.searchInput}>{item.name}</Text>
+  renderIngredient = ({ item }) => (
+    <TouchableHighlight
+      underlayColor="rgba(73,182,77,0.9)"
+      onPress={() => onPressIngredient(item[0])}
+    >
+      <View style={styles.container}>
+        <Image style={styles.photo} source={{ uri: item[0].photo_url }} />
+        <Text style={styles.title}>{item[0].name}</Text>
+        <Text style={{ color: "grey" }}>{item[1]}</Text>
       </View>
-    );
-  };
+    </TouchableHighlight>
+  );
 
   render() {
     return (
@@ -71,7 +83,7 @@ class SearchScreen extends Component {
         </View>
         <FlatList
           data={this.state.recipes}
-          renderItem={this.renderIngredients}
+          renderItem={this.renderIngredient}
           keyExtractor={(item) => item.id}
           image={this.state.recipes.image}
         />
