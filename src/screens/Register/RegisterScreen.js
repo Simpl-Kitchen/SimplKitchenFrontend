@@ -23,6 +23,8 @@ export default function RegisterScreen(props) {
         password: password,
       })
       .then((response) => {
+        const token = response.data.token;
+        console.log(token);
         if (response.data === "Email already exists") {
           Alert.alert("Email already exists");
         } else {

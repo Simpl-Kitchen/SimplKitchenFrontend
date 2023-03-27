@@ -13,7 +13,7 @@ import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsD
 import LoginScreen from '../screens/Login/LoginScreen';
 import RegisterScreen from '../screens/Register/RegisterScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
-
+import PantryScreen from '../screens/Pantry/PantryScreen';
 
  const Stack = createStackNavigator();
 
@@ -33,6 +33,7 @@ function MainNavigator() {
       <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown: false}} />
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='Profile' component={ProfileScreen} />
+      <Stack.Screen name='Pantry' component={PantryScreen} />
       <Stack.Screen name='Categories' component={CategoriesScreen} />
       <Stack.Screen name='Recipe' component={RecipeScreen} />
       <Stack.Screen name='RecipesList' component={RecipesListScreen} />

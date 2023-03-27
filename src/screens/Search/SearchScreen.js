@@ -9,6 +9,11 @@ import {
 } from "react-native";
 
 import styles from "./styles";
+import token from "../Register/RegisterScreen";
+
+// if (token = null){
+//   navigation.navigate("Login");
+// }
 
 class SearchScreen extends Component {
   state = {
@@ -31,7 +36,7 @@ class SearchScreen extends Component {
       const response = await axios.request(options);
       console.log("API call success: ", response.data);
       // throw alert with ingredient text
-      // alert(JSON.stringify(response.data.foodData));
+      alert(JSON.stringify(response.data.foodData));
       this.setState({ recipes: response.data.foodData });
     } catch (error) {
       console.log(error);

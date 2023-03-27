@@ -17,6 +17,10 @@ import {
 import BackButton from "../../components/BackButton/BackButton";
 import ViewIngredientsButton from "../../components/ViewIngredientsButton/ViewIngredientsButton";
 
+// if(token = null){
+//   navigation.navigate("Login");
+// }
+
 const { width: viewportWidth } = Dimensions.get("window");
 
 export default function RecipeScreen(props) {
