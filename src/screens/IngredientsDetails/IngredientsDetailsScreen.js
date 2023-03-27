@@ -11,11 +11,9 @@ import {
   Image,
   TouchableHighlight,
   TouchableOpacity,
-  Button
 } from "react-native";
 import styles from "./styles";
 import { getIngredientName, getAllIngredients } from "../../data/MockDataAPI";
-import { ScrollView } from "react-native-gesture-handler";
 import pantryScreen from "../Pantry/PantryScreen";
 
 export default function IngredientsDetailsScreen(props) {

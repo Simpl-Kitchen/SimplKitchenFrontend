@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     backgroundColor: "#EDEDED",
-    color: "red",
+    color: "#000000",
     width: 180,
     height: 50,
     paddingHorizontal: 10,
