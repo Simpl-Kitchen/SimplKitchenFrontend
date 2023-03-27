@@ -41,11 +41,11 @@ class SearchScreen extends Component {
       results.forEach((item, index) => {
 
         item.image = " https://spoonacular.com/cdn/ingredients_100x100/" + item.image
-        console.log(
-          `${index + 1}. ID: ${item.id}, Name: ${item.name}, Image: ${
-            item.image
-          }`
-        );
+        // console.log(
+        //   `${index + 1}. ID: ${item.id}, Name: ${item.name}, Image: ${
+        //     item.image
+        //   }`
+        // );
       });
 
       // Loop through the results array and display the properties in a cleaner format
