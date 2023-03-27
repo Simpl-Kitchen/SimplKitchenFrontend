@@ -39,6 +39,15 @@ const PantryScreen = ({ navigation }) => {
       const response = await axios.request(options);
       const results = response.data.foodData.results;
 
+      // Loop through the results array and display the properties in a cleaner format
+      results.forEach((item, index) => {
+        console.log(
+          `${index + 1}. ID: ${item.id}, Name: ${item.name}, Image: ${
+            item.image
+          }`
+        );
+      });
+
       // Append image url to image
       results.forEach((item) => {
         item.image = `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`;
