@@ -37,6 +37,17 @@ class SearchScreen extends Component {
       const response = await axios.request(options);
       const results = response.data.foodData.results;
 
+      // Append image url to image
+      results.forEach((item, index) => {
+
+        item.image = " https://spoonacular.com/cdn/ingredients_100x100/" + item.image
+        console.log(
+          `${index + 1}. ID: ${item.id}, Name: ${item.name}, Image: ${
+            item.image
+          }`
+        );
+      });
+
       // Loop through the results array and display the properties in a cleaner format
       results.forEach((item, index) => {
         console.log(
