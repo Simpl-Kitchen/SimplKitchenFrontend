@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import styles from "./styles";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // email and password are the state variables
 
@@ -30,19 +31,26 @@ export default function LoginScreen(props) {
         email: email,
         password: password,
       })
-      .then((response) => {
+      .then(async (response) => {
         if (response.data === "Incorrect email or password") {
           Alert.alert("Incorrect email or password");
         } else {
-          Alert.alert("Login successful");
-          props.navigation.navigate("Categories");
-          console.response("response", response);
+          // Store the user token in AsyncStorage
+          try {
+            await AsyncStorage.setItem("userToken", response.data.token);
+            Alert.alert("Login successful");
+            props.navigation.navigate("Categories");
+            console.log(response.data.token);
+          } catch (error) {
+            console.log(error);
+          }
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  
 
   return (
     // add spt for image at the top center of the screen
