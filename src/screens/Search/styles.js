@@ -4,13 +4,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     backgroundColor: "#fff",
   },
   searchContainer: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     marginBottom: 20,
+    marginTop: 20,
+    width: "100%",
   },
   searchInput: {
     flex: 1,
@@ -20,6 +22,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginRight: 10,
+    marginLeft: 10,
+    fontSize: 16,
+    color: "#000",
   },
   searchButton: {
     backgroundColor: "#0099ff",
@@ -30,6 +35,7 @@ const styles = StyleSheet.create({
   searchButtonText: {
     color: "#fff",
     fontSize: 16,
+    fontWeight: "bold",
   },
   carouselContainer: {
     flexDirection: "row",
@@ -58,9 +64,19 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   photo: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     marginRight: 10,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  rowItem: {
+    width: "48%",
   },
 });
 

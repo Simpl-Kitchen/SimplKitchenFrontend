@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import styles from "./styles";
 import axios from "axios";
@@ -45,7 +46,9 @@ export default function LoginScreen(props) {
 
   return (
     // add spt for image at the top center of the screen
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
       <Image
         style={styles.image}
         source={require("../../../assets/SKLogo.png")}
@@ -70,6 +73,6 @@ export default function LoginScreen(props) {
       >
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

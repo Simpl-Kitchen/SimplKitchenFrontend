@@ -5,7 +5,14 @@
 // has a back button to go back to the login screen
 
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
+} from "react-native";
 import styles from "./styles";
 import axios from "axios";
 import { Image } from "react-native";
@@ -39,9 +46,14 @@ export default function RegisterScreen(props) {
   };
 
   return (
-    <View style={styles.container}>
-
-      <Text style={styles.title}>Register</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <Image
+        style={styles.image}
+        source={require("../../../assets/SKLogo.png")}
+      />
       <TextInput
         style={styles.input}
         placeholder="Name"
@@ -67,6 +79,6 @@ export default function RegisterScreen(props) {
       >
         <Text style={styles.buttonText}>Back</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

@@ -20,6 +20,7 @@ import {
   Button,
   TouchableHighlight,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import styles from "./styles";
@@ -50,7 +51,7 @@ const PantryScreen = ({ navigation }) => {
 
       // Append image url to image
       results.forEach((item) => {
-        item.image = `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`;
+        item.image = `https://spoonacular.com/cdn/ingredients_500x500/${item.image}`;
       });
 
       setIngredients(results);
@@ -63,17 +64,60 @@ const PantryScreen = ({ navigation }) => {
     navigation.navigate("Ingredient", { ingredient });
   };
 
-  const renderIngredient = ({ item }) => (
-    <TouchableHighlight
-      underlayColor="rgba(73,182,77,0.9)"
-      onPress={() => onPressIngredient(item)}
-    >
-      <View style={styles.container}>
-        <Image style={styles.photo} source={{ uri: item.image }} />
-        <Text style={styles.title}>{item.name}</Text>
-      </View>
-    </TouchableHighlight>
-  );
+  const renderIngredient = ({ item, index }) => {
+    // Render two items per row
+    if (index % 2 === 0) {
+      // Check if the current item is the last item
+      const secondItem =
+        index + 1 < ingredients.length ? ingredients[index + 1] : null;
+
+      return (
+        <KeyboardAvoidingView style={styles.rowContainer}>
+          <TouchableHighlight
+            underlayColor="rgba(73,182,77,0.9)"
+            onPress={() => onPressIngredient(item)}
+          >
+            <View style={styles.container}>
+              <Image style={styles.photo} source={{ uri: item.image }} />
+              <Text style={styles.title}>{item.name}</Text>
+              <Button
+                title="⊕ Add To Pantry"
+                color="#0D0C0C"
+                onPress={() => {
+                  alert(`Added ${item.name} to pantry`);
+                }}
+              />
+            </View>
+          </TouchableHighlight>
+          {secondItem && (
+            <TouchableHighlight
+              underlayColor="rgba(73,182,77,0.9)"
+              onPress={() => onPressIngredient(secondItem)}
+              style={styles.rowItem}
+            >
+              <View style={styles.container}>
+                <Image
+                  style={styles.photo}
+                  source={{ uri: secondItem.image }}
+                />
+                <Text style={styles.title}>{secondItem.name}</Text>
+                <Button
+                  title="⊕ Add To Pantry"
+                  color="#0D0C0C"
+                  onPress={() => {
+                    alert(`Added ${item.name} to pantry`);
+                  }}
+                />
+              </View>
+            </TouchableHighlight>
+          )}
+        </KeyboardAvoidingView>
+      );
+    }
+
+    // For odd indices, do not render anything
+    return null;
+  };
 
   return (
     <View style={styles.container}>
@@ -86,14 +130,15 @@ const PantryScreen = ({ navigation }) => {
         />
         <Button title="Search" color="#0D0C0C" onPress={fetchData} />
       </View>
-      <FlatList
-        data={ingredients}
-        renderItem={renderIngredient}
-        keyExtractor={(item) => item.id}
-      />
+      <View style={styles.carouselContainer}>
+        <FlatList
+          data={ingredients}
+          renderItem={renderIngredient}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
     </View>
   );
 };
-
 
 export default PantryScreen;
