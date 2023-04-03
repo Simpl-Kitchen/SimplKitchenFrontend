@@ -50,7 +50,7 @@ const PantryScreen = ({ navigation }) => {
 
       // Append image url to image
       results.forEach((item) => {
-        item.image = `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`;
+        item.image = `https://spoonacular.com/cdn/ingredients_500x500/${item.image}`;
       });
 
       setIngredients(results);
