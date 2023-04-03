@@ -25,7 +25,7 @@ import {
 
 import styles from "./styles";
 
-const PantryScreen = ({ navigation }) => {
+const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [ingredients, setIngredients] = useState([]);
 
@@ -128,7 +128,7 @@ const PantryScreen = ({ navigation }) => {
           onChangeText={(text) => setSearch(text)}
           value={search}
         />
-        <Button title="Search" color="#0D0C0C" onPress={fetchData} />
+        <Button title="SEARCH" color="#0D0C0C" onPress={fetchData} />
       </View>
       <View style={styles.carouselContainer}>
         <FlatList
@@ -141,4 +141,4 @@ const PantryScreen = ({ navigation }) => {
   );
 };
 
-export default PantryScreen;
+export default SearchScreen;
