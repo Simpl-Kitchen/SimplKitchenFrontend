@@ -33,6 +33,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
   },
+  ingredientsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  ingredientContainer: {
+    width: '48%',
+    marginBottom: 10,
+  },
+  photo: {
+    width: '100%',
+    height: 150,
+    marginBottom: 5,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },  
 });
 
 export default styles;
