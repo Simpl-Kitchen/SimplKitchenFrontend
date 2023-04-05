@@ -65,7 +65,14 @@ const SearchScreen = ({ navigation }) => {
   // Define pantry object
 
   const handleAddIngredient = (ingredient) => {
-    navigation.navigate("Pantry", { ingredient });
+    //navigation.navigate("Pantry", { ingredient });
+
+    try {
+      console.log("Inside handleAddIngredient :: ingredient = ", ingredient)
+      addIngredientToPantry(ingredient);
+    } catch (error) {
+      console.log(error)
+    }
     console.log(ingredient);
     
   };

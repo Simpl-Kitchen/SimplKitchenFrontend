@@ -48,9 +48,9 @@ const addIngredientToPantry = async (ingredient) => {
             "Authorization": `Bearer ${userToken}`
         },
         data: {
-            "ingredientId" : ingredient.ingredientId,
-            "ingredientName" : ingredient.ingredientName,
-            "pictureURL" : ingredient.pictureURL
+            "ingredientId" : ingredient.id,
+            "ingredientName" : ingredient.name,
+            "pictureURL" : ingredient.image,
         } 
         
       };
@@ -62,9 +62,10 @@ const addIngredientToPantry = async (ingredient) => {
         console.error("Error adding ingredient to pantry:", error);
       }
 
-
-}
-const getUsersIngredients = async () => {
+      
+    }
+    const getUsersIngredients = async () => {
+    try {
     const userToken = await getToken();
 
     const options = {
@@ -76,7 +77,6 @@ const getUsersIngredients = async () => {
         } 
       };
 
-      try {
         const response = await axios.request(options);
         //console.log("Successfully added ingredient:", response.data);
       } catch (error) {
