@@ -1,7 +1,3 @@
-// Description: This file contains the code for the DrawerContainer component.
-// This component is used to display the menu items in the drawer.
-// The user can click on a menu item to navigate to the corresponding screen.
-
 import React from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
@@ -63,3 +59,17 @@ DrawerContainer.propTypes = {
     navigate: PropTypes.func.isRequired,
   }),
 };
+
+// Add drawer lock mode to screen options
+DrawerContainer.navigationOptions = ({ navigation }) => ({
+  drawerLockMode: "locked-closed",
+  headerLeft: () => (
+    <MenuButton
+      title="Menu"
+      source={require("../../../assets/icons/menu.png")}
+      onPress={() => {
+        navigation.openDrawer();
+      }}
+    />
+  )
+});

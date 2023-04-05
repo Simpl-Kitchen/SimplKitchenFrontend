@@ -54,7 +54,10 @@ function DrawerStack() {
       drawerPosition='left'
       initialRouteName='Main'
       drawerStyle={{
-        width: 250
+        width: 250,
+        backgroundColor: '#A8DDA8',
+        borderTopRightRadius: 30,
+        borderTopLeftRadius: 30
       }}
       screenOptions={{headerShown: false}}
       drawerContent={({navigation})=> <DrawerContainer navigation={navigation}/>}
