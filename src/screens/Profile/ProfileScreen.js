@@ -13,6 +13,8 @@ import {
 import styles from "./styles";
 import * as ImagePicker from "expo-image-picker";
 
+import {removeToken} from "../../utils/Authorization";
+
 export default function ProfileScreen(props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -43,7 +45,10 @@ export default function ProfileScreen(props) {
 
   const handleLogout = async () => {
     // remove the user's token from AsyncStorage
-    await AsyncStorage.removeItem("token");
+    //await AsyncStorage.removeItem("token");
+    
+    await removeToken();
+    
     // navigate to the login screen
     props.navigation.navigate("Login");
     Alert.alert("Logged out successfully");
