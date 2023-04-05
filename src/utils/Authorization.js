@@ -20,4 +20,19 @@ const removeToken = async () => {
         console.log(error);
     }
 }
-module.exports = {storeToken, removeToken}
+
+const getToken = async () => {
+    try {
+        const token = await AsyncStorage.getItem("userToken");
+        
+        return token;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+module.exports = {
+    storeToken, 
+    removeToken,
+    getToken,}
