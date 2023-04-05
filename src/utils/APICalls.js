@@ -64,7 +64,28 @@ const addIngredientToPantry = async (ingredient) => {
 
 
 }
+const getUsersIngredients = async () => {
+    const userToken = await getToken();
+
+    const options = {
+        method: "GET",
+        url: "https://simplkitchenapi.onrender.com/api/v1/pantry",
+        //params: queryObject,
+        headers: {
+            "Authorization": `Bearer ${userToken}`
+        } 
+      };
+
+      try {
+        const response = await axios.request(options);
+        //console.log("Successfully added ingredient:", response.data);
+      } catch (error) {
+        console.error("Error getting all ingredients:", error);
+      }
+
+      return response
+}
 
 
 
-module.exports = {loginSimplKitchen, getIngredientsByName, addIngredientToPantry}
+module.exports = {loginSimplKitchen, getIngredientsByName, addIngredientToPantry, getUsersIngredients}
