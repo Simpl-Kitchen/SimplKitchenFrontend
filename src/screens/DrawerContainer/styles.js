@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: 20
   }
+  
 });
 
 export default styles;
