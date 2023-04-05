@@ -46,9 +46,7 @@ export default function ProfileScreen(props) {
   const handleLogout = async () => {
     // remove the user's token from AsyncStorage
     //await AsyncStorage.removeItem("token");
-    
     await removeToken();
-    
     // navigate to the login screen
     props.navigation.navigate("Login");
     Alert.alert("Logged out successfully");

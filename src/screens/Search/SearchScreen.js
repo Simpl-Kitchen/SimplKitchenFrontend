@@ -67,11 +67,11 @@ const SearchScreen = ({ navigation }) => {
   // Define pantry object
 
   const handleIngredient = (ingredient) => {
-    // Pass ingredient to pantry screen
+   // send the ingredient item to the pantry screen
     navigation.navigate("Pantry", { ingredient });
 
-    console.log(`Sent ${ingredient} to pantry screen`);
   };
+
 
   const onPressIngredient = (ingredient) => {
     navigation.navigate("Ingredient", { ingredient });
