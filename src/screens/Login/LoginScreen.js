@@ -14,9 +14,10 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import styles from "./styles";
-import axios from "axios";
+//import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import {loginSimplKitchen} from "../../utils/APICalls";
 // email and password are the state variables
 
 export default function LoginScreen(props) {
@@ -25,30 +26,50 @@ export default function LoginScreen(props) {
 
   // handleLogin function is called when the user clicks the login button
 
-  const handleLogin = () => {
-    axios
-      .post("https://simplkitchenapi.onrender.com/api/v1/auth/login", {
-        email: email,
-        password: password,
-      })
-      .then(async (response) => {
+  const handleLogin = async () => {
+
+    try {
+        const response = await loginSimplKitchen(email, password);
         if (response.data === "Incorrect email or password") {
           Alert.alert("Incorrect email or password");
         } else {
           // Store the user token in AsyncStorage
-          try {
+
             await AsyncStorage.setItem("userToken", response.data.token);
             Alert.alert("Login successful");
             props.navigation.navigate("Categories");
             console.log(response.data.token);
-          } catch (error) {
-            console.log(error);
-          }
+            //console.log(error);
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    } catch (error) {
+      console.log(error);
+    }
+    
+    
+    
+    // axios
+    //   .post("https://simplkitchenapi.onrender.com/api/v1/auth/login", {
+    //     email: email,
+    //     password: password,
+    //   })
+    //   .then(async (response) => {
+    //     if (response.data === "Incorrect email or password") {
+    //       Alert.alert("Incorrect email or password");
+    //     } else {
+    //       // Store the user token in AsyncStorage
+    //       try {
+    //         await AsyncStorage.setItem("userToken", response.data.token);
+    //         Alert.alert("Login successful");
+    //         props.navigation.navigate("Categories");
+    //         console.log(response.data.token);
+    //       } catch (error) {
+    //         console.log(error);
+    //       }
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   };
   
 
