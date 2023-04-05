@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import styles from "./styles";
+import handleAddIngredient from "../Search/SearchScreen";
 
 const PantryScreen = ({ navigation, route }) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
@@ -19,6 +20,7 @@ const PantryScreen = ({ navigation, route }) => {
     const ingredient = route.params?.ingredient;
     if (ingredient) {
       setPantryIngredients([...pantryIngredients, ingredient]);
+      handleAddIngredient(ingredient);
     }
   };
 
@@ -47,6 +49,10 @@ const PantryScreen = ({ navigation, route }) => {
     </View>
   );
 
+  const setPantry = (ingredients) => {
+    setPantryIngredients([...pantryIngredients, ...ingredients]);
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -65,6 +71,10 @@ const PantryScreen = ({ navigation, route }) => {
           color="#A8DDA8"
           onPress={() => navigation.navigate("Search", { screen: "Search" })}
         />
+      </View>
+      <View>
+        <Image style={styles.photo} source={{ uri: item.image }} />
+        <Text style={styles.title}>{item.name}</Text>
       </View>
     </View>
   );
