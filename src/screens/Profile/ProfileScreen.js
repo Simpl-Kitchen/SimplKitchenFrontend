@@ -26,7 +26,6 @@ export default function ProfileScreen(props) {
   const handleUpdateProfile = () => {
     // TODO: Add update profile logic here
     // update the user's name, email, bio, and image
-    
 
     Alert.alert("Profile updated successfully");
   };
@@ -51,7 +50,7 @@ export default function ProfileScreen(props) {
     await removeToken();
     
     // navigate to the login screen
-    props.navigation.navigate("LoginScreen");
+    props.navigation.navigate("Login");
     Alert.alert("Logged out successfully");
   };
 
