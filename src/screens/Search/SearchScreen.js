@@ -11,7 +11,7 @@
 // Dan needs you to add some "Token" thing
 
 import React, { useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 import {
   View,
   Text,
@@ -36,6 +36,11 @@ const SearchScreen = ({ navigation }) => {
       const queryObject = { search };
       
       const results = await getIngredientsByName(queryObject);
+
+      // if (dropdown includes grocery items) {
+      //   results = results + await getGroceryProductsByName
+      // }
+
 
       // Loop through the results array and display the properties in a cleaner format
       results.forEach((item, index) => {
