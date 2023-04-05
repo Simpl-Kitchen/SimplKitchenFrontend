@@ -26,6 +26,7 @@ import {
 import styles from "./styles";
 
 import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
@@ -98,7 +99,7 @@ const SearchScreen = ({ navigation }) => {
             <View style={styles.container}>
               <Image style={styles.photo} source={{ uri: item.image }} />
               <Text style={styles.title}>{item.name}</Text>
-              <Button
+              <TouchableOpacity
                 title="⊕ Add To Pantry"
                 color="#0D0C0C"
                 onPress={() => handleAddIngredient(item)}
