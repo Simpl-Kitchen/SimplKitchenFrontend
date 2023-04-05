@@ -15,10 +15,11 @@ import {
 } from "react-native";
 import styles from "./styles";
 //import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+//import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {loginSimplKitchen} from "../../utils/APICalls";
 import {storeToken} from "../../utils/Authorization";
+
 // email and password are the state variables
 
 export default function LoginScreen(props) {
