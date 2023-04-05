@@ -25,7 +25,7 @@ import {
 
 import styles from "./styles";
 
-import { getIngredientsByName } from "../../utils/APICalls";
+import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
 
 const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
