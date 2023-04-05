@@ -28,8 +28,11 @@ const Ingredient = ({ ingredient, onPressIngredient, handleAddIngredient }) => {
       onPress={() => onPressIngredient(ingredient)}
       style={styles.rowItem}
     >
+      {/*Create a View component to display the ingredient's details  */}
       <View style={styles.container}>
+        {/* Display the ingredient's image */}
         <Image style={styles.photo} source={{ uri: ingredient.image }} />
+        {/* Display the ingredient's name */}
         <Text style={styles.title}>{ingredient.name}</Text>
         <Button
           title="⊕ Add To Pantry"
