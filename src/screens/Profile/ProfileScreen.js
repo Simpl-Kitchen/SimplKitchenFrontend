@@ -14,6 +14,7 @@ import styles from "./styles";
 import * as ImagePicker from "expo-image-picker";
 
 import {removeToken} from "../../utils/Authorization";
+import {addIngredientToPantry} from "../../utils/APICalls";
 
 export default function ProfileScreen(props) {
   const [name, setName] = useState("");
