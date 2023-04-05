@@ -18,6 +18,7 @@ import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {loginSimplKitchen} from "../../utils/APICalls";
+import {storeToken} from "../../utils/Authorization";
 // email and password are the state variables
 
 export default function LoginScreen(props) {
@@ -30,14 +31,19 @@ export default function LoginScreen(props) {
 
     try {
         const response = await loginSimplKitchen(email, password);
-        if (response.data === "Incorrect email or password") {
-          Alert.alert("Incorrect email or password");
-        } else {
-          // Store the user token in AsyncStorage
 
-            await AsyncStorage.setItem("userToken", response.data.token);
-            Alert.alert("Login successful");
-            props.navigation.navigate("Categories");
+        if (response.data === "Incorrect email or password") {
+
+          Alert.alert("Incorrect email or password");
+
+        } else {
+
+          // Store the user token in AsyncStorage
+          
+          Alert.alert("Login successful");
+          //await AsyncStorage.setItem("userToken", response.data.token);
+          await storeToken(response.data.token);
+          props.navigation.navigate("Categories");
             console.log(response.data.token);
             //console.log(error);
         }
