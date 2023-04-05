@@ -24,7 +24,6 @@ export default function ProfileScreen(props) {
   const handleUpdateProfile = () => {
     // TODO: Add update profile logic here
     // update the user's name, email, bio, and image
-    
 
     Alert.alert("Profile updated successfully");
   };
@@ -46,7 +45,7 @@ export default function ProfileScreen(props) {
     // remove the user's token from AsyncStorage
     await AsyncStorage.removeItem("token");
     // navigate to the login screen
-    props.navigation.navigate("LoginScreen");
+    props.navigation.navigate("Login");
     Alert.alert("Logged out successfully");
   };
 

@@ -60,6 +60,8 @@ const SearchScreen = ({ navigation }) => {
     }
   };
 
+  
+
   const onPressIngredient = (ingredient) => {
     navigation.navigate("Ingredient", { ingredient });
   };
