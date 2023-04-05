@@ -5,4 +5,7 @@ const storeToken = async (token) => {
     await AsyncStorage.setItem("userToken", token);
 }
 
-module.exports = {storeToken}
+const removeToken = async () => {
+    await AsyncStorage.removeItem("userToken");
+}
+module.exports = {storeToken, removeToken}
