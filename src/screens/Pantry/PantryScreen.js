@@ -61,7 +61,7 @@ const PantryScreen = ({ navigation, route }) => {
         keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>Your pantry is empty</Text>
+            <Text style={styles.emptyText}>Your pantry is empty</Text>   
           </View>
         )}
       />
@@ -73,8 +73,8 @@ const PantryScreen = ({ navigation, route }) => {
         />
       </View>
       <View>
-        <Image style={styles.photo} source={{ uri: item.image }} />
-        <Text style={styles.title}>{item.name}</Text>
+        <Image style={styles.photo} source={{ uri: pantryIngredients.item }} />
+        <Text style={styles.title}>{pantryIngredients.item }</Text>
       </View>
     </View>
   );
