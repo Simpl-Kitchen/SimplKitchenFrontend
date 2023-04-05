@@ -33,5 +33,12 @@ const getIngredientsByName = async (queryObject) => {
       return results;
 }
 
+const addIngredientToPantry = async (ingredient) => {
+
+
+
+}
+
+
 
 module.exports = {loginSimplKitchen, getIngredientsByName}
