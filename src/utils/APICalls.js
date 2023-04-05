@@ -34,7 +34,8 @@ const getIngredientsByName = async (queryObject) => {
 }
 
 const addIngredientToPantry = async (ingredient) => {
-
+    
+    try {
     //console.log("Inside getIngredientsByName")
 
     const userToken = await getToken();
@@ -55,7 +56,6 @@ const addIngredientToPantry = async (ingredient) => {
         
       };
 
-      try {
         const response = await axios.request(options);
         console.log("Successfully added ingredient:", response.data);
       } catch (error) {
@@ -64,7 +64,7 @@ const addIngredientToPantry = async (ingredient) => {
 
       
     }
-    const getUsersIngredients = async () => {
+const getUsersIngredients = async () => {
     try {
     const userToken = await getToken();
 
@@ -79,11 +79,11 @@ const addIngredientToPantry = async (ingredient) => {
 
         const response = await axios.request(options);
         //console.log("Successfully added ingredient:", response.data);
+        return response.data
       } catch (error) {
         console.error("Error getting all ingredients:", error);
       }
 
-      return response
 }
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
 import {
   View,
@@ -13,24 +13,41 @@ import {
 import styles from "./styles";
 import handleAddIngredient from "../Search/SearchScreen";
 
+const {getUsersIngredients } = require("../../utils/APICalls.js");
+
+
 const PantryScreen = ({ navigation, route }) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
 
-  const onAddIngredient = () => {
-    const ingredient = route.params?.ingredient;
-    if (ingredient) {
-      setPantryIngredients([...pantryIngredients, ingredient]);
-      handleAddIngredient(ingredient);
+  const fetchData = async () => {
+    console.log("Inside fetchData");
+    try {
+      const results = await getUsersIngredients();
+      console.log("results = ", results);
+    } catch (error) {
+      console.log(error);
     }
-  };
+  }
 
-  const onRemoveIngredient = (index) => {
-    const newPantryIngredients = [...pantryIngredients];
-    newPantryIngredients.splice(index, 1);
-    setPantryIngredients(newPantryIngredients);
-  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  // const onAddIngredient = () => {
+  //   const ingredient = route.params?.ingredient;
+  //   if (ingredient) {
+  //     setPantryIngredients([...pantryIngredients, ingredient]);
+  //     handleAddIngredient(ingredient);
+  //   }
+  // };
+
+  // const onRemoveIngredient = (index) => {
+  //   const newPantryIngredients = [...pantryIngredients];
+  //   newPantryIngredients.splice(index, 1);
+  //   setPantryIngredients(newPantryIngredients);
+  // };
 
   const renderItem = ({ item, index }) => (
+    
     <View style={styles.itemContainer}>
       <TouchableHighlight
         underlayColor="rgba(73,182,77,0.9)"
