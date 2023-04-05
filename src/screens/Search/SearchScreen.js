@@ -66,7 +66,6 @@ const SearchScreen = ({ navigation }) => {
    // send the ingredient item to the pantry screen
     navigation.navigate("Pantry", { ingredient });
 
-
   };
 
 
