@@ -6,6 +6,7 @@ import {
   Image,
   TouchableHighlight,
   TouchableOpacity,
+  Button,
 } from "react-native";
 
 // Import custom styles for the Ingredient component
@@ -27,14 +28,10 @@ const Ingredient = ({ ingredient, onPressIngredient, handleAddIngredient }) => {
       onPress={() => onPressIngredient(ingredient)}
       style={styles.rowItem}
     >
-      //Create a View component to display the ingredient's details
       <View style={styles.container}>
-      // Display the ingredient's image
         <Image style={styles.photo} source={{ uri: ingredient.image }} />
-        // Display the ingredient's name
         <Text style={styles.title}>{ingredient.name}</Text>
-        // Add a TouchableOpacity component to handle the addition of the ingredient to the pantry
-        <TouchableOpacity
+        <Button
           title="⊕ Add To Pantry"
           color="#0D0C0C"
           // Call the handleAddIngredient callback function with the current ingredient when pressed
