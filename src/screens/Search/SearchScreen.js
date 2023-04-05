@@ -60,7 +60,14 @@ const SearchScreen = ({ navigation }) => {
     }
   };
 
-  
+  // Define pantry object
+
+  const handleIngredient = (ingredient) => {
+    // Pass ingredient to pantry screen
+    navigation.navigate("Pantry", { ingredient });
+
+    console.log(`Sent ${ingredient} to pantry screen`);
+  };
 
   const onPressIngredient = (ingredient) => {
     navigation.navigate("Ingredient", { ingredient });
@@ -85,9 +92,7 @@ const SearchScreen = ({ navigation }) => {
               <Button
                 title="⊕ Add To Pantry"
                 color="#0D0C0C"
-                onPress={() => {
-                  alert(`Added ${item.name} to pantry`);
-                }}
+                onPress={() => handleIngredient(item)} 
               />
             </View>
           </TouchableHighlight>
@@ -106,7 +111,7 @@ const SearchScreen = ({ navigation }) => {
                 <Button
                   title="⊕ Add To Pantry"
                   color="#0D0C0C"
-                  onPress={() => {
+                  onPress={(handleIngredient) => {
                     alert(`Added ${item.name} to pantry`);
                   }}
                 />
