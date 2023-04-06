@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-//import axios from "axios";
 import {
   View,
   Text,
   FlatList,
-  TextInput,
   Button,
   TouchableHighlight,
   Image,
@@ -13,6 +11,32 @@ import {
 import styles from "./styles";
 
 const { getUsersIngredients } = require("../../utils/APICalls.js");
+
+const Ingredient = ({ item, index, onRemoveIngredient }) => (
+  <View style={styles.itemContainer}>
+    <TouchableHighlight
+      underlayColor="rgba(73,182,77,0.9)"
+      onPress={() => console.log(item)}
+    >
+      <View style={styles.container}>
+        <Image style={styles.photo} source={{ uri: item.pictureURL }} />
+        <Text style={styles.title}>{item.ingredientName}</Text>
+        <Text style={styles.amount}>{item.amount}</Text>
+      </View>
+    </TouchableHighlight>
+    <Button
+      title="Remove"
+      color="#841584"
+      onPress={() => onRemoveIngredient(index)}
+    />
+  </View>
+);
+
+const EmptyPantry = () => (
+  <View style={styles.emptyContainer}>
+    <Text style={styles.emptyText}>Your pantry is empty</Text>
+  </View>
+);
 
 const PantryScreen = ({ navigation, route }) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
@@ -26,30 +50,20 @@ const PantryScreen = ({ navigation, route }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  const onRemoveIngredient = (index) => {
+    const newPantryIngredients = [...pantryIngredients];
+    newPantryIngredients.splice(index, 1);
+    setPantryIngredients(newPantryIngredients);
+  };
+
   const renderItem = ({ item, index }) => (
-    <View style={styles.itemContainer}>
-      <TouchableHighlight
-        underlayColor="rgba(73,182,77,0.9)"
-        onPress={() => console.log(item)}
-      >
-        <View style={styles.container}>
-          <Image style={styles.photo} source={{ uri: item.pictureURL }} />
-          <Text style={styles.title}>{item.ingredientName}</Text>
-          <Text style={styles.amount}>{item.amount}</Text>
-        </View>
-      </TouchableHighlight>
-      <Button
-        title="Remove"
-        color="#841584"
-        onPress={() => onRemoveIngredient(index)}
-      />
-    </View>
+    <Ingredient item={item} index={index} onRemoveIngredient={onRemoveIngredient} />
   );
 
   return (
@@ -57,20 +71,8 @@ const PantryScreen = ({ navigation, route }) => {
       <FlatList
         data={pantryIngredients}
         renderItem={renderItem}
-        //keyExtractor={(item) => item.id.toString()}
-        ListEmptyComponent={() => (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>Your pantry is empty</Text>
-          </View>
-        )}
+        ListEmptyComponent={EmptyPantry}
       />
-      {/* <View style={styles.buttonContainer}>
-        <Button
-          title="Add Ingredient"
-          color="#A8DDA8"
-          onPress={() => navigation.navigate("Search", { screen: "Search" })}
-        />
-      </View> */}
     </View>
   );
 };
