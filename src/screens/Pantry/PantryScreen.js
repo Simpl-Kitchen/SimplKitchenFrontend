@@ -48,7 +48,31 @@ const PantryScreen = ({ navigation, route }) => {
         <Image style={styles.photo} source={{ uri: item.pictureURL }} />
         <View style={styles.itemTextContainer}>
           <Text style={styles.title}>{item.ingredientName}</Text>
-          <Text style={styles.amount}>{item.amount}</Text>
+          <View style={styles.quantityContainer}>
+            <TouchableOpacity
+              style={styles.minusButton}
+              onPress={() => {
+                // Decrease quantity of ingredient by 1
+                const updatedIngredients = [...pantryIngredients];
+                updatedIngredients[index].amount -= 1;
+                setPantryIngredients(updatedIngredients);
+              }}
+            >
+              <Text style={styles.buttonText}>-</Text>
+            </TouchableOpacity>
+            <Text style={styles.quantity}>{item.amount}</Text>
+            <TouchableOpacity
+              style={styles.plusButton}
+              onPress={() => {
+                // Increase quantity of ingredient by 1
+                const updatedIngredients = [...pantryIngredients];
+                updatedIngredients[index].amount += 1;
+                setPantryIngredients(updatedIngredients);
+              }}
+            >
+              <Text style={styles.buttonText}>+</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <View style={styles.removeButtonContainer}>
@@ -61,6 +85,7 @@ const PantryScreen = ({ navigation, route }) => {
       </View>
     </View>
   );
+  
 
   return (
     <View style={styles.container}>

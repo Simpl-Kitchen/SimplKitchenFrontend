@@ -4,47 +4,65 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingHorizontal: 16,
   },
   itemContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E2E2E2",
+    marginBottom: 16,
   },
   itemContent: {
     flexDirection: "row",
     alignItems: "center",
+    flex: 1,
   },
   photo: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     marginRight: 16,
   },
   itemTextContainer: {
-    flexDirection: "column",
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
   amount: {
-    fontSize: 14,
-    color: "#A5A5A5",
-    marginTop: 4,
+    fontSize: 16,
+    color: "#888",
+  },
+  removeButtonContainer: {
+    marginLeft: 16,
+  },
+  removeButton: {
+    backgroundColor: "#f00",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+  },
+  removeButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   addButton: {
-    backgroundColor: "#4CAF50",
-    padding: 16,
-    borderRadius: 8,
-    margin: 16,
-    alignSelf: "center",
+    backgroundColor: "#0f0",
+    position: "absolute",
+    bottom: 24,
+    left: 24,
+    right: 24,
+    paddingVertical: 16,
+    borderRadius: 4,
+    alignItems: "center",
   },
   addButtonText: {
     color: "#fff",
+    fontSize: 18,
     fontWeight: "bold",
   },
   emptyContainer: {
@@ -53,18 +71,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   emptyText: {
-    fontSize: 16,
-    color: "#A5A5A5",
+    fontSize: 18,
+    color: "#888",
   },
-  removeButton: {
-    backgroundColor: "#F44336",
+  flatlistContentContainer: {
+    paddingBottom: 100,
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  minusButton: {
+    backgroundColor: "#f00",
     padding: 8,
-    borderRadius: 8,
+    borderRadius: 4,
+    marginRight: 8,
   },
-  removeButtonText: {
+  plusButton: {
+    backgroundColor: "#0f0",
+    padding: 8,
+    borderRadius: 4,
+    marginLeft: 8,
+  },
+  buttonText: {
     color: "#fff",
+    fontSize: 16,
     fontWeight: "bold",
-    fontSize: 12,
+  },
+  quantity: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
