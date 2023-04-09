@@ -44,16 +44,16 @@ const styles = StyleSheet.create({
     width: '48%',
     marginBottom: 10,
   },
-  photo: {
-    width: '100%',
-    height: 150,
-    marginBottom: 5,
-  },
+  // photo: {
+  //   width: '100%',
+  //   height: 150,
+  //   marginBottom: 5,
+  // },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-  },  
+  },
 });
 
 export default styles;
