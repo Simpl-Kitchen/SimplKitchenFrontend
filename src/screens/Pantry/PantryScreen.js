@@ -13,7 +13,10 @@ import {
 import styles from "./styles";
 import handleAddIngredient from "../Search/SearchScreen";
 
-const { getUsersIngredients, removeIngredientFromPantry } = require("../../utils/APICalls.js");
+const {
+  getUsersIngredients,
+  removeIngredientFromPantry,
+} = require("../../utils/APICalls.js");
 
 const PantryScreen = ({ navigation, route }) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
@@ -32,9 +35,12 @@ const PantryScreen = ({ navigation, route }) => {
   };
 
   const onRemoveIngredient = (index) => {
-    const newIngredients = [...pantryIngredients];
-    newIngredients.splice(index, 1);
-    setPantryIngredients(newIngredients);
+    try {
+      removeIngredientFromPantry(pantryIngredients[index]);
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderItem = ({ item, index }) => (
@@ -46,7 +52,11 @@ const PantryScreen = ({ navigation, route }) => {
           <Text style={styles.amount}>{item.amount}</Text>
         </View>
       </TouchableOpacity>
-      <Button title="Remove" color="#841584" onPress={() => onRemoveIngredient(index)} />
+      <Button
+        title="Remove"
+        color="#841584"
+        onPress={() => onRemoveIngredient(index)}
+      />
     </View>
   );
 
