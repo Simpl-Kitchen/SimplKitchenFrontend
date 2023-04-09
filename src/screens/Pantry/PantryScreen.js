@@ -69,11 +69,7 @@ const PantryScreen = ({ navigation, route }) => {
               style={styles.minusButton}
               onPress={() => {
                 // Decrease quantity of ingredient by 1 if current quantity is greater than 0
-                const updatedIngredients = [...pantryIngredients];
-                if (updatedIngredients[index].amount > 0) {
-                  updatedIngredients[index].amount -= 1;
-                  setPantryIngredients(updatedIngredients);
-                }
+                onRemoveIngredient(index);
               }}
             >
               <Text style={styles.buttonText}>-</Text>
@@ -83,11 +79,8 @@ const PantryScreen = ({ navigation, route }) => {
               style={styles.plusButton}
               onPress={() => {
                 // Increase quantity of ingredient by 1
-                const updatedIngredients = [...pantryIngredients];
-                updatedIngredients[index].amount += 1;
-                setPantryIngredients(updatedIngredients);
                 // Add ingredient to pantry
-                onAddIngredient([index]);
+                onAddIngredient(index);
               }}
             >
               <Text style={styles.buttonText}>+</Text>
