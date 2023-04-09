@@ -1,68 +1,67 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
-    backgroundColor: '#00BFFF',
+    backgroundColor: "#00BFFF",
     height: 200,
-  },
-  avatarContainer: {
-    alignItems: 'center',
-    marginTop: -100,
   },
   avatar: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
     borderWidth: 4,
-    borderColor: '#fff',
+    borderColor: "#fff",
     marginBottom: 10,
+    alignSelf: "center",
   },
-  nameContainer: {
-    alignItems: 'center',
-    marginVertical: 10,
+  body: {
+    marginTop: 40,
   },
-  nameText: {
-    fontSize: 22,
-    fontWeight: '600',
-  },
-  bioContainer: {
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
-  bioText: {
-    fontSize: 18,
-    textAlign: 'center',
+  bodyContent: {
+    flex: 1,
+    alignItems: "center",
+    padding: 30,
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    width: 250,
+    backgroundColor: "#fff",
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 20,
     borderWidth: 1,
-    marginHorizontal: 20,
-    marginVertical: 10,
-    paddingHorizontal: 10,
+    borderColor: "#00BFFF",
+  },
+  bioInput: {
+    height: 80,
   },
   buttonContainer: {
-    backgroundColor: '#00BFFF',
-    paddingVertical: 10,
-    marginHorizontal: 20,
-    marginVertical: 10,
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: 250,
     borderRadius: 20,
+    backgroundColor: "#00BFFF",
   },
   logoutButtonContainer: {
-    backgroundColor: '#FF6347',
-    paddingVertical: 10,
-    marginHorizontal: 20,
-    marginVertical: 10,
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: 250,
     borderRadius: 20,
+    backgroundColor: "#FF0000",
   },
   buttonText: {
-    textAlign: 'center',
-    color: '#fff',
-    fontWeight: '700',
+    color: "#fff",
+    fontSize: 18,
   },
 });
 

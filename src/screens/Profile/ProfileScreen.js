@@ -13,8 +13,8 @@ import {
 import styles from "./styles";
 import * as ImagePicker from "expo-image-picker";
 
-import {removeToken} from "../../utils/Authorization";
-import {addIngredientToPantry} from "../../utils/APICalls";
+import { removeToken } from "../../utils/Authorization";
+import { addIngredientToPantry } from "../../utils/APICalls";
 
 export default function ProfileScreen(props) {
   const [name, setName] = useState("");
@@ -24,11 +24,35 @@ export default function ProfileScreen(props) {
     "https://bootdey.com/img/Content/avatar/avatar6.png"
   );
 
-  const handleUpdateProfile = () => {
-    // TODO: Add update profile logic here
-    // update the user's name, email, bio, and image
+  const handleUpdateProfile = async () => {
+    try {
+      // Make a PUT request to your backend server with the updated user information
+      const response = await fetch("your-server-url/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          bio,
+          image,
+        }),
+      });
+      const data = await response.json();
 
-    Alert.alert("Profile updated successfully");
+      // If the update was successful, display a success message
+      if (response.ok) {
+        Alert.alert("Profile updated successfully");
+      } else {
+        // If there was an error updating the profile, display an error message
+        Alert.alert(data.message);
+      }
+    } catch (error) {
+      // If there was a network error or some other error, display an error message
+      Alert.alert("Error updating profile. Please try again later.");
+    }
   };
 
   const handleSelectImage = async () => {
@@ -39,8 +63,13 @@ export default function ProfileScreen(props) {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync();
-    if (!result.canceled) {
-      setImage(result.assets);
+    if (result && result.assets && result.assets[0]) {
+      const selectedImage = result.assets[0].uri;
+      if (
+        selectedImage !== "https://bootdey.com/img/Content/avatar/avatar6.png"
+      ) {
+        setImage(selectedImage);
+      }
     }
   };
 
@@ -61,7 +90,7 @@ export default function ProfileScreen(props) {
       >
         <View style={styles.header}>
           <TouchableOpacity onPress={handleSelectImage}>
-            <Image style={styles.avatar} source={{ assets: image }} />
+            <Image style={styles.avatar} source={{ uri: image }} />
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
