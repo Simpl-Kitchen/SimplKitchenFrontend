@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   removeButton: {
-    backgroundColor: "#f00",
+    backgroundColor: "#70161E",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 4,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   addButton: {
-    backgroundColor: "#0f0",
+    backgroundColor: "#98CBB0",
     position: "absolute",
     bottom: 24,
     left: 24,
@@ -82,13 +82,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   minusButton: {
-    backgroundColor: "#f00",
+    backgroundColor: "#70161E",
     padding: 8,
     borderRadius: 4,
     marginRight: 8,
   },
   plusButton: {
-    backgroundColor: "#0f0",
+    backgroundColor: "#98CBB0",
     padding: 8,
     borderRadius: 4,
     marginLeft: 8,
