@@ -91,8 +91,8 @@ const getUsersIngredients = async () => {
 
 }
 
-const removeIngredientFromPantry = async (ingredient) => {
-
+const removeIngredientFromPantry = async (ingredientId) => {
+  console.log("Inside removeIngredientFromPantry")
 }
 
 
