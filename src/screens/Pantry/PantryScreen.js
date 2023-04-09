@@ -52,10 +52,12 @@ const PantryScreen = ({ navigation, route }) => {
             <TouchableOpacity
               style={styles.minusButton}
               onPress={() => {
-                // Decrease quantity of ingredient by 1
+                // Decrease quantity of ingredient by 1 if current quantity is greater than 0
                 const updatedIngredients = [...pantryIngredients];
-                updatedIngredients[index].amount -= 1;
-                setPantryIngredients(updatedIngredients);
+                if (updatedIngredients[index].amount > 0) {
+                  updatedIngredients[index].amount -= 1;
+                  setPantryIngredients(updatedIngredients);
+                }
               }}
             >
               <Text style={styles.buttonText}>-</Text>
@@ -85,7 +87,6 @@ const PantryScreen = ({ navigation, route }) => {
       </View>
     </View>
   );
-  
 
   return (
     <View style={styles.container}>
