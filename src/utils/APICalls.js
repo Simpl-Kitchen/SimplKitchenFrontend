@@ -85,10 +85,10 @@ const getUsersIngredients = async () => {
 
 
 
-const removeIngredientFromPantry = async (ingredientId) => {
+const removeIngredientFromPantry = async (ingredient) => {
 
   console.log("Inside removeIngredientFromPantry")
-  console.log("Ingredient ID: " + ingredientId)
+  console.log("Ingredient ID: " + ingredient)
   // try {
   //   const userToken = await getToken();
   //   console.log("User token: " + JSON.stringify(userToken));
