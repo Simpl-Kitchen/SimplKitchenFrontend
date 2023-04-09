@@ -13,7 +13,7 @@ import {
 import styles from "./styles";
 import handleAddIngredient from "../Search/SearchScreen";
 
-const { getUsersIngredients } = require("../../utils/APICalls.js");
+const { getUsersIngredients, removeIngredientFromPantry } = require("../../utils/APICalls.js");
 
 const PantryScreen = ({ navigation, route }) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);

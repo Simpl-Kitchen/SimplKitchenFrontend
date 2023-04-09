@@ -91,6 +91,10 @@ const getUsersIngredients = async () => {
 
 }
 
+const removeIngredientFromPantry = async (ingredient) => {
+
+}
 
 
-module.exports = { loginSimplKitchen, getIngredientsByName, addIngredientToPantry, getUsersIngredients }
+
+module.exports = { loginSimplKitchen, getIngredientsByName, addIngredientToPantry, getUsersIngredients, removeIngredientFromPantry }
