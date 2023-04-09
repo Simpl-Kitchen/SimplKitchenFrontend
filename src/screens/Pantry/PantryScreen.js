@@ -36,9 +36,7 @@ const PantryScreen = ({ navigation, route }) => {
   const onRemoveIngredient = async (index) => {
     try {
       await removeIngredientFromPantry(pantryIngredients[index]);
-      const updatedIngredients = [...pantryIngredients];
-      updatedIngredients.splice(index, 1);
-      setPantryIngredients(updatedIngredients);
+      fetchData();
     } catch (error) {
       console.log(error);
     }
