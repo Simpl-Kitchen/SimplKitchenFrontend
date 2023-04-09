@@ -88,23 +88,24 @@ const getUsersIngredients = async () => {
 const removeIngredientFromPantry = async (ingredient) => {
 
   console.log("Inside removeIngredientFromPantry")
-  console.log("Ingredient ID: " + ingredient)
-  // try {
-  //   const userToken = await getToken();
-  //   console.log("User token: " + JSON.stringify(userToken));
-  //   const options = {
-  //     method: "DELETE",
-  //     url: `${SIMPLKITCHEN_API_URL}/pantry`,
-  //     //params: queryObject,
-  //     headers: {
-  //       Authorization: `Bearer ${userToken}`,
-  //     },
-  //   };
-  //   const response = await axios.request(options);
-  //   console.log("Successfully removed ingredient:", response.data);
-  // } catch (error) {
-  //   console.error("Error removing ingredient from pantry:", error);
-  // }
+  console.log("Ingredient ID: " + JSON.stringify(ingredient.ingredientId))
+  try {
+    const userToken = await getToken();
+
+    const options = {
+      method: "DELETE",
+      url: `${SIMPLKITCHEN_API_URL}/pantry/${ingredient.ingredientId}`,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+
+    console.log(options.url)
+    const response = await axios.request(options);
+    console.log("Successfully removed ingredient:", response.data);
+  } catch (error) {
+    console.error("Error removing ingredient from pantry:", error);
+  }
 };
 
 
