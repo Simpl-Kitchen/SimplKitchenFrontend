@@ -15,6 +15,7 @@ import styles from "./styles";
 const {
   getUsersIngredients,
   removeIngredientFromPantry,
+  addIngredientToPantry,
 } = require("../../utils/APICalls.js");
 
 const PantryScreen = ({ navigation, route }) => {
@@ -41,6 +42,18 @@ const PantryScreen = ({ navigation, route }) => {
       console.log(error);
     }
   };
+
+  const onAddIngredient = async (index) => {
+    try {
+      // Add ingredient to pantry
+      // await addIngredientToPantry(pantryIngredients[index]);
+      // Fetch updated pantry ingredients
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
   const renderItem = ({ item, index }) => (
     <View style={styles.itemContainer}>
@@ -70,6 +83,8 @@ const PantryScreen = ({ navigation, route }) => {
                 const updatedIngredients = [...pantryIngredients];
                 updatedIngredients[index].amount += 1;
                 setPantryIngredients(updatedIngredients);
+                // Add ingredient to pantry
+                onAddIngredient([index]);
               }}
             >
               <Text style={styles.buttonText}>+</Text>
