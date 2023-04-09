@@ -12,15 +12,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 10,
   },
-  // photo: {
-  //   width: 50,
-  //   height: 50,
-  //   marginRight: 10,
-  // },
   photo: {
-    width: 100, // Adjust width as needed
-    height: 100, // Adjust height as needed
-    resizeMode: 'contain',
+    width: 50,
+    height: 50,
+    marginRight: 10,
   },
   title: {
     fontSize: 18,
@@ -49,11 +44,16 @@ const styles = StyleSheet.create({
     width: '48%',
     marginBottom: 10,
   },
+  photo: {
+    width: '100%',
+    height: 150,
+    marginBottom: 5,
+  },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
+  },  
 });
 
 export default styles;
