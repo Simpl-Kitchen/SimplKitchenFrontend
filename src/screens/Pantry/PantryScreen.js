@@ -5,13 +5,12 @@ import {
   Text,
   FlatList,
   TextInput,
-  Button,
   TouchableOpacity,
   Image,
+  StyleSheet,
 } from "react-native";
 
 import styles from "./styles";
-import handleAddIngredient from "../Search/SearchScreen";
 
 const {
   getUsersIngredients,
@@ -45,18 +44,21 @@ const PantryScreen = ({ navigation, route }) => {
 
   const renderItem = ({ item, index }) => (
     <View style={styles.itemContainer}>
-      <TouchableOpacity onPress={() => onRemoveIngredient(index)}>
-        <View style={styles.container}>
-          <Image style={styles.photo} source={{ uri: item.pictureURL }} />
+      <View style={styles.itemContent}>
+        <Image style={styles.photo} source={{ uri: item.pictureURL }} />
+        <View style={styles.itemTextContainer}>
           <Text style={styles.title}>{item.ingredientName}</Text>
           <Text style={styles.amount}>{item.amount}</Text>
         </View>
-      </TouchableOpacity>
-      <Button
-        title="Remove"
-        color="#841584"
-        onPress={() => onRemoveIngredient(index)}
-      />
+      </View>
+      <View style={styles.removeButtonContainer}>
+        <TouchableOpacity
+          style={styles.removeButton}
+          onPress={() => onRemoveIngredient(index)}
+        >
+          <Text style={styles.removeButtonText}>Remove</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -71,14 +73,14 @@ const PantryScreen = ({ navigation, route }) => {
             <Text style={styles.emptyText}>Your pantry is empty</Text>
           </View>
         )}
+        contentContainerStyle={styles.flatlistContentContainer}
       />
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Add Ingredient"
-          color="#A8DDA8"
-          onPress={() => navigation.navigate("Search", { screen: "Search" })}
-        />
-      </View>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate("Search", { screen: "Search" })}
+      >
+        <Text style={styles.addButtonText}>Add Ingredient</Text>
+      </TouchableOpacity>
     </View>
   );
 };
