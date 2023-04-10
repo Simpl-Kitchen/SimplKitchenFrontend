@@ -1,3 +1,7 @@
+//TODO//
+// Make this the screen that when you click the recipe it is sent here for full view//
+
+
 import React, { useLayoutEffect, useRef, useState } from "react";
 import {
   ScrollView,
