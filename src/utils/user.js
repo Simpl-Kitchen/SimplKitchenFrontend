@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const {getUser} = require("./APICalls.js")
+const {getUser} = require("./APICalls")
 
 const connectUserToSpoonacular = async () => {
 
