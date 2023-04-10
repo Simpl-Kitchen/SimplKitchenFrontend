@@ -138,6 +138,27 @@ const updateIngredientAmount = async (ingredient) => {
   }
 }
 
+const getUser = async () => {
+  try {
+    const userToken = await getToken();
+
+    const options = {
+      method: "GET",
+      url: `${SIMPLKITCHEN_API_URL}/user/profile`,
+      //params: queryObject,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+
+    const response = await axios.request(options);
+    //console.log("Successfully added ingredient:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 
 module.exports = {
@@ -147,4 +168,5 @@ module.exports = {
   getUsersIngredients,
   removeIngredientFromPantry,
   updateIngredientAmount,
+  getUser,
 };
