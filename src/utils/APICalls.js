@@ -108,6 +108,37 @@ const removeIngredientFromPantry = async (ingredient) => {
   }
 };
 
+const updateIngredientAmount = async (ingredient) => {
+
+  console.log("Updating ingredient amount")
+  console.log("Ingredient ID: " + JSON.stringify(ingredient.ingredientId))
+  console.log("Ingredient amount: " + JSON.stringify(ingredient.amount))
+
+  try {
+    const userToken = await getToken();
+
+    const options = {
+      method: "PATCH",
+      url: `${SIMPLKITCHEN_API_URL}/pantry/${ingredient.ingredientId}`,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+      data: {
+        amount: ingredient.amount,
+      },
+    };
+
+    //console.log(options.url)
+    const response = await axios.request(options);
+    console.log("Successfully updated ingredient:", response.data);
+
+  } catch (error) {
+    console.error("Error updating ingredient amount:", error);
+
+  }
+}
+
+
 
 module.exports = {
   loginSimplKitchen,
@@ -115,4 +146,5 @@ module.exports = {
   addIngredientToPantry,
   getUsersIngredients,
   removeIngredientFromPantry,
+  updateIngredientAmount,
 };

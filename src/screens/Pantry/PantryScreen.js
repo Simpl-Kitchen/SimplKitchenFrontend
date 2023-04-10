@@ -15,7 +15,7 @@ import styles from "./styles";
 const {
   getUsersIngredients,
   removeIngredientFromPantry,
-  addIngredientToPantry,
+  updateIngredientAmount,
 } = require("../../utils/APICalls.js");
 
 const PantryScreen = ({ navigation, route }) => {
@@ -38,7 +38,15 @@ const PantryScreen = ({ navigation, route }) => {
     try {
       console.log("Hello world from onRemoveIngredient")
       console.log(pantryIngredients[index])
-      await removeIngredientFromPantry(pantryIngredients[index]);
+      //await removeIngredientFromPantry(pantryIngredients[index]);
+      if (pantryIngredients[index].amount > 1) {
+        pantryIngredients[index].amount -= 1;
+        await updateIngredientAmount(pantryIngredients[index])
+
+      }
+      else {
+        await removeIngredientFromPantry(pantryIngredients[index]);
+      }
       fetchData();
     } catch (error) {
       console.log(error);
@@ -49,6 +57,10 @@ const PantryScreen = ({ navigation, route }) => {
     try {
       console.log("Hello world from onAddIngredient")
       console.log(pantryIngredients[index])
+
+      pantryIngredients[index].amount += 1;
+      console.log(pantryIngredients[index])
+      await updateIngredientAmount(pantryIngredients[index])
       // Add ingredient to pantry
       // await addIngredientToPantry(pantryIngredients[index]);
       // Fetch updated pantry ingredients
