@@ -31,7 +31,7 @@ function MainNavigator() {
     >
       <Stack.Screen name='Login' component={LoginScreen} options={{headerShown: false}}  />
       <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown: false}} />
-      <Stack.Screen name='Home' component={HomeScreen} />
+      <Stack.Screen name='Home' component={HomeScreen}  />
       <Stack.Screen name='Profile' component={ProfileScreen} />
       <Stack.Screen name='Pantry' component={PantryScreen} />
       <Stack.Screen name='Categories' component={CategoriesScreen} />
