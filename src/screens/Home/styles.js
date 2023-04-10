@@ -66,6 +66,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  addButton: {
+    backgroundColor: "#22aa88",
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
+    alignSelf: "flex-start",
+  },
+  buttonContainer: {
+    alignSelf: "flex-end",
+    marginTop: 10,
+    backgroundColor: "#B0B4B33A",
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },  
+  addButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
 export default styles;

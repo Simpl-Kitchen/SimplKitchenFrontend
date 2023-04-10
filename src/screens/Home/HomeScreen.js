@@ -7,25 +7,30 @@ import {
   Image,
   SafeAreaView,
   RefreshControl,
+  Button,
+  TouchableOpacity,
 } from "react-native";
 import PropTypes from "prop-types";
-import DrawerContainer from "../DrawerContainer/DrawerContainer" // import the DrawerContainer component
+import { useNavigation } from "@react-navigation/native"; // import the useNavigation hook
+import DrawerContainer from "../DrawerContainer/DrawerContainer"; // import the DrawerContainer component
 import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
+  // const [refreshing, setRefreshing] = useState(false);
+  const navigation = useNavigation(); // use the useNavigation hook
+  
 
   const fetchData = () => {
-    setRefreshing(true);
+    // setRefreshing(true);
     fetch(
       "https://api.spoonacular.com/recipes/random?number=10&apiKey=e44c9f0796b4400ab3a69f1354d139a9"
     )
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data.recipes);
-        setRefreshing(false);
+        // setRefreshing(false);
       })
       .catch((error) => console.error(error));
   };
@@ -43,9 +48,13 @@ const HomeScreen = ({ navigation }) => {
             navigation.openDrawer();
           }}
         />
-      )
+      ),
     });
   }, []);
+
+  const handleAddToMealPlan = (recipe) => {
+    navigation.navigate("MealPlan", { recipe }); // navigate to the MealPlan screen and pass the recipe as a parameter
+  };
 
   const renderRecipe = ({ item }) => {
     return (
@@ -56,12 +65,19 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.info}>Servings: {item.servings}</Text>
-          <Text style={styles.info}>Ready in: {item.readyInMinutes} minutes</Text>
-          <Text style={styles.summary}>{item.summary.replace(/(<([^>]+)>)/gi, "")}</Text>
-          <Text style={styles.ingredientsTitle}>Ingredients:</Text>
-          <Text style={styles.ingredients}>{item.extendedIngredients.map(ingredient => `${ingredient.originalString}\n`).join("")}</Text>
-          <Text style={styles.instructionsTitle}>Instructions:</Text>
-          <Text style={styles.instructions}>{item.instructions.replace(/(<([^>]+)>)/gi, "").trim()}</Text>
+          <Text style={styles.info}>
+            Ready in: {item.readyInMinutes} minutes
+          </Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Add to Meal Plan"
+              onPress={() => handleAddToMealPlan(item)}
+            />
+          </View>
+          <Text style={styles.info}>Calories: {item.calories}</Text>
+          <Text style={styles.info}>Fat: {item.fat}</Text>
+          <Text style={styles.info}>Carbs: {item.carbs}</Text>
+          <Text style={styles.info}>Protein: {item.protein}</Text>
         </View>
       </View>
     );
@@ -73,20 +89,9 @@ const HomeScreen = ({ navigation }) => {
         data={recipes}
         renderItem={renderRecipe}
         keyExtractor={(item) => item.id.toString()}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-        }
       />
     </SafeAreaView>
   );
-};
-
-// Add prop type for navigation
-HomeScreen.propTypes = {
-  navigation: PropTypes.shape({
-    setOptions: PropTypes.func.isRequired,
-    openDrawer: PropTypes.func.isRequired,
-  }),
 };
 
 export default HomeScreen;
