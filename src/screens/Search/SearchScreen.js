@@ -1,10 +1,14 @@
 // SearchScreen.js
 import React, { useState } from "react";
 import { View, FlatList, KeyboardAvoidingView } from "react-native";
-import styles from "./styles";
+import { SearchBar } from 'react-native-elements';
 import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
 import IngredientItem from "./IngredientItem";
-import SearchBar from "./SearchBar";
+import { Image } from 'react-native-elements';
+import { Dimensions } from 'react-native';
+import styles from "./styles";
+
+const { width } = Dimensions.get('window');
 
 const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
@@ -37,41 +41,47 @@ const SearchScreen = ({ navigation }) => {
     navigation.navigate("Ingredient", { ingredient });
   };
 
-  const renderIngredient = ({ item, index }) => {
-    if (index % 2 !== 0) return null;
-
-    const secondItem =
-      index + 1 < ingredients.length ? ingredients[index + 1] : null;
-
-    return (
-      <KeyboardAvoidingView style={styles.rowContainer}>
-        {[item, secondItem].map(
-          (ingredient, idx) =>
-            ingredient && (
-              <IngredientItem
-                key={ingredient.id}
-                ingredient={ingredient}
-                onPress={onPressIngredient}
-                onAdd={handleAddIngredient}
-              />
-            )
-        )}
-      </KeyboardAvoidingView>
-    );
-  };
+  const renderIngredient = ({ item }) => (
+    <IngredientItem
+      key={item.id}
+      ingredient={item}
+      onPress={onPressIngredient}
+      onAdd={handleAddIngredient}
+    />
+  );
 
   return (
     <View style={styles.container}>
-      <SearchBar search={search} setSearch={setSearch} onSearch={fetchData} />
+      <SearchBar
+        platform="ios"
+        placeholder="Search for ingredients..."
+        value={search}
+        onChangeText={setSearch}
+        onSubmitEditing={fetchData}
+      />
       <View style={styles.carouselContainer}>
         <FlatList
           data={ingredients}
+          numColumns={2}
           renderItem={renderIngredient}
           keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.flatListContainer}
         />
       </View>
     </View>
   );
 };
+
+const IngredientImage = ({ uri }) => (
+  <Image
+    source={{ uri }}
+    style={{
+      width: width / 2 - 20,
+      height: width / 2 - 20,
+      borderRadius: 10,
+      marginBottom: 10,
+    }}
+  />
+);
 
 export default SearchScreen;

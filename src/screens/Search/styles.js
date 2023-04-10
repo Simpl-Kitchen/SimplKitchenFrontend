@@ -8,21 +8,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   searchContainer: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
     marginTop: 20,
     width: "100%",
   },
-  searchInput: {
+  searchInputContainer: {
     flex: 1,
     height: 40,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginRight: 10,
-    marginLeft: 10,
+    backgroundColor: "#fff",
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+  },
+  searchInput: {
     fontSize: 16,
     color: "#000",
   },
