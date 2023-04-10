@@ -8,7 +8,9 @@ import {
   SafeAreaView,
   RefreshControl,
 } from "react-native";
-
+import PropTypes from "prop-types";
+import DrawerContainer from "../DrawerContainer/DrawerContainer" // import the DrawerContainer component
+import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
 const HomeScreen = ({ navigation }) => {
@@ -30,6 +32,19 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchData();
+    // Add drawer lock mode and header button to screen options
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+      )
+    });
   }, []);
 
   const renderRecipe = ({ item }) => {
@@ -66,6 +81,12 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
+// Add prop type for navigation
+HomeScreen.propTypes = {
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired,
+    openDrawer: PropTypes.func.isRequired,
+  }),
+};
+
 export default HomeScreen;
-
-

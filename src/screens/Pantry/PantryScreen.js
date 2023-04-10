@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
 import {
   View,
@@ -25,6 +25,25 @@ const PantryScreen = ({ navigation, route }) => {
     fetchData();
   }, []);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        >
+          <Image
+            source={require("../../../assets/icons/menu.png")}
+            style={styles.menuIcon}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   const fetchData = async () => {
     try {
       const results = await getUsersIngredients();
@@ -36,14 +55,10 @@ const PantryScreen = ({ navigation, route }) => {
 
   const onRemoveIngredient = async (index) => {
     try {
-
       if (pantryIngredients[index].amount > 1) {
-
         pantryIngredients[index].amount -= 1;
-        await updateIngredientAmount(pantryIngredients[index])
-
-      }
-      else {
+        await updateIngredientAmount(pantryIngredients[index]);
+      } else {
         await removeIngredientFromPantry(pantryIngredients[index]);
       }
       fetchData();
@@ -54,19 +69,13 @@ const PantryScreen = ({ navigation, route }) => {
 
   const onAddIngredient = async (index) => {
     try {
-      // Increase amount of ingredient by 1
       pantryIngredients[index].amount += 1;
-
-      // Add ingredient to pantry
-      await updateIngredientAmount(pantryIngredients[index])
-
-      // Fetch updated pantry ingredients
+      await updateIngredientAmount(pantryIngredients[index]);
       fetchData();
     } catch (error) {
       console.log(error);
     }
   };
-
 
   const renderItem = ({ item, index }) => (
     <View style={styles.itemContainer}>
@@ -78,7 +87,6 @@ const PantryScreen = ({ navigation, route }) => {
             <TouchableOpacity
               style={styles.minusButton}
               onPress={() => {
-                // Decrease quantity of ingredient by 1 if current quantity is greater than 0
                 onRemoveIngredient(index);
               }}
             >
@@ -88,8 +96,6 @@ const PantryScreen = ({ navigation, route }) => {
             <TouchableOpacity
               style={styles.plusButton}
               onPress={() => {
-                // Increase quantity of ingredient by 1
-                // Add ingredient to pantry
                 onAddIngredient(index);
               }}
             >
@@ -120,7 +126,6 @@ const PantryScreen = ({ navigation, route }) => {
             <Text style={styles.emptyText}>Your pantry is empty</Text>
           </View>
         )}
-        contentContainerStyle={styles.flatlistContentContainer}
       />
       <TouchableOpacity
         style={styles.addButton}
@@ -132,4 +137,4 @@ const PantryScreen = ({ navigation, route }) => {
   );
 };
 
-export default PantryScreen;
+export default PantryScreen;    

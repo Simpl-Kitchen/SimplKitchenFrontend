@@ -44,7 +44,7 @@ export default function LoginScreen(props) {
           Alert.alert("Login successful");
           //await AsyncStorage.setItem("userToken", response.data.token);
           await storeToken(response.data.token);
-          props.navigation.navigate("Categories");
+          props.navigation.navigate("Home");
             console.log(response.data.token);
             //console.log(error);
         }
