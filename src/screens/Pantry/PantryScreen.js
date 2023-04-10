@@ -36,10 +36,9 @@ const PantryScreen = ({ navigation, route }) => {
 
   const onRemoveIngredient = async (index) => {
     try {
-      console.log("Hello world from onRemoveIngredient")
-      console.log(pantryIngredients[index])
-      //await removeIngredientFromPantry(pantryIngredients[index]);
+
       if (pantryIngredients[index].amount > 1) {
+
         pantryIngredients[index].amount -= 1;
         await updateIngredientAmount(pantryIngredients[index])
 
@@ -55,14 +54,12 @@ const PantryScreen = ({ navigation, route }) => {
 
   const onAddIngredient = async (index) => {
     try {
-      console.log("Hello world from onAddIngredient")
-      console.log(pantryIngredients[index])
-
+      // Increase amount of ingredient by 1
       pantryIngredients[index].amount += 1;
-      console.log(pantryIngredients[index])
-      await updateIngredientAmount(pantryIngredients[index])
+
       // Add ingredient to pantry
-      // await addIngredientToPantry(pantryIngredients[index]);
+      await updateIngredientAmount(pantryIngredients[index])
+
       // Fetch updated pantry ingredients
       fetchData();
     } catch (error) {
