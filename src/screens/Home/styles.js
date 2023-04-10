@@ -3,53 +3,68 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f7f7f7",
   },
   recipe: {
-    backgroundColor: "#f2f2f2",
-    marginHorizontal: 16,
-    marginVertical: 8,
-    borderRadius: 8,
-    overflow: "hidden",
-    padding: 16,
+    flex: 1,
+    flexDirection: "column",
+    marginHorizontal: 20,
+    marginVertical: 10,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
+  },
+  imageContainer: {
+    alignItems: "center",
+    marginBottom: 10,
   },
   image: {
     width: "100%",
     height: 200,
+    borderRadius: 10,
   },
+  textContainer: {},
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    marginVertical: 8,
-  },
-  summary: {
-    fontSize: 16,
-    marginBottom: 16,
+    marginBottom: 5,
   },
   info: {
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 5,
+  },
+  summary: {
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 5,
   },
   ingredientsTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 10,
+    marginBottom: 5,
   },
   ingredients: {
     fontSize: 16,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   instructionsTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    marginTop: 16,
-    marginBottom: 8,
+    marginBottom: 5,
   },
   instructions: {
     fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 16,
+    marginBottom: 10,
   },
 });
 
