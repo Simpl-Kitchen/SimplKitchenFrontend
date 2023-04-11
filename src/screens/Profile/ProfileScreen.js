@@ -150,7 +150,7 @@ import styles from "./styles";
 import * as ImagePicker from "expo-image-picker";
 
 import { removeToken } from "../../utils/Authorization";
-import { addIngredientToPantry } from "../../utils/APICalls";
+//import { addIngredientToPantry } from "../../utils/APICalls";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
@@ -195,7 +195,7 @@ export default function ProfileScreen(props) {
       Alert.alert("Error updating profile. Please try again later.");
     }
   };
-  
+
   const FoodIntolerances = () => {
     const [intolerances, setIntolerances] = useState([
       { id: '1', name: 'Dairy' },
@@ -210,30 +210,30 @@ export default function ProfileScreen(props) {
       { id: '10', name: 'Tree Nut' },
       { id: '11', name: 'Wheat' },
     ]);
-  
+
     const renderItem = ({ item }) => (
       <View style={{ padding: 10 }}>
         <Text>{item.name}</Text>
       </View>
     );
-  
+
     return (
       <ScrollView>
-      <View>
-  <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Food Intolerances</Text>
-  <FlatList
-    data={intolerances}
-    renderItem={renderItem}
-    keyExtractor={(item) => item.id}
-  />
-</View>
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Food Intolerances</Text>
+          <FlatList
+            data={intolerances}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       </ScrollView>
     );
   };
 
-  
 
-  
+
+
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -302,14 +302,13 @@ export default function ProfileScreen(props) {
         </View>
       </KeyboardAvoidingView>
       <View>
-    <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Food Intolerances, Dairy , Egg, Gluten, Grain, Peanut, Sesame, Shellfish, Soy, Sulfite, Tree Nut, Wheat </Text>
-    <FlatList
-      data={FoodIntolerances}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-    />
-  </View>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Food Intolerances, Dairy , Egg, Gluten, Grain, Peanut, Sesame, Shellfish, Soy, Sulfite, Tree Nut, Wheat </Text>
+        <FlatList
+          data={FoodIntolerances}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
     </ScrollView>
   );
-  }
-  
+}
