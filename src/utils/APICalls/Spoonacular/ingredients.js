@@ -41,4 +41,7 @@ const searchIngredientsByName = async (query) => {
 
 }
 
+// Tomorrow implement the following function:
+// Search by ingredient
+
 module.exports = { searchIngredientsByName };
