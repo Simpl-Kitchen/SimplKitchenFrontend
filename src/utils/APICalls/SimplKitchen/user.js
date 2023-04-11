@@ -41,28 +41,24 @@ const loginSimplKitchen = async (email, password) => {
   return response;
 };
 
-const registerSimplKitchen = async (username, name, email, password) => {
-  axios
-    .post("https://simplkitchenapi.onrender.com/api/v1/auth/register", {
+const registerSimplKitchen = async (name, username, email, password) => {
+  console.log("Inside registerSimplKitchen");
+
+
+  const options = {
+    method: "POST",
+    url: "https://simplkitchenapi.onrender.com/api/v1/auth/register",
+    data: {
+      firstName: name.split(" ")[0],
+      lastName: name.split(" ")[1],
       username: username,
-      name: name,
       email: email,
       password: password,
-    })
-    .then((response) => {
-      const token = response.data.token;
-      console.log(token);
-      if (response.data === "Email already exists") {
-        Alert.alert("Email already exists");
-      } else {
-        Alert.alert("Registration successful");
-        props.navigation.navigate("Login");
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      Alert.alert("Error registering user");
-    });
+    },
+  };
+
+  const response = await axios.request(options);
+  return response.data;
 }
 
 const getUserInformation = async () => {
