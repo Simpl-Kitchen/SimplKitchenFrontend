@@ -10,7 +10,7 @@ const IngredientItem = ({ ingredient, onPress, onAdd }) => (
         style={styles.rowItem}
     >
         <View style={styles.container}>
-            <Image style={styles.photo} source={{ uri: ingredient.image }} />
+            <Image style={styles.photo} source={{ uri: `https://spoonacular.com/cdn/ingredients_500x500/${ingredient.image}` }} />
             <Text style={styles.title}>{ingredient.name}</Text>
             <Button title="⊕ Add To Pantry" color="#0D0C0C" onPress={() => onAdd(ingredient)} />
         </View>

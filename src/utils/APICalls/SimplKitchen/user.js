@@ -1,3 +1,4 @@
+import { SIMPLKITCHEN_API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -64,4 +65,23 @@ const registerSimplKitchen = async (username, name, email, password) => {
     });
 }
 
-module.exports(connectUserToSpoonacular, loginSimplKitchen, registerSimplKitchen)
+const getUserInformation = async () => {
+  try {
+    const userToken = await AsyncStorage.getItem("userToken");
+    const options = {
+      method: "GET",
+      url: `${SIMPLKITCHEN_API_URL}/user/profile`,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+
+    const response = await axios.request(options);
+    //console.log("Successfully added ingredient:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+module.exports = { connectUserToSpoonacular, loginSimplKitchen, registerSimplKitchen, getUserInformation }

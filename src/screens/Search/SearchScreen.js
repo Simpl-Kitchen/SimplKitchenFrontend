@@ -2,11 +2,14 @@
 import React, { useState } from "react";
 import { View, FlatList, KeyboardAvoidingView } from "react-native";
 import { SearchBar } from 'react-native-elements';
-import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
 import IngredientItem from "./IngredientItem";
 import { Image } from 'react-native-elements';
 import { Dimensions } from 'react-native';
 import styles from "./styles";
+
+import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
+import { searchIngredientsByName } from "../../utils/APICalls/Spoonacular/ingredients"
+
 
 const { width } = Dimensions.get('window');
 
@@ -16,14 +19,11 @@ const SearchScreen = ({ navigation }) => {
 
   const fetchData = async () => {
     try {
-      const queryObject = { search };
-      const results = await getIngredientsByName(queryObject);
 
-      results.forEach((item) => {
-        item.image = `https://spoonacular.com/cdn/ingredients_500x500/${item.image}`;
-      });
+      const ingredientSearch = await searchIngredientsByName(search);
+      const ingredients = ingredientSearch.results;
+      setIngredients(ingredients);
 
-      setIngredients(results);
     } catch (error) {
       console.log(error);
     }
