@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const searchIngredientsSpoonacular = async (query) => {
+const searchIngredientsByName = async (query) => {
     options = {
         'query': query, // String | The (natural language) search query.
         'addChildren': true, // Boolean | Whether to add children of found foods.
@@ -14,7 +14,7 @@ const searchIngredientsSpoonacular = async (query) => {
         // 'language': "en" // String | The language of the input. Either 'en' or 'de'.
     };
 
-    
+
 }
 
-module.exports = { searchIngredientsSpoonacular };
+module.exports = { searchIngredientsByName };
