@@ -2,18 +2,13 @@ import axios from "axios";
 const { getUserInformation } = require("../SimplKitchen/user");
 
 const searchIngredientsByName = async (query) => {
-    //console.log("Using new searchIngredientsByName function.")
+
     const userData = await getUserInformation();
 
-    //console.log("userData:", userData);
-
-
-    //console.log("Using new searchIngredientsByName function.")
     const opts = {
         'query': query.toLowerCase(), // String | The (natural language) search query.
         //'addChildren': true, // Boolean | Whether to add children of found foods.
         // 'metaInformation': false, // Boolean | Whether to return more meta information about the ingredients.
-        // 'intolerances': "egg", // String | A comma-separated list of intolerances. All recipes returned must not contain ingredients that are not suitable for people with the intolerances entered. See a full list of supported intolerances.
         'intolerances': userData.intolerances, // String | A comma-separated list of intolerances. All recipes returned must not contain ingredients that are not suitable for people with the intolerances entered. See a full list of supported intolerances.
         // 'sort': "calories", // String | The strategy to sort recipes by. See a full list of supported sorting options.
         'sortDirection': "asc", // String | The direction in which to sort. Must be either 'asc' (ascending) or 'desc' (descending).
