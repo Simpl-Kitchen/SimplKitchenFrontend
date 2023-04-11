@@ -11,33 +11,33 @@ import {
   TouchableOpacity,
 } from "react-native";
 import PropTypes from "prop-types";
-import { useNavigation } from "@react-navigation/native"; // import the useNavigation hook
-import DrawerContainer from "../DrawerContainer/DrawerContainer"; // import the DrawerContainer component
+import { useNavigation } from "@react-navigation/native";
+import DrawerContainer from "../DrawerContainer/DrawerContainer";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
 const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
-  // const [refreshing, setRefreshing] = useState(false);
-  const navigation = useNavigation(); // use the useNavigation hook
-  
+  const [refreshing, setRefreshing] = useState(false);
+  const navigation = useNavigation();
 
   const fetchData = () => {
-    // setRefreshing(true);
+    setRefreshing(true);
     fetch(
       "https://api.spoonacular.com/recipes/random?number=10&apiKey=e44c9f0796b4400ab3a69f1354d139a9"
     )
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data.recipes);
-        // setRefreshing(false);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setRefreshing(false);
+      });
   };
 
   useEffect(() => {
     fetchData();
-    // Add drawer lock mode and header button to screen options
     navigation.setOptions({
       drawerLockMode: "locked-closed",
       headerLeft: () => (
@@ -53,7 +53,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleAddToMealPlan = (recipe) => {
-    navigation.navigate("MealPlan", { recipe }); // navigate to the MealPlan screen and pass the recipe as a parameter
+    navigation.navigate("MealPlan", { recipe });
   };
 
   const renderRecipe = ({ item }) => {
@@ -89,6 +89,9 @@ const HomeScreen = () => {
         data={recipes}
         renderItem={renderRecipe}
         keyExtractor={(item) => item.id.toString()}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+        }
       />
     </SafeAreaView>
   );

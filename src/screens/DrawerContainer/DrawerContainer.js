@@ -26,10 +26,10 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="Recipes"
+          title="Meal Plan"
           source={require("../../../assets/icons/category.png")}
           onPress={() => {
-            navigation.navigate("Categories");
+            navigation.navigate("MealPlan");
             navigation.closeDrawer();
           }}
         />
@@ -71,5 +71,5 @@ DrawerContainer.navigationOptions = ({ navigation }) => ({
         navigation.openDrawer();
       }}
     />
-  )
+  ),
 });
