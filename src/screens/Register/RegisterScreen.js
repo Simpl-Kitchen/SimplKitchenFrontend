@@ -45,12 +45,13 @@ export default function RegisterScreen(props) {
       })
       .catch((error) => {
         // console.log(error);
-        Alert.alert("Error registering user");
         if (error.response) {
           // The request was made, and the server responded with a status code
           // that falls outside the range of 2xx
           console.log('Error status:', error.response.status);
           console.log('Error data:', error.response.data);
+          //Alert.alert("Error registering user");
+          Alert.alert(error.response.data.msg)
         } else if (error.request) {
           // The request was made but no response was received
           console.log('No response received:', error.request);
