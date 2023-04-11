@@ -19,13 +19,17 @@ import { Image } from "react-native";
 
 export default function RegisterScreen(props) {
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = () => {
     axios
       .post("https://simplkitchenapi.onrender.com/api/v1/auth/register", {
-        name: name,
+        //name: name,
+        firstName: name.split(" ")[0],
+        lastName: name.split(" ")[1],
+        username: username,
         email: email,
         password: password,
       })
@@ -40,8 +44,21 @@ export default function RegisterScreen(props) {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         Alert.alert("Error registering user");
+        if (error.response) {
+          // The request was made, and the server responded with a status code
+          // that falls outside the range of 2xx
+          console.log('Error status:', error.response.status);
+          console.log('Error data:', error.response.data);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log('No response received:', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error message:', error.message);
+        }
+        //console.log('Error config:', error.config);
       });
   };
 
@@ -58,6 +75,11 @@ export default function RegisterScreen(props) {
         style={styles.input}
         placeholder="Name"
         onChangeText={(text) => setName(text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        onChangeText={(text) => setUsername(text)}
       />
       <TextInput
         style={styles.input}
