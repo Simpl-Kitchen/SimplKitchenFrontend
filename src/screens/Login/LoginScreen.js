@@ -14,12 +14,8 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import styles from "./styles";
-//import axios from "axios";
-//import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { loginSimplKitchen } from "../../utils/APICalls";
-//import {storeToken} from "../../utils/Authorization";
-import { storeToken } from "../../utils/AsyncStorage/userToken"
+import { loginSimplKitchen } from "../../utils/APICalls/SimplKitchen/user";
 
 // email and password are the state variables
 
@@ -32,52 +28,32 @@ export default function LoginScreen(props) {
   const handleLogin = async () => {
 
     try {
-      const response = await loginSimplKitchen(email, password);
 
-      if (response.data === "Incorrect email or password") {
+      const login = await loginSimplKitchen(email, password);
 
-        Alert.alert("Incorrect email or password");
-
-      } else {
-
-        // Store the user token in AsyncStorage
+      if (login) {
 
         Alert.alert("Login successful");
-        //await AsyncStorage.setItem("userToken", response.data.token);
-        await storeToken(response.data.token);
-        props.navigation.navigate("Pantry");
-        console.log(response.data.token);
-        //console.log(error);
+        props.navigation.navigate("Home");
+
       }
+
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        // The request was made, and the server responded with a status code
+        // that falls outside the range of 2xx
+        console.log('Error status:', error.response.status);
+        console.log('Error data:', error.response.data);
+        Alert.alert(error.response.data.msg);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error message:', error.message);
+      }
     }
 
-
-
-    // axios
-    //   .post("https://simplkitchenapi.onrender.com/api/v1/auth/login", {
-    //     email: email,
-    //     password: password,
-    //   })
-    //   .then(async (response) => {
-    //     if (response.data === "Incorrect email or password") {
-    //       Alert.alert("Incorrect email or password");
-    //     } else {
-    //       // Store the user token in AsyncStorage
-    //       try {
-    //         await AsyncStorage.setItem("userToken", response.data.token);
-    //         Alert.alert("Login successful");
-    //         props.navigation.navigate("Categories");
-    //         console.log(response.data.token);
-    //       } catch (error) {
-    //         console.log(error);
-    //       }
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   };
 
 

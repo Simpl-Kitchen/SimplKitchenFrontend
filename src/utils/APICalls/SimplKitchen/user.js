@@ -1,6 +1,7 @@
 import { SIMPLKITCHEN_API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { storeToken } from "../../AsyncStorage/userToken"
 
 const { getUser } = require("../../APICalls")
 
@@ -33,17 +34,20 @@ const connectUserToSpoonacular = async () => {
 }
 
 const loginSimplKitchen = async (email, password) => {
-  console.log("Inside loginSimplKitchen");
+
   const response = await axios.post(`${SIMPLKITCHEN_API_URL}/auth/login`, {
     email: email,
     password: password,
   });
+
+  if (response) {
+    await storeToken(response.data.token);
+  }
+
   return response;
 };
 
 const registerSimplKitchen = async (name, username, email, password) => {
-  console.log("Inside registerSimplKitchen");
-
 
   const options = {
     method: "POST",

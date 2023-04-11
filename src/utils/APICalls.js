@@ -5,14 +5,14 @@ import { SIMPLKITCHEN_API_URL } from "@env";
 
 console.log("SIMPLKITCHEN_API_URL: " + SIMPLKITCHEN_API_URL);
 
-const loginSimplKitchen = async (email, password) => {
-  console.log("Inside loginSimplKitchen");
-  const response = await axios.post(`${SIMPLKITCHEN_API_URL}/auth/login`, {
-    email: email,
-    password: password,
-  });
-  return response;
-};
+// const loginSimplKitchen = async (email, password) => {
+//   console.log("Inside loginSimplKitchen");
+//   const response = await axios.post(`${SIMPLKITCHEN_API_URL}/auth/login`, {
+//     email: email,
+//     password: password,
+//   });
+//   return response;
+// };
 
 // const getIngredientsByName = async (queryObject) => {
 //   console.log("Inside getIngredientsByName");
@@ -162,7 +162,7 @@ const loginSimplKitchen = async (email, password) => {
 
 
 module.exports = {
-  loginSimplKitchen,
+  //loginSimplKitchen,
   //getIngredientsByName,
   //addIngredientToPantry,
   //getUsersIngredients,
