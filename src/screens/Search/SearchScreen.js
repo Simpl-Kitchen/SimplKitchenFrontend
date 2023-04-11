@@ -7,8 +7,9 @@ import { Image } from 'react-native-elements';
 import { Dimensions } from 'react-native';
 import styles from "./styles";
 
-import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
+//import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
 import { searchIngredientsByName } from "../../utils/APICalls/Spoonacular/ingredients"
+import { addIngredientToPantry } from "../../utils/APICalls/SimplKitchen/pantry";
 
 
 const { width } = Dimensions.get('window');

@@ -12,11 +12,13 @@ import {
 
 import styles from "./styles";
 
-const {
-  getUsersIngredients,
-  removeIngredientFromPantry,
-  updateIngredientAmount,
-} = require("../../utils/APICalls.js");
+// const {
+//   //getUsersIngredients,
+//   //removeIngredientFromPantry,
+//   //updateIngredientAmount,
+// } = require("../../utils/APICalls.js");
+
+const { getUsersIngredients, removeIngredientFromPantry, updateIngredientAmount } = require("../../utils/APICalls/SimplKitchen/pantry");
 
 const PantryScreen = ({ navigation, route }) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
@@ -80,7 +82,7 @@ const PantryScreen = ({ navigation, route }) => {
   const renderItem = ({ item, index }) => (
     <View style={styles.itemContainer}>
       <View style={styles.itemContent}>
-        <Image style={styles.photo} source={{ uri: item.pictureURL }} />
+        <Image style={styles.photo} source={{ uri: `https://spoonacular.com/cdn/ingredients_500x500/${item.pictureURL}` }} />
         <View style={styles.itemTextContainer}>
           <Text style={styles.title}>{item.ingredientName}</Text>
           <View style={styles.quantityContainer}>

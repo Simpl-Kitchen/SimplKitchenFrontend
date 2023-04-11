@@ -17,8 +17,9 @@ import styles from "./styles";
 //import axios from "axios";
 //import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import {loginSimplKitchen} from "../../utils/APICalls";
-import {storeToken} from "../../utils/Authorization";
+import { loginSimplKitchen } from "../../utils/APICalls";
+//import {storeToken} from "../../utils/Authorization";
+import { storeToken } from "../../utils/AsyncStorage/userToken"
 
 // email and password are the state variables
 
@@ -31,29 +32,29 @@ export default function LoginScreen(props) {
   const handleLogin = async () => {
 
     try {
-        const response = await loginSimplKitchen(email, password);
+      const response = await loginSimplKitchen(email, password);
 
-        if (response.data === "Incorrect email or password") {
+      if (response.data === "Incorrect email or password") {
 
-          Alert.alert("Incorrect email or password");
+        Alert.alert("Incorrect email or password");
 
-        } else {
+      } else {
 
-          // Store the user token in AsyncStorage
-          
-          Alert.alert("Login successful");
-          //await AsyncStorage.setItem("userToken", response.data.token);
-          await storeToken(response.data.token);
-          props.navigation.navigate("Pantry");
-            console.log(response.data.token);
-            //console.log(error);
-        }
+        // Store the user token in AsyncStorage
+
+        Alert.alert("Login successful");
+        //await AsyncStorage.setItem("userToken", response.data.token);
+        await storeToken(response.data.token);
+        props.navigation.navigate("Pantry");
+        console.log(response.data.token);
+        //console.log(error);
+      }
     } catch (error) {
       console.log(error);
     }
-    
-    
-    
+
+
+
     // axios
     //   .post("https://simplkitchenapi.onrender.com/api/v1/auth/login", {
     //     email: email,
@@ -78,7 +79,7 @@ export default function LoginScreen(props) {
     //     console.log(error);
     //   });
   };
-  
+
 
   return (
     // add spt for image at the top center of the screen
