@@ -62,10 +62,33 @@ const getUserInformation = async () => {
   }
 }
 
+const updateUserIntolerences = async (intolerences) => {
+  try {
+    const userToken = await AsyncStorage.getItem("userToken");
+    const options = {
+      method: "PUT",
+      url: `${SIMPLKITCHEN_API_URL}/user/intolerances`,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+      data: {
+        intolerences: intolerences,
+      },
+    };
+
+    const response = await axios.request(options);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 module.exports =
 {
 
   loginSimplKitchen,
   registerSimplKitchen,
-  getUserInformation
+  getUserInformation,
+  updateUserIntolerences,
 }
