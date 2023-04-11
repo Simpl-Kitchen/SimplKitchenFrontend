@@ -3,36 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { storeToken } from "../../AsyncStorage/userToken"
 
-const { getUser } = require("../../APICalls")
-
-const connectUserToSpoonacular = async () => {
-
-  const userData = await getUser();
-  const username = userData.username
-  const firstname = userData.firstName
-  const lastname = userData.lastName
-  const email = userData.email
-
-  try {
-    const options = {
-      method: "POST",
-      url: "https://api.spoonacular.com/users/connect",
-      data: {
-        username: username,
-        firstName: firstname,
-        lastName: lastname,
-        email: email,
-      },
-    };
-
-    const response = await axios.request(options);
-    console.log(response)
-    //console.log("Successfully added ingredient:", response.data);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 const loginSimplKitchen = async (email, password) => {
 
   const response = await axios.post(`${SIMPLKITCHEN_API_URL}/auth/login`, {
@@ -62,12 +32,20 @@ const registerSimplKitchen = async (name, username, email, password) => {
   };
 
   const response = await axios.request(options);
+
+  if (response) {
+
+    await storeToken(response.data.token);
+  }
+
   return response.data;
 }
 
 const getUserInformation = async () => {
+  console.log("Hello")
   try {
     const userToken = await AsyncStorage.getItem("userToken");
+    console.log(userToken)
     const options = {
       method: "GET",
       url: `${SIMPLKITCHEN_API_URL}/user/profile`,
@@ -84,4 +62,10 @@ const getUserInformation = async () => {
   }
 }
 
-module.exports = { connectUserToSpoonacular, loginSimplKitchen, registerSimplKitchen, getUserInformation }
+module.exports =
+{
+
+  loginSimplKitchen,
+  registerSimplKitchen,
+  getUserInformation
+}

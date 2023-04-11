@@ -1,9 +1,10 @@
 import axios from "axios";
-const { getUserInformation } = require("../SimplKitchen/user");
+const { getUserInformation } = require("../../APICalls/SimplKitchen/user");
 
 const searchIngredientsByName = async (query) => {
 
     const userData = await getUserInformation();
+    console.log(userData);
 
     const opts = {
         'query': query.toLowerCase(), // String | The (natural language) search query.
