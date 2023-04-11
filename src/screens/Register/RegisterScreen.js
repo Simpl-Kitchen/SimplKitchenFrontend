@@ -31,9 +31,12 @@ export default function RegisterScreen(props) {
     try {
 
       const register = await registerSimplKitchen(name, username, email, password)
+
       if (register) {
+
         Alert.alert("Registration successful");
         props.navigation.navigate("Login");
+
       }
 
     } catch (error) {
