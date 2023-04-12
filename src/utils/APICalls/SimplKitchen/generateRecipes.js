@@ -18,7 +18,7 @@ const generateUserRecipes = async () => {
         };
 
         const response = await axios.request(options);
-        return response;
+        return response.data;
 }
 
 const getGeneratedRecipes = async () => {
