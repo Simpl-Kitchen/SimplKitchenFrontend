@@ -1,6 +1,6 @@
 // SearchScreen.js
 import React, { useState, useEffect } from "react";
-import { View, FlatList, KeyboardAvoidingView } from "react-native";
+import { View, FlatList} from "react-native";
 import { SearchBar } from "react-native-elements";
 import IngredientItem from "./IngredientItem";
 import { Image } from "react-native-elements";
