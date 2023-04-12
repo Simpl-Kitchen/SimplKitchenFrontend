@@ -8,15 +8,14 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
-// import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
-// import DrawerContainer from "../DrawerContainer/DrawerContainer";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
 const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [sortBy, setSortBy] = useState(null);
   const navigation = useNavigation();
 
   const fetchData = () => {
@@ -47,8 +46,22 @@ const HomeScreen = () => {
           }}
         />
       ),
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            if (sortBy === "asc") {
+              setSortBy("desc");
+            } else {
+              setSortBy("asc");
+            }
+          }}
+        >
+          <Text style={styles.filterButtonText}>Sort by price per serving</Text>
+        </TouchableOpacity>
+      ),
     });
-  }, []);
+  }, [sortBy]);
 
   const handleAddToMealPlan = (recipe) => {
     navigation.navigate("MealPlan", { recipe });
@@ -67,36 +80,45 @@ const HomeScreen = () => {
           <Text style={styles.info}>
             Ready in: {item.readyInMinutes} minutes
           </Text>
+          <Text style={styles.info}>
+            Price per serving: ${(item.pricePerServing / 100).toFixed(2)}
+          </Text>
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={() => handleAddToMealPlan(item)}
           >
             <Text style={styles.buttonText}>Add to Meal Plan</Text>
           </TouchableOpacity>
-            <Text style={styles.info}>
-              Gluten Free: {item.glutenFree ? "Yes" : "No"}
-            </Text>
-            <Text style={styles.info}>
-              Vegan: {item.vegan ? "Yes" : "No"}
-            </Text>
-            
+          <Text style={styles.info}>
+            Gluten Free: {item.glutenFree ? "Yes" : "No"}
+          </Text>
+          <Text style={styles.info}>Vegan: {item.vegan ? "Yes" : "No"}</Text>
         </View>
       </View>
     );
   };
 
+  const sortedRecipes = recipes.sort((a, b) => {
+    if (sortBy === "asc") {
+      return a.pricePerServing - b.pricePerServing;
+    } else if (sortBy === "desc") {
+      return b.pricePerServing - a.pricePerServing;
+    } else {
+      return 0;
+    }
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={recipes}
+        data={sortedRecipes}
         renderItem={renderRecipe}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={fetchData}
           />
-
         }
       />
     </SafeAreaView>
