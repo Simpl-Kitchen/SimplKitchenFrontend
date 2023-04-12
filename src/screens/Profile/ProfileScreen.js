@@ -140,11 +140,9 @@ import {
   TouchableOpacity,
   Alert,
   KeyboardAvoidingView,
-  Image,
   ScrollView,
   FlatList,
   renderItem,
-  AsyncStorage,
 } from "react-native";
 import styles from "./styles";
 import * as ImagePicker from "expo-image-picker";
@@ -154,6 +152,7 @@ import { addIngredientToPantry } from "../../utils/APICalls";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen(props) {
   const [name, setName] = useState("");
