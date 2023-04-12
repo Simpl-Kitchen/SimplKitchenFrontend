@@ -12,6 +12,7 @@ import { searchIngredientsByName } from "../../utils/APICalls/Spoonacular/ingred
 import { addIngredientToPantry } from "../../utils/APICalls/SimplKitchen/pantry";
 import MenuButton from "../../components/MenuButton/MenuButton";
 
+
 const { width } = Dimensions.get("window");
 
 const SearchScreen = ({ navigation }) => {
