@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import { getToken } from "../../utils/APICalls/SimplKitchen/user";
 
+
 const MealPlanScreen = () => {
   const [recipes, setRecipes] = useState([]);
   const navigation = useNavigation();
@@ -21,17 +22,26 @@ const MealPlanScreen = () => {
     );
   };
 
+  const getToken = async () => {
+    const token = await AsyncStorage.getItem("token");
+    return token;
+  }
+
   const fetchData = async () => {
     const token = await getToken();
-    const recipeIds = await AsyncStorage.getItem("mealPlanRecipes");
     const response = await fetch(
-      `https://api.spoonacular.com/recipes/informationBulk?ids=${recipeIds}&apiKey=e44c9f0796b4400ab3a69f1354d139a9`
+      "https://api.spoonacular.com/recipes/random?number=10&apiKey=e44c9f0796b4400ab3a69f1354d139a9",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
+      }
     );
     const data = await response.json();
-    console.log("Fetched data:", data);
-    setRecipes(data);
+    setRecipes(data.recipes);
   };
-
+  
   useEffect(() => {
     console.log("Fetching recipes...");
     fetchData();
