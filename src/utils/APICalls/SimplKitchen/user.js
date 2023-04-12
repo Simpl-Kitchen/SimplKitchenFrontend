@@ -1,21 +1,7 @@
 import { SIMPLKITCHEN_API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { storeToken } from "../../AsyncStorage/userToken"
-
-const loginSimplKitchen = async (email, password) => {
-
-  const response = await axios.post(`${SIMPLKITCHEN_API_URL}/auth/login`, {
-    email: email,
-    password: password,
-  });
-
-  if (response) {
-    await storeToken(response.data.token);
-  }
-
-  return response;
-};
+import { storeToken, removeToken } from "../../AsyncStorage/userToken"
 
 const registerSimplKitchen = async (name, username, email, password) => {
 
@@ -41,11 +27,29 @@ const registerSimplKitchen = async (name, username, email, password) => {
   return response.data;
 }
 
+const loginSimplKitchen = async (email, password) => {
+
+  const response = await axios.post(`${SIMPLKITCHEN_API_URL}/auth/login`, {
+    email: email,
+    password: password,
+  });
+
+  if (response) {
+    await storeToken(response.data.token);
+  }
+
+  return response;
+};
+
+const logoutSimplKitchen = async () => {
+  await removeToken();
+}
+
 const getUserInformation = async () => {
-  console.log("Hello")
+  //console.log("Hello")
   try {
     const userToken = await AsyncStorage.getItem("userToken");
-    console.log(userToken)
+    //console.log(userToken)
     const options = {
       method: "GET",
       url: `${SIMPLKITCHEN_API_URL}/user/profile`,
@@ -62,19 +66,22 @@ const getUserInformation = async () => {
   }
 }
 
-const updateUserIntolerences = async (intolerences) => {
+const updateUserIntolerences = async (intolerances) => {
+
   try {
     const userToken = await AsyncStorage.getItem("userToken");
     const options = {
-      method: "PUT",
+      method: "POST",
       url: `${SIMPLKITCHEN_API_URL}/user/intolerances`,
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
       data: {
-        intolerences: intolerences,
+        intolerances: intolerances,
       },
     };
+
+    console.log(options.data)
 
     const response = await axios.request(options);
 
@@ -87,8 +94,9 @@ const updateUserIntolerences = async (intolerences) => {
 module.exports =
 {
 
-  loginSimplKitchen,
   registerSimplKitchen,
+  loginSimplKitchen,
+  logoutSimplKitchen,
   getUserInformation,
   updateUserIntolerences,
 }
