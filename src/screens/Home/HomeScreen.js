@@ -6,7 +6,7 @@ import {
   Image,
   SafeAreaView,
   RefreshControl,
-  Button,
+  TouchableOpacity,
 } from "react-native";
 // import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
@@ -62,20 +62,24 @@ const HomeScreen = () => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.info}>Likes: {item.aggregateLikes} </Text>
           <Text style={styles.info}>Servings: {item.servings}</Text>
           <Text style={styles.info}>
             Ready in: {item.readyInMinutes} minutes
           </Text>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Add to Meal Plan"
-              onPress={() => handleAddToMealPlan(item)}
-            />
-          </View>
-          <Text style={styles.info}>Calories: {item.calories}</Text>
-          <Text style={styles.info}>Fat: {item.fat}</Text>
-          <Text style={styles.info}>Carbs: {item.carbs}</Text>
-          <Text style={styles.info}>Protein: {item.protein}</Text>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => handleAddToMealPlan(item)}
+          >
+            <Text style={styles.buttonText}>Add to Meal Plan</Text>
+          </TouchableOpacity>
+            <Text style={styles.info}>
+              Gluten Free: {item.glutenFree ? "Yes" : "No"}
+            </Text>
+            <Text style={styles.info}>
+              Vegan: {item.vegan ? "Yes" : "No"}
+            </Text>
+            
         </View>
       </View>
     );
@@ -88,7 +92,11 @@ const HomeScreen = () => {
         renderItem={renderRecipe}
         keyExtractor={(item) => item.id.toString()}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={fetchData}
+          />
+
         }
       />
     </SafeAreaView>

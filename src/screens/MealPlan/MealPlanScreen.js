@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import MenuButton from "../../components/MenuButton/MenuButton";
+import { getToken } from "../../utils/APICalls/SimplKitchen/user";
 
 const MealPlanScreen = () => {
   const [recipes, setRecipes] = useState([]);
@@ -20,12 +22,18 @@ const MealPlanScreen = () => {
   };
 
   const fetchData = async () => {
-    const response = await fetch("https://api.spoonacular.com/recipes");
+    const token = await getToken();
+    const recipeIds = await AsyncStorage.getItem("mealPlanRecipes");
+    const response = await fetch(
+      `https://api.spoonacular.com/recipes/informationBulk?ids=${recipeIds}&apiKey=e44c9f0796b4400ab3a69f1354d139a9`
+    );
     const data = await response.json();
+    console.log("Fetched data:", data);
     setRecipes(data);
   };
 
   useEffect(() => {
+    console.log("Fetching recipes...");
     fetchData();
     navigation.setOptions({
       drawerLockMode: "locked-closed",
@@ -62,42 +70,41 @@ const MealPlanScreen = () => {
   );
 };
 
-export default MealPlanScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingHorizontal: 20,
   },
   header: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 10,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
   },
   clearButton: {
+    fontSize: 16,
     color: "red",
   },
   emptyMessage: {
-    flex: 1,
-    textAlign: "center",
-    marginTop: 50,
+    marginTop: 20,
     fontSize: 16,
+    textAlign: "center",
   },
   recipe: {
+    backgroundColor: "#f2f2f2",
     padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    marginBottom: 10,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });
+
+export default MealPlanScreen;

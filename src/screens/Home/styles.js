@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    padding: 10,
   },  
   addButtonText: {
     color: "#fff",
