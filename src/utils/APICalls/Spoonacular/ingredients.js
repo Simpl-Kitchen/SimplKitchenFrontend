@@ -20,13 +20,11 @@ const searchIngredientsByName = async (query) => {
         // 'language': "en" // String | The language of the input. Either 'en' or 'de'.
     };
 
-    let requestHeaders = {
-        'x-api-key': process.env.SPOONACULAR_API_KEY
-    }
-
     const options = {
         method: 'GET',
-        headers: requestHeaders,
+        headers: {
+            'x-api-key': process.env.SPOONACULAR_API_KEY
+        },
         url: 'https://api.spoonacular.com/food/ingredients/search',
         params: opts,
     };
