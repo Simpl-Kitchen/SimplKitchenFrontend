@@ -1,78 +1,54 @@
-import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { MultipleSelectList } from "react-native-dropdown-select-list";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
-import {
-  updateUserIntolerences,
-  logoutSimplKitchen,
-} from "../../utils/APICalls/SimplKitchen/user";
-import MenuButton from "../../components/MenuButton/MenuButton";
+import { updateUserIntolerences, logoutSimplKitchen } from '../../utils/APICalls/SimplKitchen/user'
 
 import styles from "./styles";
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen(props) {
+
   const [selected, setSelected] = React.useState([]);
 
+
   const data = [
-    { key: "1", value: "Dairy" },
-    { key: "2", value: "Egg" },
-    { key: "3", value: "Gluten" },
-    { key: "4", value: "Grain" },
-    { key: "5", value: "Peanut" },
-    { key: "6", value: "Seafood" },
-    { key: "7", value: "Sesame" },
-    { key: "8", value: "Shellfish" },
-    { key: "9", value: "Soy" },
-    { key: "10", value: "Sulfite" },
-    { key: "11", value: "Tree Nut" },
-    { key: "12", value: "Wheat" },
-  ];
+    { key: '1', value: 'Dairy' },//, disabled: true },
+    { key: '2', value: 'Egg' },
+    { key: '3', value: 'Gluten' },
+    { key: '4', value: 'Grain' },//, disabled: true },
+    { key: '5', value: 'Peanut' },
+    { key: '6', value: 'Seafood' },
+    { key: '7', value: 'Sesame' },
+    { key: '8', value: 'Shellfish' },
+    { key: '9', value: 'Soy' },
+    { key: '10', value: 'Sulfite' },
+    { key: '11', value: 'Tree Nut' },
+    { key: '12', value: 'Wheat' },
+  ]
 
   const handleSave = () => {
-    console.log(selected);
+    console.log(selected)
 
     try {
-      updateUserIntolerences(selected);
+      updateUserIntolerences(selected)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
 
-    alert("Saved selected items");
-  };
+    alert("Saved selected items")
+  }
 
   const handleLogout = async () => {
+    // Perform logout actions here
     console.log("Logout clicked");
 
     try {
-      await logoutSimplKitchen();
-    } catch (error) {}
-  };
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch("https://example.com/data");
-      const data = await response.json();
-      console.log(data);
+      await logoutSimplKitchen()
     } catch (error) {
-      console.log(error);
+
     }
   };
 
-  useEffect(() => {
-    fetchData();
-    navigation.setOptions({
-      drawerLockMode: "locked-closed",
-      headerLeft: () => (
-        <MenuButton
-          title="Menu"
-          source={require("../../../assets/icons/menu.png")}
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
-      ),
-    });
-  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -80,7 +56,7 @@ export default function ProfileScreen({ navigation }) {
         setSelected={(val) => setSelected(val)}
         data={data}
         save="value"
-        onSelect={() => {}}
+        onSelect={() => { }}
         label="Categories"
       />
       <View style={styles.buttonsContainer}>
@@ -93,4 +69,35 @@ export default function ProfileScreen({ navigation }) {
       </View>
     </View>
   );
+
 }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     paddingHorizontal: 10,
+//   },
+//   buttonsContainer: {
+//     flexDirection: "row",
+//     justifyContent: "center",
+//     marginTop: 20,
+//   },
+//   button: {
+//     backgroundColor: "#1E90FF",
+//     paddingVertical: 15,
+//     paddingHorizontal: 20,
+//     borderRadius: 10,
+//     marginRight: 10,
+//   },
+//   logoutButton: {
+//     backgroundColor: "#FF0000",
+//     paddingVertical: 15,
+//     paddingHorizontal: 20,
+//     borderRadius: 10,
+//   },
+//   buttonText: {
+//     color: "#FFFFFF",
+//     fontWeight: "700",
+//     fontSize: 16,
+//   },
+// });
