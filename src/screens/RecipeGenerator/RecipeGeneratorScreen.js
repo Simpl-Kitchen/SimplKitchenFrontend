@@ -6,10 +6,11 @@ import { View, Button, StyleSheet, Text } from "react-native";
 import {generateUserRecipes, getGeneratedRecipes} from "../../utils/APICalls/SimplKitchen/generateRecipes";
 
 const RecipeGeneratorScreen = () => {
-  const handleGenerateRecipe = () => {
+  const handleGenerateRecipe = async () => {
     // TODO: Implement recipe generation logic
     console.log("Clicked")
-    generateUserRecipes()
+    const response = await generateUserRecipes()
+    console.log(response)
   };
 
   return (
