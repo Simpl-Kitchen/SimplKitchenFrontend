@@ -5,13 +5,13 @@ import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import { updateUserIntolerences, logoutSimplKitchen } from '../../utils/APICalls/SimplKitchen/user'
 
 import styles from "./styles";
-import * as ImagePicker from "expo-image-picker";
+//import * as ImagePicker from "expo-image-picker";
 
-import { removeToken } from "../../utils/Authorization";
-import { addIngredientToPantry } from "../../utils/APICalls";
-import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+// import { removeToken } from "../../utils/Authorization";
+// import { addIngredientToPantry } from "../../utils/APICalls";
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createDrawerNavigator } from "@react-navigation/drawer";
+// import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 
 export default function ProfileScreen(props) {
 
