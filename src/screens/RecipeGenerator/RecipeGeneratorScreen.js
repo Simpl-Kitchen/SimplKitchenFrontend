@@ -8,6 +8,8 @@ import {generateUserRecipes, getGeneratedRecipes} from "../../utils/APICalls/Sim
 const RecipeGeneratorScreen = () => {
   const handleGenerateRecipe = () => {
     // TODO: Implement recipe generation logic
+    console.log("Clicked")
+    generateUserRecipes()
   };
 
   return (
