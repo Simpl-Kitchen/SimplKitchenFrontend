@@ -9,6 +9,7 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
+import MenuButton from "../../components/MenuButton/MenuButton";
 
 import styles from "./styles";
 
@@ -27,24 +28,21 @@ const PantryScreen = ({ navigation, route }) => {
     fetchData();
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    fetchData();
     navigation.setOptions({
       drawerLockMode: "locked-closed",
       headerLeft: () => (
-        <TouchableOpacity
-          style={styles.menuButton}
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
           onPress={() => {
             navigation.openDrawer();
           }}
-        >
-          <Image
-            source={require("../../../assets/icons/menu.png")}
-            style={styles.menuIcon}
-          />
-        </TouchableOpacity>
+        />
       ),
     });
-  }, [navigation]);
+  }, []);
 
   const fetchData = async () => {
     try {

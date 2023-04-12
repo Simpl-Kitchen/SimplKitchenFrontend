@@ -1,18 +1,18 @@
 // SearchScreen.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, FlatList, KeyboardAvoidingView } from "react-native";
-import { SearchBar } from 'react-native-elements';
+import { SearchBar } from "react-native-elements";
 import IngredientItem from "./IngredientItem";
-import { Image } from 'react-native-elements';
-import { Dimensions } from 'react-native';
+import { Image } from "react-native-elements";
+import { Dimensions } from "react-native";
 import styles from "./styles";
 
 //import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
-import { searchIngredientsByName } from "../../utils/APICalls/Spoonacular/ingredients"
+import { searchIngredientsByName } from "../../utils/APICalls/Spoonacular/ingredients";
 import { addIngredientToPantry } from "../../utils/APICalls/SimplKitchen/pantry";
+import MenuButton from "../../components/MenuButton/MenuButton";
 
-
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
@@ -20,11 +20,9 @@ const SearchScreen = ({ navigation }) => {
 
   const fetchData = async () => {
     try {
-
       const ingredientSearch = await searchIngredientsByName(search);
       const ingredients = ingredientSearch.results;
       setIngredients(ingredients);
-
     } catch (error) {
       console.log(error);
     }
@@ -50,6 +48,22 @@ const SearchScreen = ({ navigation }) => {
       onAdd={handleAddIngredient}
     />
   );
+
+  useEffect(() => {
+    fetchData();
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+      ),
+    });
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -3,16 +3,14 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet,
   Image,
   SafeAreaView,
   RefreshControl,
   Button,
-  TouchableOpacity,
 } from "react-native";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
-import DrawerContainer from "../DrawerContainer/DrawerContainer";
+// import DrawerContainer from "../DrawerContainer/DrawerContainer";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 

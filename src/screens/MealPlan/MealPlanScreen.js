@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MenuButton from "../../components/MenuButton/MenuButton";
-
 
 const MealPlanScreen = () => {
   const [recipes, setRecipes] = useState([]);
@@ -19,6 +18,28 @@ const MealPlanScreen = () => {
       </View>
     );
   };
+
+  const fetchData = async () => {
+    const response = await fetch("https://api.spoonacular.com/recipes");
+    const data = await response.json();
+    setRecipes(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+      ),
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -80,4 +101,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
