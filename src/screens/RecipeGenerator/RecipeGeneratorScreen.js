@@ -3,6 +3,8 @@
 import React from "react";
 import { View, Button, StyleSheet, Text } from "react-native";
 
+import {generateUserRecipes, getGeneratedRecipes} from "../../utils/APICalls/SimplKitchen/generateRecipes";
+
 const RecipeGeneratorScreen = () => {
   const handleGenerateRecipe = () => {
     // TODO: Implement recipe generation logic
