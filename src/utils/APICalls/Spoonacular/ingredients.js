@@ -36,7 +36,8 @@ const searchIngredientsByName = async (query) => {
         return response.data
 
     }).catch(function (error) {
-        console.error(error);
+        console.error(error.data);
+
     });
 
     return searchResults
