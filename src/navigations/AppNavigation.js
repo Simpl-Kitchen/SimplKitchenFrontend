@@ -8,7 +8,7 @@ import RecipeScreen from '../screens/Recipe/RecipeScreen';
 import DrawerContainer from '../screens/DrawerContainer/DrawerContainer';
 import IngredientScreen from '../screens/Ingredient/IngredientScreen';
 import SearchScreen from '../screens/Search/SearchScreen';
-import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsDetailsScreen';
+import RecipeGeneratorScreen from '../screens/RecipeGenerator/RecipeGeneratorScreen';
 import LoginScreen from '../screens/Login/LoginScreen';
 import RegisterScreen from '../screens/Register/RegisterScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
@@ -39,7 +39,7 @@ function MainNavigator() {
       <Stack.Screen name='MealPlan' component={MealPlanScreen} />
       <Stack.Screen name='Ingredient' component={IngredientScreen} />
       <Stack.Screen name='Search' component={SearchScreen} />
-      <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
+      <Stack.Screen name='RecipeGenerator' component={RecipeGeneratorScreen} />
     </Stack.Navigator>
   )
 } 

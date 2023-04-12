@@ -30,7 +30,7 @@ const MealPlanScreen = () => {
   const fetchData = async () => {
     const token = await getToken();
     const response = await fetch(
-      "https://api.spoonacular.com/recipes/random?number=10&apiKey=e44c9f0796b4400ab3a69f1354d139a9",
+      "https://api.spoonacular.com/recipes",
       {
         headers: {
           Authorization: `Bearer ${token}`,

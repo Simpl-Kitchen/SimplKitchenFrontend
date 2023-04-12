@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import styles from "./styles";
+
 import MenuButton from "../../components/MenuButton/MenuButton";
 
 export default function DrawerContainer(props) {
@@ -46,6 +47,14 @@ export default function DrawerContainer(props) {
           source={require("../../../assets/icons/profile.png")}
           onPress={() => {
             navigation.navigate("Profile");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Recipe Generator"
+          source={require("../../../assets/icons/placeholder.png")}
+          onPress={() => {
+            navigation.navigate("RecipeGenerator");
             navigation.closeDrawer();
           }}
         />
