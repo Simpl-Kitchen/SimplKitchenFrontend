@@ -1,119 +1,57 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import MenuButton from "../../components/MenuButton/MenuButton";
-import { getToken } from "../../utils/APICalls/SimplKitchen/user";
-
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, Button } from 'react-native';
 
 const MealPlanScreen = () => {
-  const [recipes, setRecipes] = useState([]);
-  const navigation = useNavigation();
+  const [mealPlans, setMealPlans] = useState([]);
 
-  const handleClearMealPlan = () => {
-    setRecipes([]);
+  const getMealPlans = () => {
+    fetch('https://api.spoonacular.com/mealplanner/generate?apiKey=e44c9f0796b4400ab3a69f1354d139a9')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setMealPlans(data.meals);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
-
-  const renderRecipe = ({ item }) => {
-    return (
-      <View style={styles.recipe}>
-        <Text style={styles.title}>{item.title}</Text>
-      </View>
-    );
-  };
-
-  const getToken = async () => {
-    const token = await AsyncStorage.getItem("token");
-    return token;
-  }
-
-  const fetchData = async () => {
-    const token = await getToken();
-    const response = await fetch(
-      "https://api.spoonacular.com/recipes",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-
-      }
-    );
-    const data = await response.json();
-    setRecipes(data.recipes);
-  };
-  
-  useEffect(() => {
-    console.log("Fetching recipes...");
-    fetchData();
-    navigation.setOptions({
-      drawerLockMode: "locked-closed",
-      headerLeft: () => (
-        <MenuButton
-          title="Menu"
-          source={require("../../../assets/icons/menu.png")}
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
-      ),
-    });
-  }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Meal Plan</Text>
-        <Text style={styles.clearButton} onPress={handleClearMealPlan}>
-          Clear
-        </Text>
-      </View>
-      {recipes.length === 0 ? (
-        <Text style={styles.emptyMessage}>No meals added to meal plan.</Text>
-      ) : (
-        <FlatList
-          data={recipes}
-          renderItem={renderRecipe}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      )}
+    <View>
+      <Button title="Get Weekly Plan" onPress={getMealPlans} />
+      {mealPlans && mealPlans.length > 0 && mealPlans.map(meal => (
+        <View key={meal.id}>
+          <Text style={styles.title}>{meal.title}</Text>
+          <Image source={{ uri: `https://spoonacular.com/recipeImages/${meal.image}` }} style={styles.image} />
+          <Text style={styles.subTitle}>Recipes:</Text>
+          {meal.ingredients.map((ingredient, index) => (
+            <View key={index}>
+              <Text>{ingredient.name}</Text>
+              <Text>{ingredient.amount.metric.value} {ingredient.amount.metric.unit}</Text>
+            </View>
+          ))}
+        </View>
+      ))}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  clearButton: {
-    fontSize: 16,
-    color: "red",
-  },
-  emptyMessage: {
-    marginTop: 20,
-    fontSize: 16,
-    textAlign: "center",
-  },
-  recipe: {
-    backgroundColor: "#f2f2f2",
-    padding: 20,
-    marginBottom: 10,
-  },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  subTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  image: {
+    height: 200,
+    width: '100%',
+    resizeMode: 'cover',
   },
 });
 
