@@ -5,6 +5,7 @@ import { SIMPLKITCHEN_API_URL } from "@env";
 const getUsersIngredients = async () => {
     try {
         const userToken = await getToken();
+        console.log(userToken)
 
         const options = {
             method: "GET",

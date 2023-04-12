@@ -4,6 +4,7 @@ const { getUserInformation } = require("../../APICalls/SimplKitchen/user");
 const searchIngredientsByName = async (query) => {
 
     const userData = await getUserInformation();
+    //console.log(userData)
     const intolerances = userData.userResponse.intolerances.toString();
 
 
