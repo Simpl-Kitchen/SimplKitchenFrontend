@@ -1,41 +1,40 @@
-
-import {
-    StyleSheet, 
-    Text,
-    View,
-    Image,
-    
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#F5FCFF',
+    },
+    mealPlan: {
+      margin: 20,
       padding: 20,
-    },
-    buttonContainer: {
-      marginBottom: 20,
-    },
-    mealPlanContainer: {
-      marginBottom: 20,
+      backgroundColor: '#fff',
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
     },
     mealTitle: {
-      fontSize: 24,
-      fontWeight: "bold",
+      fontSize: 20,
+      fontWeight: 'bold',
       marginBottom: 10,
     },
     image: {
-      height: 200,
-      width: "100%",
-      resizeMode: "cover",
+      width: 250,
+      height: 250,
       marginBottom: 10,
+      resizeMode: 'cover',
     },
-    servings: {
-      fontSize: 16,
-      marginBottom: 5,
-    },
-    prepTime: {
-      fontSize: 16,
+    button: {
+      marginVertical: 10,
     },
   });
-  
+
 export default styles;
