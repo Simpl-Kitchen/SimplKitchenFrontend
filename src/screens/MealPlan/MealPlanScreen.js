@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Button, FlatList } from "react-native";
+import { View, Text, Image, StyleSheet, Button, FlatList, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 const MealPlanScreen = () => {
   const [mealPlans, setMealPlans] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     loadMealPlans();
@@ -53,20 +55,29 @@ const MealPlanScreen = () => {
         data={mealPlans}
         keyExtractor={(index, item) => index.toString()}
         renderItem={({ item }) => (
-          <View style={styles.mealPlan}>
-            <Text style={styles.mealTitle}>{item.title}</Text>
-            <Image
-              source={{ uri: `https://spoonacular.com/recipeImages/${item.id}-556x370.jpg` }}
-              style={styles.image}
-            />
-            <Text>Servings: {item.servings}</Text>
-            <Text>Prep Time: {item.readyInMinutes} minutes</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("RecipeScreen", {
+                recipe: item,
+              })
+            }
+          >
+            <View style={styles.mealPlan}>
+              <Text style={styles.mealTitle}>{item.title}</Text>
+              <Image
+                source={{
+                  uri: `https://spoonacular.com/recipeImages/${item.id}-556x370.jpg`,
+                }}
+                style={styles.image}
+              />
+              <Text>Servings: {item.servings}</Text>
+              <Text>Prep Time: {item.readyInMinutes} minutes</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     );
   };
-  
 
   return (
     <View style={styles.container}>
