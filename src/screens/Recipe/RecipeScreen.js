@@ -60,7 +60,7 @@ const RecipeScreen = ({ route }) => {
               style={styles.image}
             />
           )}
-          <Text>Servings: </Text>
+          <Text style={styles.servingsText}>Servings: </Text>
           {editServings ? (
             <TextInput
               keyboardType="numeric"
@@ -71,20 +71,23 @@ const RecipeScreen = ({ route }) => {
             />
           ) : (
             <TouchableOpacity onPress={toggleEditServings}>
-              <Text style={styles.servingsText}>
+              <Text style={styles.servingsNumbera}>
                 {servings || recipeDetails.servings}
               </Text>
             </TouchableOpacity>
           )}
-          <Text>Prep Time: {recipeDetails.readyInMinutes} minutes</Text>
-          <Text style={styles.title}>Ingredients</Text>
+          <Text style={styles.servingsText} > {"\n"}Prep Time: {recipeDetails.readyInMinutes} minutes {"\n"}{"\n"}</Text>
+          <Text style={styles.title}>{"• "}Ingredients</Text>
           {recipeDetails.extendedIngredients &&
+          recipeDetails.extendedIngredients.length > 0 &&
             recipeDetails.extendedIngredients.map((ingredient, index) => (
               <Text key={index}>
-                {calculateNewAmount(ingredient)} {ingredient.unit} {ingredient.name}
+                {"‣"} {" "}
+                {calculateNewAmount(ingredient)} {ingredient.unit} {ingredient.name} {"\n"} 
               </Text>
             ))}
-          <Text style={styles.title}>Instructions</Text>
+            
+          <Text style={styles.title}>{"• "}Instructions</Text>
           {recipeDetails.analyzedInstructions &&
           recipeDetails.analyzedInstructions[0] &&
           recipeDetails.analyzedInstructions[0].steps ? (
@@ -128,10 +131,16 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     width: 50,
     textAlign: "center",
+    fontWeight: "bold",
   },
   servingsText: {
     textDecorationLine: "underline",
+    fontWeight: "bold",
+    fontSize: 16,
   },
+  servingsNumber: {
+    fontSize: 16,
+  }
 });
 
 export default RecipeScreen;
