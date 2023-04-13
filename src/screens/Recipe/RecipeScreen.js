@@ -1,10 +1,20 @@
 // RecipeScreen.js
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 
 const RecipeScreen = ({ route }) => {
   const { recipe } = route.params;
   const [recipeDetails, setRecipeDetails] = useState(null);
+  const [servings, setServings] = useState(null);
+  const [editServings, setEditServings] = useState(false);
 
   const fetchRecipeDetails = async () => {
     try {
@@ -22,41 +32,82 @@ const RecipeScreen = ({ route }) => {
     fetchRecipeDetails();
   }, []);
 
+  const handleServingsChange = (newServings) => {
+    setServings(parseInt(newServings, 10));
+  };
+
+  const toggleEditServings = () => {
+    setEditServings(!editServings);
+  };
+
+  const calculateNewAmount = (ingredient) => {
+    if (!servings || servings === recipeDetails.servings) {
+      return ingredient.amount;
+    }
+
+    const newAmount = (ingredient.amount / recipeDetails.servings) * servings;
+    return newAmount.toFixed(2);
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {recipeDetails ? (
         <>
           <Text style={styles.title}>{recipeDetails.title}</Text>
           {recipeDetails.image && (
-            <Image source={{ uri: recipeDetails.image }} style={styles.image} />
+            <Image
+              source={{ uri: recipeDetails.image }}
+              style={styles.image}
+            />
           )}
-          <Text>Servings: {recipeDetails.servings}</Text>
+          <Text>Servings: </Text>
+          {editServings ? (
+            <TextInput
+              keyboardType="numeric"
+              value={servings ? servings.toString() : ''}
+              onChangeText={handleServingsChange}
+              style={styles.servingsInput}
+              onBlur={toggleEditServings}
+            />
+          ) : (
+            <TouchableOpacity onPress={toggleEditServings}>
+              <Text style={styles.servingsText}>
+                {servings || recipeDetails.servings}
+              </Text>
+            </TouchableOpacity>
+          )}
           <Text>Prep Time: {recipeDetails.readyInMinutes} minutes</Text>
           <Text style={styles.title}>Ingredients</Text>
           {recipeDetails.extendedIngredients &&
             recipeDetails.extendedIngredients.map((ingredient, index) => (
               <Text key={index}>
-                {ingredient.amount} {ingredient.unit} {ingredient.name}
+                {calculateNewAmount(ingredient)} {ingredient.unit} {ingredient.name}
               </Text>
             ))}
           <Text style={styles.title}>Instructions</Text>
-          <Text>
-            {recipeDetails.instructions
-              ? recipeDetails.instructions
-              : "Instructions not available."}
-          </Text>
+          {recipeDetails.analyzedInstructions &&
+          recipeDetails.analyzedInstructions[0] &&
+          recipeDetails.analyzedInstructions[0].steps ? (
+            recipeDetails.analyzedInstructions[0].steps.map((step, index) => (
+              <Text key={index}>
+                {index + 1}. {step.step} {"\n"}
+              </Text>
+            ))
+          ) : (
+            <Text>Instructions not available.</Text>
+          )}
         </>
       ) : (
         <Text>Loading recipe details...</Text>
       )}
     </ScrollView>
   );
-}; 
-
+};
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    paddingBottom: 30,
   },
   title: {
     fontSize: 24,
@@ -68,6 +119,18 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: "cover",
     marginBottom: 20,
+  },
+  servingsInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    width: 50,
+    textAlign: "center",
+  },
+  servingsText: {
+    textDecorationLine: "underline",
   },
 });
 
