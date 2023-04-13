@@ -1,9 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, Button, FlatList } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
 
 const MealPlanScreen = () => {
   const [mealPlans, setMealPlans] = useState([]);
+
+  useEffect(() => {
+    loadMealPlans();
+  }, []);
+
+  const saveMealPlans = async (meals) => {
+    try {
+      await AsyncStorage.setItem("mealPlans", JSON.stringify(meals));
+    } catch (error) {
+      console.error("Error saving meal plans: ", error);
+    }
+  };
+
+  const loadMealPlans = async () => {
+    try {
+      const storedMealPlans = await AsyncStorage.getItem("mealPlans");
+      if (storedMealPlans !== null) {
+        setMealPlans(JSON.parse(storedMealPlans));
+      }
+    } catch (error) {
+      console.error("Error loading meal plans: ", error);
+    }
+  };
 
   const getMealPlans = () => {
     fetch(
@@ -14,6 +38,7 @@ const MealPlanScreen = () => {
         console.log(JSON.stringify(data));
         const mealsArray = Object.values(data.week).flatMap((day) => day.meals);
         setMealPlans(mealsArray);
+        saveMealPlans(mealsArray);
       })
       .catch((error) => {
         console.error(error);
