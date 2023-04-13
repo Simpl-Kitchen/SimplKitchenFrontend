@@ -56,6 +56,7 @@ const MealPlanScreen = () => {
         keyExtractor={(index, item) => index.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
+            styles={styles.container}
             onPress={() =>
               navigation.navigate("RecipeScreen", {
                 recipe: item,

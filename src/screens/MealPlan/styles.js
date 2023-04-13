@@ -27,10 +27,11 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
     image: {
-      width: 250,
-      height: 250,
+      width: "100%",
+      height: 230,
       marginBottom: 10,
       resizeMode: 'cover',
+      borderRadius: 10,
     },
     button: {
       marginVertical: 10,

@@ -109,6 +109,7 @@ const RecipeScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 10,
     paddingBottom: 30,
   },
@@ -116,12 +117,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
+    backgroundColor: '#F5FCFF',
   },
   image: {
     width: "100%",
     height: 200,
     resizeMode: "cover",
     marginBottom: 20,
+    borderRadius: 10,
   },
   servingsInput: {
     borderWidth: 1,
