@@ -37,13 +37,15 @@ const MealPlanScreen = () => {
       .then((data) => {
         console.log(JSON.stringify(data));
         const mealsArray = Object.values(data.week).flatMap((day) => day.meals);
-        setMealPlans(mealsArray);
-        saveMealPlans(mealsArray);
+        const sevenMealsArray = mealsArray.slice(0, 7);
+        setMealPlans(sevenMealsArray);
+        saveMealPlans(sevenMealsArray);
       })
       .catch((error) => {
         console.error(error);
       });
   };
+  
 
   const renderRecipes = () => {
     return (
