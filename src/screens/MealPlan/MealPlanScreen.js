@@ -55,7 +55,10 @@ const MealPlanScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.mealPlan}>
             <Text style={styles.mealTitle}>{item.title}</Text>
-            <Image source={{ uri: item.image }} style={styles.image} />
+            <Image
+              source={{ uri: `https://spoonacular.com/recipeImages/${item.id}-556x370.jpg` }}
+              style={styles.image}
+            />
             <Text>Servings: {item.servings}</Text>
             <Text>Prep Time: {item.readyInMinutes} minutes</Text>
           </View>
@@ -63,6 +66,7 @@ const MealPlanScreen = () => {
       />
     );
   };
+  
 
   return (
     <View style={styles.container}>
