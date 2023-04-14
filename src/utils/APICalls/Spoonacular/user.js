@@ -1,4 +1,5 @@
 const { getUserInformation } = require("../SimplKitchen/user");
+const axios = require("axios")
 
 const connectUserToSpoonacular = async () => {
 
@@ -28,6 +29,26 @@ const connectUserToSpoonacular = async () => {
     }
 }
 
+const generateMealPlanWeek = async () => {
+    const options = {
+        method: "GET",
+        url: "https://api.spoonacular.com/mealplanner/generate",
+        headers: {
+            'x-api-key': process.env.SPOONACULAR_API_KEY
+        },
+        params: {
+            timeFrame: "week",
+        }
+
+    }
+
+    const response = await axios.request(options);
+    const mealPlanWeek = response.data
+
+    return mealPlanWeek
+}
+
 module.exports = {
-    connectUserToSpoonacular
+    connectUserToSpoonacular,
+    generateMealPlanWeek
 }
