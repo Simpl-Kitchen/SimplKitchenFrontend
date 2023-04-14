@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
+    backgroundColor: "#F0EFEF",
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -11,14 +12,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: "#1E90FF",
+    backgroundColor: "#98CBB0",
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 10,
     marginRight: 10,
   },
   logoutButton: {
-    backgroundColor: "#FF0000",
+    backgroundColor: "#70161E",
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 10,

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F0EFEF",
     padding: 10,
   },
   button: {
@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignSelf: "center",
     marginBottom: 10,
+
   },
   buttonText: {
     color: "#ffffff",
@@ -23,6 +24,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 15,
+    borderTopWidth: 1, 
+    borderTopColor: "#CCCCCC79",
   },
   mealTitle: {
     fontSize: 18,
@@ -38,6 +41,7 @@ const styles = StyleSheet.create({
   },
   mealPlanContent: {
     width: "100%",
+
   },
 });
 
