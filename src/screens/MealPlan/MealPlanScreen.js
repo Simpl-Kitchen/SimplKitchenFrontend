@@ -4,6 +4,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 
+import { connectUserToSpoonacular, generateMealPlanWeek } from "../../utils/APICalls/Spoonacular/user";
+
 const MealPlanScreen = () => {
   const [mealPlans, setMealPlans] = useState([]);
   const navigation = useNavigation();
@@ -47,7 +49,7 @@ const MealPlanScreen = () => {
         console.error(error);
       });
   };
-  
+
 
   const renderRecipes = () => {
     return (
