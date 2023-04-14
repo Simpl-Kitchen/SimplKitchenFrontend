@@ -1,5 +1,6 @@
 import axios from "axios";
 const { getUserInformation } = require("../../APICalls/SimplKitchen/user");
+import { SPOONACULAR_API_KEY } from "@env";
 
 const searchIngredientsByName = async (query) => {
 
@@ -23,7 +24,7 @@ const searchIngredientsByName = async (query) => {
     const options = {
         method: 'GET',
         headers: {
-            'x-api-key': process.env.SPOONACULAR_API_KEY
+            'x-api-key': SPOONACULAR_API_KEY
         },
         url: 'https://api.spoonacular.com/food/ingredients/search',
         params: opts,
