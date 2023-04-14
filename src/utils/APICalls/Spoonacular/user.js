@@ -1,5 +1,6 @@
-const { getUserInformation } = require("../SimplKitchen/user");
 const axios = require("axios")
+const { getUserInformation } = require("../SimplKitchen/user");
+import { SPOONACULAR_API_KEY } from "@env";
 
 const connectUserToSpoonacular = async () => {
 
@@ -34,7 +35,7 @@ const generateMealPlanWeek = async () => {
         method: "GET",
         url: "https://api.spoonacular.com/mealplanner/generate",
         headers: {
-            'x-api-key': process.env.SPOONACULAR_API_KEY
+            'x-api-key': SPOONACULAR_API_KEY
         },
         params: {
             timeFrame: "week",
