@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Button, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 
-import { connectUserToSpoonacular, generateMealPlanWeek } from "../../utils/APICalls/Spoonacular/user";
+import { generateMealPlanWeek } from "../../utils/APICalls/Spoonacular/user";
 
 const MealPlanScreen = () => {
   const [mealPlan, setMealPlan] = useState(null);
-  const [selectedDay, setSelectedDay] = useState('monday');
+  const [selectedDay, setSelectedDay] = useState("monday");
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -37,29 +44,15 @@ const MealPlanScreen = () => {
   };
 
   const getMealPlans = async () => {
-
     try {
-      const fetchedMealPlan = await generateMealPlanWeek()
+      const fetchedMealPlan = await generateMealPlanWeek();
       setMealPlan(fetchedMealPlan);
-      saveMealPlans(fetchedMealPlan)
-
-      // Iterating through mealPlan for debugging purposes 
-      // console.log(JSON.stringify(mealPlan))
-
-      // for (const day in mealPlan.week) {
-      //   //console.log(day); // This will print the day, e.g., 'monday', 'tuesday', etc.
-      //   //console.log(mealPlan.week[day]); // This will print the entire data for that day
-
-      //   for (const meal of mealPlan.week[day].meals) {
-      //     console.log(meal); // This will print the entire meal object
-      //     console.log(meal.title); // This will print the meal title
-      //   }
-      // }
+      saveMealPlans(fetchedMealPlan);
     } catch (error) {
-      console.error('Error Message:', error.message); // Error message text
-      console.error('Error Code:', error.response.status); // HTTP status code
-      console.error('Error Response Data:', error.response.data); // Response data
-      console.error('Error Request URL:', error.config.url);
+      console.error("Error Message:", error.message);
+      console.error("Error Code:", error.response.status);
+      console.error("Error Response Data:", error.response.data);
+      console.error("Error Request URL:", error.config.url);
     }
   };
 
@@ -83,14 +76,14 @@ const MealPlanScreen = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={styles.container}
+              style={styles.mealPlan}
               onPress={() =>
-                navigation.navigate('RecipeScreen', {
+                navigation.navigate("RecipeScreen", {
                   recipe: item,
                 })
               }
             >
-              <View style={styles.mealPlan}>
+              <View>
                 <Text style={styles.mealTitle}>{item.title}</Text>
                 <Image
                   source={{
@@ -109,14 +102,14 @@ const MealPlanScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Button
-        title="Get Weekly Plan"
-        onPress={getMealPlans}
-        style={styles.button}
-      />
-      {renderMealPicker()}
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={getMealPlans} style={styles.button}>
+          <Text style={styles.buttonText}>Get Weekly Plan</Text>
+        </TouchableOpacity>
+        {renderMealPicker()}
+      </View>
+    </ScrollView>
   );
 };
 

@@ -1,41 +1,44 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#F5FCFF',
-    },
-    mealPlan: {
-      margin: 20,
-      padding: 20,
-      backgroundColor: '#fff',
-      borderRadius: 10,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    },
-    mealTitle: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginBottom: 10,
-    },
-    image: {
-      width: "100%",
-      height: 230,
-      marginBottom: 10,
-      resizeMode: 'cover',
-      borderRadius: 10,
-    },
-    button: {
-      marginVertical: 10,
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 10,
+  },
+  button: {
+    backgroundColor: "#A8DDA8",
+    padding: 10,
+    borderRadius: 8,
+    alignSelf: "center",
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  mealPlan: {
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 15,
+  },
+  mealTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  image: {
+    width: "100%",
+    height: 150,
+    borderRadius: 8,
+    marginBottom: 5,
+    resizeMode: "cover",
+  },
+  mealPlanContent: {
+    width: "100%",
+  },
+});
 
 export default styles;
