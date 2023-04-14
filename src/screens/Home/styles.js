@@ -87,6 +87,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  filterButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    padding: 10,
+    borderRadius: 20,
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  filterButton:{
+    backgroundColor: "#A8DDA8",
+    borderRadius: 20,
+    marginRight: 10,
+    marginLeft: 10,
+  }
+
 });
 
 export default styles;

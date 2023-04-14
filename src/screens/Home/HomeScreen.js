@@ -50,21 +50,17 @@ const HomeScreen = () => {
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => {
-            if (sortBy === "asc") {
-              setSortBy("desc");
-            } else {
-              setSortBy("asc");
-            }
+            setSortBy((prevSortBy) => (prevSortBy === "asc" ? "desc" : "asc"));
           }}
         >
-          <Text style={styles.filterButtonText}>Sort by price per serving</Text>
+          <Text style={styles.filterButtonText}>price ⇅</Text>
         </TouchableOpacity>
       ),
     });
-  }, [sortBy]);
+  }, []); // Remove sortBy dependency
 
   const handleAddToMealPlan = (recipe) => {
-    navigation.navigate("MealPlan", { recipe });
+    navigation.navigate("MealPlan", { recipe: recipe });
   };
 
   const renderRecipe = ({ item }) => {
@@ -115,10 +111,7 @@ const HomeScreen = () => {
         renderItem={renderRecipe}
         keyExtractor={(item) => item.id}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={fetchData}
-          />
+          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
         }
       />
     </SafeAreaView>
