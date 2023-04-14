@@ -4,10 +4,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 
+import { Picker } from '@react-native-picker/picker';
+
 import { connectUserToSpoonacular, generateMealPlanWeek } from "../../utils/APICalls/Spoonacular/user";
 
 const MealPlanScreen = () => {
-  const [mealPlans, setMealPlans] = useState([]);
+  const [mealPlan, setMealPlan] = useState(null);
+  const [selectedDay, setSelectedDay] = useState('monday');
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -26,7 +29,7 @@ const MealPlanScreen = () => {
     try {
       const storedMealPlans = await AsyncStorage.getItem("mealPlans");
       if (storedMealPlans !== null) {
-        setMealPlans(JSON.parse(storedMealPlans));
+        setMealPlan(JSON.parse(storedMealPlans));
       }
     } catch (error) {
       console.error("Error loading meal plans: ", error);
@@ -34,29 +37,13 @@ const MealPlanScreen = () => {
   };
 
   const getMealPlans = async () => {
-    // fetch(
-    //   "https://api.spoonacular.com/mealplanner/generate?apiKey=e44c9f0796b4400ab3a69f1354d139a9&timeFrame=week"
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(JSON.stringify(data));
-    //     const mealsArray = Object.values(data.week).flatMap((day) => day.meals);
-    //     const sevenMealsArray = mealsArray.slice(0, 7);
-    //     setMealPlans(sevenMealsArray);
-    //     saveMealPlans(sevenMealsArray);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+
     try {
+      const fetchedMealPlan = await generateMealPlanWeek()
+      setMealPlan(fetchedMealPlan);
+      saveMealPlans(fetchedMealPlan)
 
-      const mealPlan = await generateMealPlanWeek()
-      const mealsArray = Object.values(mealPlan.week).flatMap((day) => day.meals);
-      const sevenMealsArray = mealsArray.slice(0, 7);
-      setMealPlans(sevenMealsArray);
-      saveMealPlans(sevenMealsArray);
-
-      // Iterating through mealPlan
+      // Iterating through mealPlan for debugging purposes 
       // console.log(JSON.stringify(mealPlan))
 
       // for (const day in mealPlan.week) {
@@ -76,35 +63,48 @@ const MealPlanScreen = () => {
     }
   };
 
+  const renderMealPicker = () => {
+    if (mealPlan === null) {
+      return null;
+    }
 
-  const renderRecipes = () => {
     return (
-      <FlatList
-        data={mealPlans}
-        keyExtractor={(index, item) => index.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            styles={styles.container}
-            onPress={() =>
-              navigation.navigate("RecipeScreen", {
-                recipe: item,
-              })
-            }
-          >
-            <View style={styles.mealPlan}>
-              <Text style={styles.mealTitle}>{item.title}</Text>
-              <Image
-                source={{
-                  uri: `https://spoonacular.com/recipeImages/${item.id}-556x370.jpg`,
-                }}
-                style={styles.image}
-              />
-              <Text>Servings: {item.servings}</Text>
-              <Text>Prep Time: {item.readyInMinutes} minutes</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+      <View>
+        <Picker
+          selectedValue={selectedDay}
+          onValueChange={(itemValue) => setSelectedDay(itemValue)}
+        >
+          {Object.keys(mealPlan.week).map((day) => (
+            <Picker.Item key={day} label={day} value={day} />
+          ))}
+        </Picker>
+        <FlatList
+          data={mealPlan.week[selectedDay].meals}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.container}
+              onPress={() =>
+                navigation.navigate('RecipeScreen', {
+                  recipe: item,
+                })
+              }
+            >
+              <View style={styles.mealPlan}>
+                <Text style={styles.mealTitle}>{item.title}</Text>
+                <Image
+                  source={{
+                    uri: `https://spoonacular.com/recipeImages/${item.id}-556x370.jpg`,
+                  }}
+                  style={styles.image}
+                />
+                <Text>Servings: {item.servings}</Text>
+                <Text>Prep Time: {item.readyInMinutes} minutes</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     );
   };
 
@@ -115,7 +115,7 @@ const MealPlanScreen = () => {
         onPress={getMealPlans}
         style={styles.button}
       />
-      {renderRecipes()}
+      {renderMealPicker()}
     </View>
   );
 };
