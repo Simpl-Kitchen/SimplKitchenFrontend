@@ -33,21 +33,47 @@ const MealPlanScreen = () => {
     }
   };
 
-  const getMealPlans = () => {
-    fetch(
-      "https://api.spoonacular.com/mealplanner/generate?apiKey=e44c9f0796b4400ab3a69f1354d139a9&timeFrame=week"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(JSON.stringify(data));
-        const mealsArray = Object.values(data.week).flatMap((day) => day.meals);
-        const sevenMealsArray = mealsArray.slice(0, 7);
-        setMealPlans(sevenMealsArray);
-        saveMealPlans(sevenMealsArray);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const getMealPlans = async () => {
+    // fetch(
+    //   "https://api.spoonacular.com/mealplanner/generate?apiKey=e44c9f0796b4400ab3a69f1354d139a9&timeFrame=week"
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(JSON.stringify(data));
+    //     const mealsArray = Object.values(data.week).flatMap((day) => day.meals);
+    //     const sevenMealsArray = mealsArray.slice(0, 7);
+    //     setMealPlans(sevenMealsArray);
+    //     saveMealPlans(sevenMealsArray);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+    try {
+
+      const mealPlan = await generateMealPlanWeek()
+      const mealsArray = Object.values(mealPlan.week).flatMap((day) => day.meals);
+      const sevenMealsArray = mealsArray.slice(0, 7);
+      setMealPlans(sevenMealsArray);
+      saveMealPlans(sevenMealsArray);
+
+      // Iterating through mealPlan
+      // console.log(JSON.stringify(mealPlan))
+
+      // for (const day in mealPlan.week) {
+      //   //console.log(day); // This will print the day, e.g., 'monday', 'tuesday', etc.
+      //   //console.log(mealPlan.week[day]); // This will print the entire data for that day
+
+      //   for (const meal of mealPlan.week[day].meals) {
+      //     console.log(meal); // This will print the entire meal object
+      //     console.log(meal.title); // This will print the meal title
+      //   }
+      // }
+    } catch (error) {
+      console.error('Error Message:', error.message); // Error message text
+      console.error('Error Code:', error.response.status); // HTTP status code
+      console.error('Error Response Data:', error.response.data); // Response data
+      console.error('Error Request URL:', error.config.url);
+    }
   };
 
 

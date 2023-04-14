@@ -1,4 +1,4 @@
-const axios = require("axios")
+import axios from "axios";
 const { getUserInformation } = require("../SimplKitchen/user");
 import { SPOONACULAR_API_KEY } from "@env";
 
