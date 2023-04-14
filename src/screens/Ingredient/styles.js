@@ -1,38 +1,24 @@
-import { StyleSheet } from 'react-native';
-import { RecipeCard } from '../../AppStyles';
+// styles.js
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  titleIngredient: {
-    fontWeight: 'bold',
-    fontSize: 20
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
   },
-  photoIngredient: {
-    width: '100%',
-    height: 250,
-    alignSelf: 'center'
-  },
-  ingredientInfo: {
-    color: 'black',
-    margin: 10,
-    fontSize: 19,
-    textAlign: 'left',
-    fontWeight: 'bold'
-  },
-  button: {
-    width: 300,
-    height: 40,
-    backgroundColor: '#86bf3e',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-    marginBottom: 0,
+  ingredientContainer: {
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 20,
-    flexDirection: 'row',
   },
-  container: RecipeCard.container,
-  photo: RecipeCard.photo,
-  title: RecipeCard.title,
-  category: RecipeCard.category
+  ingredientTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  // Add more styles here as needed
 });
 
 export default styles;
