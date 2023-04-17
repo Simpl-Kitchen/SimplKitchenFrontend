@@ -1,4 +1,3 @@
-// RecipeScreen.js
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -9,12 +8,14 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const RecipeScreen = ({ route }) => {
   const { recipe } = route.params;
   const [recipeDetails, setRecipeDetails] = useState(null);
   const [servings, setServings] = useState(null);
   const [editServings, setEditServings] = useState(false);
+  const navigation = useNavigation();
 
   const fetchRecipeDetails = async () => {
     try {
@@ -55,38 +56,39 @@ const RecipeScreen = ({ route }) => {
         <>
           <Text style={styles.title}>{recipeDetails.title}</Text>
           {recipeDetails.image && (
-            <Image
-              source={{ uri: recipeDetails.image }}
-              style={styles.image}
-            />
+            <Image source={{ uri: recipeDetails.image }} style={styles.image} />
           )}
           <Text style={styles.servingsText}>Servings: </Text>
           {editServings ? (
             <TextInput
               keyboardType="numeric"
-              value={servings ? servings.toString() : ''}
+              value={servings ? servings.toString() : ""}
               onChangeText={handleServingsChange}
               style={styles.servingsInput}
               onBlur={toggleEditServings}
             />
           ) : (
             <TouchableOpacity onPress={toggleEditServings}>
-              <Text style={styles.servingsNumbera}>
+              <Text style={styles.servingsNumber}>
                 {servings || recipeDetails.servings}
               </Text>
             </TouchableOpacity>
           )}
-          <Text style={styles.servingsText} > {"\n"}Prep Time: {recipeDetails.readyInMinutes} minutes {"\n"}{"\n"}</Text>
+          <Text style={styles.servingsText}>
+            {" "}
+            {"\n"}Prep Time: {recipeDetails.readyInMinutes} minutes {"\n"}
+            {"\n"}
+          </Text>
           <Text style={styles.title}>{"• "}Ingredients</Text>
           {recipeDetails.extendedIngredients &&
-          recipeDetails.extendedIngredients.length > 0 &&
+            recipeDetails.extendedIngredients.length > 0 &&
             recipeDetails.extendedIngredients.map((ingredient, index) => (
               <Text key={index}>
-                {"‣"} {" "}
-                {calculateNewAmount(ingredient)} {ingredient.unit} {ingredient.name} {"\n"} 
+                {"‣"} {calculateNewAmount(ingredient)} {ingredient.unit}{" "}
+                {ingredient.name} {"\n"}
               </Text>
             ))}
-            
+
           <Text style={styles.title}>{"• "}Instructions</Text>
           {recipeDetails.analyzedInstructions &&
           recipeDetails.analyzedInstructions[0] &&
@@ -99,6 +101,20 @@ const RecipeScreen = ({ route }) => {
           ) : (
             <Text>Instructions not available.</Text>
           )}
+          <TouchableOpacity
+            style={styles.shoppingListButton}
+            onPress={() =>
+              navigation.navigate("ShoppingList", {
+                username: "your_username",
+                startDate: "2023-04-17",
+                endDate: "2023-04-24",
+              })
+            }
+          >
+            <Text style={styles.shoppingListButtonText}>
+              Add To Shopping List
+            </Text>
+          </TouchableOpacity>
         </>
       ) : (
         <Text>Loading recipe details...</Text>
@@ -116,7 +132,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    backgroundColor: '#F5FCFF',
   },
   image: {
     width: "100%",
@@ -142,7 +157,19 @@ const styles = StyleSheet.create({
   },
   servingsNumber: {
     fontSize: 16,
-  }
+  },
+  shoppingListButton: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  shoppingListButtonText: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
 });
 
 export default RecipeScreen;

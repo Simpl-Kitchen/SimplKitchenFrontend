@@ -58,6 +58,14 @@ export default function DrawerContainer(props) {
             navigation.closeDrawer();
           }}
         />
+        <MenuButton
+          title="Shopping List"
+          source={require("../../../assets/icons/placeholder.png")}
+          onPress={() => {
+            navigation.navigate("ShoppingList");
+            navigation.closeDrawer();
+          }}
+        />
       </View>
     </View>
   );
