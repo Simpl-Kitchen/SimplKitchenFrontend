@@ -2,78 +2,64 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  ScrollView,
   TouchableOpacity,
+  FlatList,
+  ScrollView,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import styles from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
-const ShoppingListScreen = ({ username, startDate, endDate }) => {
-  const [shoppingList, setShoppingList] = useState(null);
+import axios from "axios";
 
-  const fetchShoppingList = async () => {
-    try {
-      const response = await fetch(
-        `https://api.spoonacular.com/mealplanner/${username}/shopping-list/${startDate}/${endDate}?apiKey=e44c9f0796b4400ab3a69f1354d139a9`,
-        {
-          method: "POST",
-        }
-      );
-  
-      if (!response.ok) {
-        console.error("API response status:", response.status);
-        const responseText = await response.text();
-        console.error("API response text:", responseText);
-        return;
-      }
-  
-      const data = await response.json();
-      setShoppingList(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
-  
+const ShoppingListScreen = () => {
+  const [shoppingList, setShoppingList] = useState([]);
+  const navigation = useNavigation();
+
+  const apiKey = "your_api_key_here";
+  const username = "your_username_here";
+  const startDate = "2023-04-17";
+  const endDate = "2023-04-23";
+  const apiURL = `https://api.spoonacular.com/mealplanner/${username}/shopping-list/${startDate}/${endDate}?apiKey=${apiKey}`;
 
   useEffect(() => {
     fetchShoppingList();
   }, []);
 
+  const fetchShoppingList = async () => {
+    try {
+      const response = await axios.get(apiURL);
+      setShoppingList(response.data.ingredients);
+    } catch (error) {
+      console.error("Error fetching shopping list:", error);
+    }
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.shoppingListItem}
+      onPress={() => {
+        navigation.navigate("IngredientScreen", { ingredient: item });
+      }}
+    >
+      <Text style={styles.ingredientName}>{item.name}</Text>
+      <Text style={styles.ingredientAmount}>
+        {item.amount.metric.value} {item.amount.metric.unit}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {shoppingList ? (
-        <>
-          <Text style={styles.title}>Shopping List</Text>
-          {shoppingList.ingredients &&
-            shoppingList.ingredients.map((ingredient, index) => (
-              <TouchableOpacity key={index}>
-                <Text style={styles.ingredient}>
-                  {ingredient.amount} {ingredient.unit} {ingredient.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-        </>
-      ) : (
-        <Text>Loading shopping list...</Text>
-      )}
+    <ScrollView>
+      <View style={styles.container}>
+        <FlatList
+          data={shoppingList}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+        />
+      </View>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    paddingBottom: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  ingredient: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-});
 
 export default ShoppingListScreen;
