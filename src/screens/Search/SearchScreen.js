@@ -1,54 +1,47 @@
-// SearchScreen.js
 import React, { useState, useEffect } from "react";
-import { View, FlatList} from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  SafeAreaView,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { SearchBar } from "react-native-elements";
-import IngredientItem from "./IngredientItem";
-import { Image } from "react-native-elements";
-import { Dimensions } from "react-native";
+import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
-//import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
-import { searchIngredientsByName } from "../../utils/APICalls/Spoonacular/ingredients";
-import { addIngredientToPantry } from "../../utils/APICalls/SimplKitchen/pantry";
-import MenuButton from "../../components/MenuButton/MenuButton";
-
-
-const { width } = Dimensions.get("window");
-
-const SearchScreen = ({ navigation }) => {
+const SearchScreen = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [sortBy, setSortBy] = useState(null);
   const [search, setSearch] = useState("");
-  const [ingredients, setIngredients] = useState([]);
+  const navigation = useNavigation();
 
-  const fetchData = async () => {
-    try {
-      const ingredientSearch = await searchIngredientsByName(search);
-      const ingredients = ingredientSearch.results;
-      setIngredients(ingredients);
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchData = (searchParam) => {
+    setRefreshing(true);
+    fetch(
+      `https://api.spoonacular.com/recipes/complexSearch?query=${searchParam}&number=10&apiKey=e44c9f0796b4400ab3a69f1354d139a9`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setRecipes(data.results);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setRefreshing(false);
+      });
   };
 
-  const handleAddIngredient = (ingredient) => {
-    try {
-      addIngredientToPantry(ingredient);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    fetchData(""); // Fetch all recipes initially
+  }, []);
 
-  const onPressIngredient = (ingredient) => {
-    navigation.navigate("Ingredient", { ingredient });
+  const handleSearch = () => {
+    fetchData(search);
   };
-
-  const renderIngredient = ({ item }) => (
-    <IngredientItem
-      key={item.id}
-      ingredient={item}
-      onPress={onPressIngredient}
-      onAdd={handleAddIngredient}
-    />
-  );
 
   useEffect(() => {
     fetchData();
@@ -63,41 +56,73 @@ const SearchScreen = ({ navigation }) => {
           }}
         />
       ),
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            setSortBy((prevSortBy) => (prevSortBy === "asc" ? "desc" : "asc"));
+          }}
+        >
+          <Text style={styles.filterButtonText}>price ⇅</Text>
+        </TouchableOpacity>
+      ),
     });
-  }, []);
+  }, []); // Remove sortBy dependency to disable sorting
+
+
+
+  const renderRecipe = ({ item }) => {
+    return (
+      <View style={styles.recipe}>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={{ uri: item.image }} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          {/* <Text style={styles.info}>Likes: {item.aggregateLikes} </Text>
+          <Text style={styles.info}>Servings: {item.servings}</Text>
+          <Text style={styles.info}>
+            Ready in: {item.readyInMinutes} minutes
+          </Text>
+          <Text style={styles.info}>
+            Price per serving: ${(item.pricePerServing / 100).toFixed(2)}
+          </Text> */}
+        </View>
+      </View>
+    );
+  };
+
+  const sortedRecipes = recipes.sort((a, b) => {
+    if (sortBy === "asc") {
+      return a.pricePerServing - b.pricePerServing;
+    } else if (sortBy === "desc") {
+      return b.pricePerServing - a.pricePerServing;
+    } else {
+      return 0;
+    }
+  });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <SearchBar
-        platform="ios"
-        placeholder="Search for ingredients..."
-        value={search}
+        placeholder="Search for recipes..."
         onChangeText={setSearch}
-        onSubmitEditing={fetchData}
+        value={search}
+        onSubmitEditing={handleSearch}
+        containerStyle={styles.searchBarContainer}
+        inputContainerStyle={styles.searchBarInputContainer}
+        lightTheme
       />
-      <View style={styles.carouselContainer}>
-        <FlatList
-          data={ingredients}
-          numColumns={2}
-          renderItem={renderIngredient}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.flatListContainer}
-        />
-      </View>
-    </View>
+      <FlatList
+        data={sortedRecipes}
+        renderItem={renderRecipe}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+        }
+      />
+    </SafeAreaView>
   );
 };
-
-const IngredientImage = ({ uri }) => (
-  <Image
-    source={{ uri }}
-    style={{
-      width: width / 2 - 20,
-      height: width / 2 - 20,
-      borderRadius: 10,
-      marginBottom: 10,
-    }}
-  />
-);
 
 export default SearchScreen;

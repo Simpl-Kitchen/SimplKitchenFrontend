@@ -129,7 +129,7 @@ const PantryScreen = ({ navigation, route }) => {
       />
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigation.navigate("Search", { screen: "Search" })}
+        onPress={() => navigation.navigate("IngredientSearch", { screen: "IngredientSearch" })}
       >
         <Text style={styles.addButtonText}>Add Ingredient</Text>
       </TouchableOpacity>
