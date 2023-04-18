@@ -69,11 +69,16 @@ const SearchScreen = () => {
     });
   }, []); // Remove sortBy dependency to disable sorting
 
-
+  const handleRecipePress = (recipe) => {
+    navigation.navigate("Recipe", { recipe });
+  };
 
   const renderRecipe = ({ item }) => {
     return (
-      <View style={styles.recipe}>
+      <TouchableOpacity
+        style={styles.recipe}
+        onPress={() => handleRecipePress(item)}
+      >
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={{ uri: item.image }} />
         </View>
@@ -88,7 +93,7 @@ const SearchScreen = () => {
             Price per serving: ${(item.pricePerServing / 100).toFixed(2)}
           </Text> */}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
