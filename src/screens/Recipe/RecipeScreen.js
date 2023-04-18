@@ -7,6 +7,8 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
+  AsyncStorage,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,6 +17,11 @@ const RecipeScreen = ({ route }) => {
   const [recipeDetails, setRecipeDetails] = useState(null);
   const [servings, setServings] = useState(null);
   const [editServings, setEditServings] = useState(false);
+  const [editedServings, setEditedServings] = useState(recipeDetails ? recipeDetails.servings : null);
+  const [editIngredients, setEditIngredients] = useState(false);
+  const [editedIngredients, setEditedIngredients] = useState([]);
+  const [editInstructions, setEditInstructions] = useState(false);
+  const [editedInstructions, setEditedInstructions] = useState([]);
   const navigation = useNavigation();
 
   const fetchRecipeDetails = async () => {
@@ -24,6 +31,8 @@ const RecipeScreen = ({ route }) => {
       );
       const data = await response.json();
       setRecipeDetails(data);
+      setEditedIngredients(data.extendedIngredients);
+      setEditedInstructions(data.analyzedInstructions?.[0]?.steps || []);
     } catch (error) {
       console.error(error);
     }
@@ -42,134 +51,290 @@ const RecipeScreen = ({ route }) => {
   };
 
   const calculateNewAmount = (ingredient) => {
-    if (!servings || servings === recipeDetails.servings) {
+    const servingsToUse = editedServings || (servings ? servings : recipeDetails.servings);
+    if (!servingsToUse || servingsToUse === recipeDetails.servings) {
       return ingredient.amount;
     }
 
-    const newAmount = (ingredient.amount / recipeDetails.servings) * servings;
+    const newAmount = (ingredient.amount / recipeDetails.servings) * servingsToUse;
     return newAmount.toFixed(2);
   };
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {recipeDetails ? (
-        <>
-          <Text style={styles.title}>{recipeDetails.title}</Text>
-          {recipeDetails.image && (
-            <Image source={{ uri: recipeDetails.image }} style={styles.image} />
-          )}
-          <Text style={styles.servingsText}>Servings: </Text>
-          {editServings ? (
-            <TextInput
-              keyboardType="numeric"
-              value={servings ? servings.toString() : ""}
-              onChangeText={handleServingsChange}
-              style={styles.servingsInput}
-              onBlur={toggleEditServings}
-            />
-          ) : (
-            <TouchableOpacity onPress={toggleEditServings}>
-              <Text style={styles.servingsNumber}>
-                {servings || recipeDetails.servings}
-              </Text>
-            </TouchableOpacity>
-          )}
-          <Text style={styles.servingsText}>
-            {" "}
-            {"\n"}Prep Time: {recipeDetails.readyInMinutes} minutes {"\n"}
-            {"\n"}
-          </Text>
-          <Text style={styles.title}>{"• "}Ingredients</Text>
-          {recipeDetails.extendedIngredients &&
-            recipeDetails.extendedIngredients.length > 0 &&
-            recipeDetails.extendedIngredients.map((ingredient, index) => (
-              <Text key={index}>
-                {"‣"} {calculateNewAmount(ingredient)} {ingredient.unit}{" "}
-                {ingredient.name} {"\n"}
-              </Text>
-            ))}
+  const onSave = async () => {
+    try {
+      const existingData = await AsyncStorage.getItem(`recipe-${recipe.id}`);
+      const existingRecipe = existingData ? JSON.parse(existingData) : {};
+      const editedRecipe = {
+        ...existingRecipe,
+        servings: editedServings,
+        ingredients: editedIngredients,
+        instructions: editedInstructions,
+      };
+      await AsyncStorage.setItem(`recipe-${recipe.id}`, JSON.stringify(editedRecipe));
+      Alert.alert("Recipe saved successfully!");
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error saving recipe.");
+    }
+  };
 
-          <Text style={styles.title}>{"• "}Instructions</Text>
-          {recipeDetails.analyzedInstructions &&
-          recipeDetails.analyzedInstructions[0] &&
-          recipeDetails.analyzedInstructions[0].steps ? (
-            recipeDetails.analyzedInstructions[0].steps.map((step, index) => (
-              <Text key={index}>
-                {index + 1}. {step.step} {"\n"}
-              </Text>
-            ))
-          ) : (
-            <Text>Instructions not available.</Text>
-          )}
-          <TouchableOpacity
-            style={styles.shoppingListButton}
-            onPress={() =>
-              navigation.navigate("ShoppingList", {
-                username: "your_username",
-                startDate: "2023-04-17",
-                endDate: "2023-04-24",
-              })
-            }
-          >
-            <Text style={styles.shoppingListButtonText}>
-              Add To Shopping List
+  return (
+    <View style={styles.screen}>
+      <View style={styles.topBar}>
+        <TouchableOpacity style={styles.editButton} onPress={() => setEditIngredients(!editIngredients)}>
+          <Text style={styles.editButtonText}>Edit Ingredients</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.editButton} onPress={() => setEditInstructions(!editInstructions)}>
+          <Text style={styles.editButtonText}>Edit Instructions</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        {recipeDetails ? (
+          <>
+            <Text style={styles.title}>{recipeDetails.title}</Text>
+            {recipeDetails.image && (
+              <Image source={{ uri: recipeDetails.image }} style={styles.image} />
+            )}
+        <Text style={styles.servingsText}>Servings: </Text>
+        {editServings ? (
+          <TextInput
+            keyboardType="numeric"
+            value={editedServings ? editedServings.toString() : ''}
+            onChangeText={(value) => setEditedServings(parseInt(value, 10))}
+            style={styles.servingsInput}
+            onBlur={toggleEditServings}
+          />
+        ) : (
+          <TouchableOpacity onPress={toggleEditServings}>
+            <Text style={styles.servingsNumber}>
+              {editedServings || recipeDetails.servings}
             </Text>
           </TouchableOpacity>
-        </>
-      ) : (
-        <Text>Loading recipe details...</Text>
-      )}
-    </ScrollView>
-  );
+        )}
+        <Text style={styles.servingsText}>
+          {"\n"}Prep Time: {recipeDetails.readyInMinutes} minutes {"\n"}
+          {"\n"}
+        </Text>
+        <Text style={styles.title}>{"• "}Ingredients</Text>
+        {editIngredients ? (
+          editedIngredients.map((ingredient, index) => (
+            <View key={index} style={styles.ingredientContainer}>
+              <TextInput
+                style={styles.ingredientInput}
+                value={ingredient.original}
+                onChangeText={(value) =>
+                  setEditedIngredients((prev) =>
+                    prev.map((prevIngredient, prevIndex) =>
+                      prevIndex === index ? { ...prevIngredient, original: value } : prevIngredient
+                    )
+                  )
+                }
+              />
+            </View>
+          ))
+        ) : (
+          recipeDetails.extendedIngredients &&
+          recipeDetails.extendedIngredients.length > 0 &&
+          recipeDetails.extendedIngredients.map((ingredient, index) => (
+            <Text key={index}>
+              {"‣"} {calculateNewAmount(ingredient)} {ingredient.unit}{" "}
+              {ingredient.name} {"\n"}
+            </Text>
+          ))
+        )}
+        <Text style={styles.title}>{"• "}Instructions</Text>
+        {editInstructions ? (
+          editedInstructions.map((step, index) => (
+            <View key={index} style={styles.instructionContainer}>
+              <Text style={styles.instructionNumber}>{index + 1}.</Text>
+              <TextInput
+                style={styles.instructionInput}
+                value={step.step}
+                onChangeText={(value) =>
+                  setEditedInstructions((prev) =>
+                    prev.map((prevStep, prevIndex) =>
+                      prevIndex === index ? { ...prevStep, step: value } : prevStep
+                    )
+                  )
+                }
+              />
+            </View>
+          ))
+        ) : recipeDetails.analyzedInstructions &&
+          recipeDetails.analyzedInstructions[0] &&
+          recipeDetails.analyzedInstructions[0].steps ? (
+          recipeDetails.analyzedInstructions[0].steps.map((step, index) => (
+            <Text key={index}>
+              {index + 1}. {step.step} {"\n"}
+            </Text>
+          ))
+        ) : (
+          <Text>Instructions not available.</Text>
+        )}
+        <TouchableOpacity
+          style={styles.shoppingListButton}
+          onPress={() =>
+            navigation.navigate("ShoppingList", {
+              username: "your_username",
+              startDate: "2023-04-17",
+              endDate: "2023-04-24",
+            })
+          }
+        >
+          <Text style={styles.shoppingListButtonText}>
+            Add To Shopping List
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.saveButton} onPress={onSave}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
+      </>
+    ) : (
+      <Text>Loading recipe details...</Text>
+    )}
+  </ScrollView>
+  <TouchableOpacity
+    style={styles.backButton}
+    onPress={() => navigation.goBack()}
+  >
+    <Text style={styles.backButtonText}>Back</Text>
+  </TouchableOpacity>
+</View>
+
+);
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    paddingBottom: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  image: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
-    marginBottom: 20,
-    borderRadius: 10,
-  },
-  servingsInput: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    width: 50,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  servingsText: {
-    textDecorationLine: "underline",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  servingsNumber: {
-    fontSize: 16,
-  },
-  shoppingListButton: {
-    backgroundColor: "#4CAF50",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  shoppingListButtonText: {
-    color: "#FFF",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
+screen: {
+flex: 1,
+},
+topBar: {
+flexDirection: "row",
+justifyContent: "flex-end",
+alignItems: "center",
+backgroundColor: "#FFF",
+paddingVertical: 10,
+paddingHorizontal: 20,
+},
+editButton: {
+backgroundColor: "#4CAF50",
+padding: 10,
+borderRadius: 5,
+alignItems: "center",
+marginLeft: 10,
+},
+editButtonText: {
+color: "#FFF",
+fontWeight: "bold",
+fontSize: 16,
+},
+container: {
+padding: 10,
+paddingBottom: 30,
+},
+title: {
+fontSize: 24,
+fontWeight: "bold",
+marginBottom: 20,
+},
+image: {
+width: "100%",
+height: 200,
+resizeMode: "cover",
+marginBottom: 20,
+borderRadius: 10,
+},
+servingsInput: {
+borderWidth: 1,
+borderColor: "#ccc",
+borderRadius: 5,
+paddingHorizontal: 5,
+paddingVertical: 2,
+width: 50,
+textAlign: "center",
+fontWeight: "bold",
+},
+servingsText: {
+textDecorationLine: "underline",
+fontWeight: "bold",
+fontSize: 16,
+},
+servingsNumber: {
+fontSize: 16,
+},
+shoppingListButton: {
+backgroundColor: "#4CAF50",
+padding: 10,
+borderRadius: 5,
+alignItems: "center",
+marginTop: 20,
+},
+shoppingListButtonText: {
+color: "#FFF",
+fontWeight: "bold",
+fontSize: 16,
+},
+backButton: {
+backgroundColor: "#FFF",
+borderWidth: 1,
+borderColor: "#ccc",
+padding: 10,
+borderRadius: 5,
+alignItems: "center",
+position: "absolute",
+bottom: 20,
+left: 20,
+},
+backButtonText: {
+color: "#333",
+fontWeight: "bold",
+fontSize: 16,
+},
+saveButton: {
+backgroundColor: "#4CAF50",
+padding: 10,
+borderRadius: 5,
+alignItems: "center",
+marginTop: 20,
+},
+saveButtonText: {
+color: "#FFF",
+fontWeight: "bold",
+fontSize: 16,
+},
+ingredientContainer: {
+flexDirection: "row",
+alignItems: "center",
+marginVertical: 5,
+},
+ingredientInput: {
+flex: 1,
+borderWidth: 1,
+borderColor: "#ccc",
+borderRadius: 5,
+paddingHorizontal: 10,
+paddingVertical: 5,
+fontSize: 16,
+},
+instructionContainer: {
+flexDirection: "row",
+alignItems: "center",
+marginVertical: 5,
+},
+instructionNumber: {
+fontWeight: "bold",
+marginRight: 10,
+fontSize: 16,
+},
+instructionInput: {
+flex: 1,
+borderWidth: 1,
+borderColor: "#ccc",
+borderRadius: 5,
+paddingHorizontal: 10,
+paddingVertical: 5,
+fontSize: 16,
+},
 });
 
 export default RecipeScreen;
