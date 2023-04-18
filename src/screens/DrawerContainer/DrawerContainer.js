@@ -36,7 +36,7 @@ export default function DrawerContainer(props) {
         />
         <MenuButton
           title="Pantry"
-          source={require("../../../assets/icons/Pantry.png")}
+          source={require("../../../assets/icons/pantry.png")}
           onPress={() => {
             navigation.navigate("Pantry");
             navigation.closeDrawer();
@@ -52,7 +52,7 @@ export default function DrawerContainer(props) {
         />
         <MenuButton
           title="Recipe Generator"
-          source={require("../../../assets/icons/placeholder.png")}
+          source={require("../../../assets/icons/RecipeGenerator.png")}
           onPress={() => {
             navigation.navigate("RecipeGenerator");
             navigation.closeDrawer();
@@ -60,7 +60,7 @@ export default function DrawerContainer(props) {
         />
         <MenuButton
           title="Shopping List"
-          source={require("../../../assets/icons/placeholder.png")}
+          source={require("../../../assets/icons/list.png")}
           onPress={() => {
             navigation.navigate("ShoppingList");
             navigation.closeDrawer();
