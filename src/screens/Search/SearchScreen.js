@@ -27,7 +27,14 @@ const SearchScreen = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        setRecipes(data.results);
+        const promises = data.results.map((recipe) =>
+          fetch(
+            `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=e44c9f0796b4400ab3a69f1354d139a9&includeNutrition=false`
+          ).then((response) => response.json())
+        );
+        Promise.all(promises).then((recipes) => {
+          setRecipes(recipes.map((recipe, index) => ({ ...data.results[index], ...recipe })));
+        });
       })
       .catch((error) => console.error(error))
       .finally(() => {
@@ -84,14 +91,13 @@ const SearchScreen = () => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{item.title}</Text>
-          {/* <Text style={styles.info}>Likes: {item.aggregateLikes} </Text>
           <Text style={styles.info}>Servings: {item.servings}</Text>
           <Text style={styles.info}>
             Ready in: {item.readyInMinutes} minutes
           </Text>
           <Text style={styles.info}>
             Price per serving: ${(item.pricePerServing / 100).toFixed(2)}
-          </Text> */}
+          </Text>
         </View>
       </TouchableOpacity>
     );
