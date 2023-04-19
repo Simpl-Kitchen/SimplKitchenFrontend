@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import axios from "axios";
 
-import {generateUserRecipes} from '../../utils/APICalls/SimplKitchen/generateRecipes'
+import {generateUserRecipes, getGeneratedRecipes} from '../../utils/APICalls/SimplKitchen/generateRecipes'
 
 
 
