@@ -1,24 +1,7 @@
-// This is the working code for the API to recieve ingredeints from the meal Plan 
-// Unfortunately, with our paid plan we do not have the resources to use this API. 
-// the requirements for requests/s is too high and we are unable to afford the cost 
+// This is the working code for the API to recieve ingredeints from the meal Plan
+// Unfortunately, with our paid plan we do not have the resources to use this API.
+// the requirements for requests/s is too high and we are unable to afford the cost
 // without appropriate funding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import {

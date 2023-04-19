@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   Image,
   TextInput,
@@ -11,6 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FontAwesome } from "@expo/vector-icons"; // You need to install '@expo/vector-icons' if not already installed
 
 import styles from "./styles";
 
@@ -19,7 +19,9 @@ const RecipeScreen = ({ route }) => {
   const [recipeDetails, setRecipeDetails] = useState(null);
   const [servings, setServings] = useState(null);
   const [editServings, setEditServings] = useState(false);
-  const [editedServings, setEditedServings] = useState(recipeDetails ? recipeDetails.servings : null);
+  const [editedServings, setEditedServings] = useState(
+    recipeDetails ? recipeDetails.servings : null
+  );
   const [editIngredients, setEditIngredients] = useState(false);
   const [editedIngredients, setEditedIngredients] = useState([]);
   const [editInstructions, setEditInstructions] = useState(false);
@@ -53,12 +55,14 @@ const RecipeScreen = ({ route }) => {
   };
 
   const calculateNewAmount = (ingredient) => {
-    const servingsToUse = editedServings || (servings ? servings : recipeDetails.servings);
+    const servingsToUse =
+      editedServings || (servings ? servings : recipeDetails.servings);
     if (!servingsToUse || servingsToUse === recipeDetails.servings) {
       return ingredient.amount;
     }
 
-    const newAmount = (ingredient.amount / recipeDetails.servings) * servingsToUse;
+    const newAmount =
+      (ingredient.amount / recipeDetails.servings) * servingsToUse;
     return newAmount.toFixed(2);
   };
 
@@ -72,7 +76,10 @@ const RecipeScreen = ({ route }) => {
         ingredients: editedIngredients,
         instructions: editedInstructions,
       };
-      await AsyncStorage.setItem(`recipe-${recipe.id}`, JSON.stringify(editedRecipe));
+      await AsyncStorage.setItem(
+        `recipe-${recipe.id}`,
+        JSON.stringify(editedRecipe)
+      );
       Alert.alert("Recipe saved successfully!");
     } catch (error) {
       console.error(error);
@@ -82,128 +89,148 @@ const RecipeScreen = ({ route }) => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.editButton} onPress={() => setEditIngredients(!editIngredients)}>
-          <Text style={styles.editButtonText}>Edit Ingredients</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.editButton} onPress={() => setEditInstructions(!editInstructions)}>
-          <Text style={styles.editButtonText}>Edit Instructions</Text>
-        </TouchableOpacity>
-      </View>
       <ScrollView contentContainerStyle={styles.container}>
         {recipeDetails ? (
           <>
             <Text style={styles.title}>{recipeDetails.title}</Text>
             {recipeDetails.image && (
-              <Image source={{ uri: recipeDetails.image }} style={styles.image} />
+              <Image
+                source={{ uri: recipeDetails.image }}
+                style={styles.image}
+              />
             )}
-        <Text style={styles.servingsText}>Servings: </Text>
-        {editServings ? (
-          <TextInput
-            keyboardType="numeric"
-            value={editedServings ? editedServings.toString() : ''}
-            onChangeText={(value) => setEditedServings(parseInt(value, 10))}
-            style={styles.servingsInput}
-            onBlur={toggleEditServings}
-          />
-        ) : (
-          <TouchableOpacity onPress={toggleEditServings}>
-            <Text style={styles.servingsNumber}>
-              {editedServings || recipeDetails.servings}
-            </Text>
-          </TouchableOpacity>
-        )}
-        <Text style={styles.servingsText}>
-          {"\n"}Prep Time: {recipeDetails.readyInMinutes} minutes {"\n"}
-          {"\n"}
-        </Text>
-        <Text style={styles.title}>{"• "}Ingredients</Text>
-        {editIngredients ? (
-          editedIngredients.map((ingredient, index) => (
-            <View key={index} style={styles.ingredientContainer}>
+            <Text style={styles.servingsText}>Servings: </Text>
+            {editServings ? (
               <TextInput
-                style={styles.ingredientInput}
-                value={ingredient.original}
-                onChangeText={(value) =>
-                  setEditedIngredients((prev) =>
-                    prev.map((prevIngredient, prevIndex) =>
-                      prevIndex === index ? { ...prevIngredient, original: value } : prevIngredient
-                    )
-                  )
-                }
+                keyboardType="numeric"
+                value={editedServings ? editedServings.toString() : ""}
+                onChangeText={(value) => setEditedServings(parseInt(value, 10))}
+                style={styles.servingsInput}
+                onBlur={toggleEditServings}
               />
-            </View>
-          ))
-        ) : (
-          recipeDetails.extendedIngredients &&
-          recipeDetails.extendedIngredients.length > 0 &&
-          recipeDetails.extendedIngredients.map((ingredient, index) => (
-            <Text key={index}>
-              {"‣"} {calculateNewAmount(ingredient)} {ingredient.unit}{" "}
-              {ingredient.name} {"\n"}
+            ) : (
+              <TouchableOpacity onPress={toggleEditServings}>
+                <Text style={styles.servingsNumber}>
+                  {editedServings || recipeDetails.servings}
+                </Text>
+              </TouchableOpacity>
+            )}
+            <Text style={styles.servingsText}>
+              {"\n"}Prep Time: {recipeDetails.readyInMinutes} minutes {"\n"}
+              {"\n"}
             </Text>
-          ))
-        )}
-        <Text style={styles.title}>{"• "}Instructions</Text>
-        {editInstructions ? (
-          editedInstructions.map((step, index) => (
-            <View key={index} style={styles.instructionContainer}>
-              <Text style={styles.instructionNumber}>{index + 1}.</Text>
-              <TextInput
-                style={styles.instructionInput}
-                value={step.step}
-                onChangeText={(value) =>
-                  setEditedInstructions((prev) =>
-                    prev.map((prevStep, prevIndex) =>
-                      prevIndex === index ? { ...prevStep, step: value } : prevStep
-                    )
-                  )
-                }
-              />
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>{"• "}Ingredients</Text>
+              <TouchableOpacity
+                onPress={() => setEditIngredients(!editIngredients)}
+              >
+                <FontAwesome
+                  name="pencil"
+                  size={20}
+                  color="black"
+                  style={styles.pencilIcon}
+                />
+              </TouchableOpacity>
             </View>
-          ))
-        ) : recipeDetails.analyzedInstructions &&
-          recipeDetails.analyzedInstructions[0] &&
-          recipeDetails.analyzedInstructions[0].steps ? (
-          recipeDetails.analyzedInstructions[0].steps.map((step, index) => (
-            <Text key={index}>
-              {index + 1}. {step.step} {"\n"}
-            </Text>
-          ))
+            {editIngredients
+              ? editedIngredients.map((ingredient, index) => (
+                  <View key={index} style={styles.ingredientContainer}>
+                    <TextInput
+                      style={styles.ingredientInput}
+                      value={ingredient.original}
+                      onChangeText={(value) =>
+                        setEditedIngredients((prev) =>
+                          prev.map((prevIngredient, prevIndex) =>
+                            prevIndex === index
+                              ? { ...prevIngredient, original: value }
+                              : prevIngredient
+                          )
+                        )
+                      }
+                    />
+                  </View>
+                ))
+              : recipeDetails.extendedIngredients &&
+                recipeDetails.extendedIngredients.length > 0 &&
+                recipeDetails.extendedIngredients.map((ingredient, index) => (
+                  <Text key={index}>
+                    {"‣"} {calculateNewAmount(ingredient)} {ingredient.unit}{" "}
+                    {ingredient.name} {"\n"}
+                  </Text>
+                ))}
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>{"• "}Instructions</Text>
+              <TouchableOpacity
+                onPress={() => setEditInstructions(!editInstructions)}
+              >
+                <FontAwesome
+                  name="pencil"
+                  size={20}
+                  color="black"
+                  style={styles.pencilIcon}
+                />
+              </TouchableOpacity>
+            </View>
+            {editInstructions ? (
+              editedInstructions.map((step, index) => (
+                <View key={index} style={styles.instructionContainer}>
+                  <Text style={styles.instructionNumber}>{index + 1}.</Text>
+                  <TextInput
+                    style={styles.instructionInput}
+                    value={step.step}
+                    onChangeText={(value) =>
+                      setEditedInstructions((prev) =>
+                        prev.map((prevStep, prevIndex) =>
+                          prevIndex === index
+                            ? { ...prevStep, step: value }
+                            : prevStep
+                        )
+                      )
+                    }
+                  />
+                </View>
+              ))
+            ) : recipeDetails.analyzedInstructions &&
+              recipeDetails.analyzedInstructions[0] &&
+              recipeDetails.analyzedInstructions[0].steps ? (
+              recipeDetails.analyzedInstructions[0].steps.map((step, index) => (
+                <Text key={index}>
+                  {index + 1}. {step.step} {"\n"}
+                </Text>
+              ))
+            ) : (
+              <Text>Instructions not available.</Text>
+            )}
+            <TouchableOpacity
+              style={styles.shoppingListButton}
+              onPress={() =>
+                navigation.navigate("ShoppingList", {
+                  username: "your_username",
+                  startDate: "2023-04-17",
+                  endDate: "2023-04-24",
+                })
+              }
+            >
+              <Text style={styles.shoppingListButtonText}>
+                Add To Shopping List
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.saveButton} onPress={onSave}>
+              <Text style={styles.saveButtonText}>Save</Text>
+            </TouchableOpacity>
+          </>
         ) : (
-          <Text>Instructions not available.</Text>
+          <Text>Loading recipe details...</Text>
         )}
-        <TouchableOpacity
-          style={styles.shoppingListButton}
-          onPress={() =>
-            navigation.navigate("ShoppingList", {
-              username: "your_username",
-              startDate: "2023-04-17",
-              endDate: "2023-04-24",
-            })
-          }
-        >
-          <Text style={styles.shoppingListButtonText}>
-            Add To Shopping List
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.saveButton} onPress={onSave}>
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
-      </>
-    ) : (
-      <Text>Loading recipe details...</Text>
-    )}
-  </ScrollView>
-  <TouchableOpacity
-    style={styles.backButton}
-    onPress={() => navigation.goBack()}
-  >
-    <Text style={styles.backButtonText}>Back</Text>
-  </TouchableOpacity>
-</View>
-
-);
+      </ScrollView>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 export default RecipeScreen;

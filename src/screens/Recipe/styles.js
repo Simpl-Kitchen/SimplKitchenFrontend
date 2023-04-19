@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
-    marginLeft: 10,
+    marginLeft:90,
     },
     editButtonText: {
     color: "#FFF",
@@ -131,6 +131,14 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     fontSize: 16,
     },
+    titleContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+      },
+      pencilIcon: {
+        marginRight: 5,
+      },
     });
 
 export default styles;
