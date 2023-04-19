@@ -2,8 +2,6 @@
 // This component is used to display the categories of recipes.
 // The user can click on a category to see the list of recipes in that category.
 // The user can also click on the menu button to open the drawer.
-// The user inputs a name
-
 
 
 import React, { useLayoutEffect } from "react";
@@ -40,8 +38,6 @@ export default function CategoriesScreen(props) {
     const category = item;
     navigation.navigate("RecipesList", { category, title });
   };
-
-  
 
   const renderCategory = ({ item }) => (
     <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressCategory(item)}>

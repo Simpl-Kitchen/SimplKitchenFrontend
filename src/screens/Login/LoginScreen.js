@@ -11,9 +11,11 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import styles from "./styles";
-import axios from "axios";
+
+import { loginSimplKitchen } from "../../utils/APICalls/SimplKitchen/user";
 
 // email and password are the state variables
 
@@ -23,29 +25,43 @@ export default function LoginScreen(props) {
 
   // handleLogin function is called when the user clicks the login button
 
-  const handleLogin = () => {
-    axios
-      .post("https://simplkitchenapi.onrender.com/api/v1/auth/login", {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        if (response.data === "Incorrect email or password") {
-          Alert.alert("Incorrect email or password");
-        } else {
-          Alert.alert("Login successful");
-          props.navigation.navigate("");
-          console.response("response", response);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleLogin = async () => {
+
+    try {
+
+      const login = await loginSimplKitchen(email, password);
+
+      if (login) {
+
+        Alert.alert("Login successful");
+        props.navigation.navigate("Home");
+
+      }
+
+    } catch (error) {
+      if (error.response) {
+        // The request was made, and the server responded with a status code
+        // that falls outside the range of 2xx
+        console.log('Error status:', error.response.status);
+        console.log('Error data:', error.response.data);
+        Alert.alert(error.response.data.msg);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error message:', error.message);
+      }
+    }
+
   };
+
 
   return (
     // add spt for image at the top center of the screen
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
       <Image
         style={styles.image}
         source={require("../../../assets/SKLogo.png")}
@@ -70,6 +86,6 @@ export default function LoginScreen(props) {
       >
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

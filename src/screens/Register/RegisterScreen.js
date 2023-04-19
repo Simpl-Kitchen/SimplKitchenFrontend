@@ -5,44 +5,76 @@
 // has a back button to go back to the login screen
 
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
+} from "react-native";
 import styles from "./styles";
 import axios from "axios";
 import { Image } from "react-native";
 
+const { registerSimplKitchen } = require('../../utils/APICalls/SimplKitchen/user');
+
 export default function RegisterScreen(props) {
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = () => {
-    axios
-      .post("https://simplkitchen-api.onrender.com/api/v1/auth/register", {
-        name: name,
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        if (response.data === "Email already exists") {
-          Alert.alert("Email already exists");
-        } else {
-          Alert.alert("Registration successful");
-          props.navigation.navigate("Login");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleRegister = async () => {
+
+
+    try {
+
+      const register = await registerSimplKitchen(name, username, email, password)
+
+      if (register) {
+
+        Alert.alert("Registration successful");
+        props.navigation.navigate("Login");
+
+      }
+
+    } catch (error) {
+
+      if (error.response) {
+        // The request was made, and the server responded with a status code
+        // that falls outside the range of 2xx
+        console.log('Error status:', error.response.status);
+        console.log('Error data:', error.response.data);
+        Alert.alert(error.response.data.msg);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error message:', error.message);
+      }
+    }
   };
 
   return (
-    <View style={styles.container}>
-
-      <Text style={styles.title}>Register</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <Image
+        style={styles.image}
+        source={require("../../../assets/SKLogo.png")}
+      />
       <TextInput
         style={styles.input}
         placeholder="Name"
         onChangeText={(text) => setName(text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        onChangeText={(text) => setUsername(text)}
       />
       <TextInput
         style={styles.input}
@@ -64,6 +96,6 @@ export default function RegisterScreen(props) {
       >
         <Text style={styles.buttonText}>Back</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

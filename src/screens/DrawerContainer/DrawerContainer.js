@@ -1,11 +1,8 @@
-// Description: This file contains the code for the DrawerContainer component.
-// This component is used to display the menu items in the drawer.
-// The user can click on a menu item to navigate to the corresponding screen.
-
 import React from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import styles from "./styles";
+
 import MenuButton from "../../components/MenuButton/MenuButton";
 
 export default function DrawerContainer(props) {
@@ -30,16 +27,16 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="Recipes"
+          title="Meal Plan"
           source={require("../../../assets/icons/category.png")}
           onPress={() => {
-            navigation.navigate("Categories");
+            navigation.navigate("MealPlan");
             navigation.closeDrawer();
           }}
         />
         <MenuButton
           title="Pantry"
-          source={require("../../../assets/icons/Pantry.png")}
+          source={require("../../../assets/icons/pantry.png")}
           onPress={() => {
             navigation.navigate("Pantry");
             navigation.closeDrawer();
@@ -53,6 +50,22 @@ export default function DrawerContainer(props) {
             navigation.closeDrawer();
           }}
         />
+        <MenuButton
+          title="Recipe Generator"
+          source={require("../../../assets/icons/RecipeGenerator.png")}
+          onPress={() => {
+            navigation.navigate("RecipeGenerator");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Shopping List"
+          source={require("../../../assets/icons/list.png")}
+          onPress={() => {
+            navigation.navigate("ShoppingList");
+            navigation.closeDrawer();
+          }}
+        />
       </View>
     </View>
   );
@@ -63,3 +76,17 @@ DrawerContainer.propTypes = {
     navigate: PropTypes.func.isRequired,
   }),
 };
+
+// Add drawer lock mode to screen options
+DrawerContainer.navigationOptions = ({ navigation }) => ({
+  drawerLockMode: "locked-closed",
+  headerLeft: () => (
+    <MenuButton
+      title="Menu"
+      source={require("../../../assets/icons/menu.png")}
+      onPress={() => {
+        navigation.openDrawer();
+      }}
+    />
+  ),
+});

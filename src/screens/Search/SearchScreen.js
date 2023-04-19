@@ -1,327 +1,139 @@
-import React, { useState, useEffect, Component } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   FlatList,
-  TextInput,
-  TouchableHighlight,
   Image,
-  StyleSheet,
-  Button,
+  SafeAreaView,
+  RefreshControl,
+  TouchableOpacity,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { SearchBar } from "react-native-elements";
+import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
-class SearchScreen extends Component {
-  state = {
-    search: "",
-    recipes: [],
+const SearchScreen = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [sortBy, setSortBy] = useState(null);
+  const [search, setSearch] = useState("");
+  const navigation = useNavigation();
+
+  const fetchData = (searchParam) => {
+    setRefreshing(true);
+    fetch(
+      `https://api.spoonacular.com/recipes/complexSearch?query=${searchParam}&number=10&apiKey=e44c9f0796b4400ab3a69f1354d139a9`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const promises = data.results.map((recipe) =>
+          fetch(
+            `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=e44c9f0796b4400ab3a69f1354d139a9&includeNutrition=false`
+          ).then((response) => response.json())
+        );
+        Promise.all(promises).then((recipes) => {
+          setRecipes(recipes.map((recipe, index) => ({ ...data.results[index], ...recipe })));
+        });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setRefreshing(false);
+      });
   };
 
-  // axios get request for ingredient entered by user
+  useEffect(() => {
+    fetchData(""); // Fetch all recipes initially
+  }, []);
 
-  // axios call to spoonacular recipe db api
-
-  fetchData = async () => {
-    try {
-      const queryObject = { search: this.state.search };
-      const options = {
-        method: "GET",
-        url: "https://simplkitchenapi.onrender.com/api/v1/search/ingredients",
-        params: queryObject,
-      };
-      const response = await axios.request(options);
-      console.log("API call success: ", response.data);
-      // throw alert with ingredient text
-      alert(JSON.stringify(response.data.foodData));
-      this.setState({ recipes: response.data.foodData });
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSearch = () => {
+    fetchData(search);
   };
 
-  // render food data response onto screen
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search"
-            onChangeText={(text) => this.setState({ search: text })}
-          />
-          <Button
-            title="Search"
-            onPress={() => {
-              this.fetchData();
-            }}
-          />
-        </View>
-        <FlatList
-          data={this.state.data}
-          renderItem={({ item }) => (
-            <TouchableHighlight
-              onPress={() =>
-                this.props.navigation.navigate("Recipe", {
-                  recipe: item,
-                })
-              }
-            >
-              <View style={styles.container}>
-                <Image
-                  style={styles.photo}
-                  source={{
-                    uri: item.image.endsWith(".png")
-                      ? item.image
-                      : item.image + ".jpg",
-                  }}
-                />
-                <Text style={styles.title}>{item.name}</Text>
-                <Text style={styles.category}>{item.category}</Text>
-                <Text style={styles.category}>
-                  {item.ingredients.join(", ")}
-                </Text>
-              </View>
-            </TouchableHighlight>
-          )}
-          numColumns={2}
-          keyExtractor={(item) => item.id.toString()}
+  useEffect(() => {
+    fetchData();
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
         />
-      </View>
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            setSortBy((prevSortBy) => (prevSortBy === "asc" ? "desc" : "asc"));
+          }}
+        >
+          <Text style={styles.filterButtonText}>price ⇅</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, []); // Remove sortBy dependency to disable sorting
+
+  const handleRecipePress = (recipe) => {
+    navigation.navigate("Recipe", { recipe });
+  };
+
+  const renderRecipe = ({ item }) => {
+    return (
+      <TouchableOpacity
+        style={styles.recipe}
+        onPress={() => handleRecipePress(item)}
+      >
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={{ uri: item.image }} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.info}>Servings: {item.servings}</Text>
+          <Text style={styles.info}>
+            Ready in: {item.readyInMinutes} minutes
+          </Text>
+          <Text style={styles.info}>
+            Price per serving: ${(item.pricePerServing / 100).toFixed(2)}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
-  }
-}  
+  };
 
-//   fetchData = async () => {
-//     try {
-//       const queryObject = { search: this.state.search };
-//       const options = {
-//         method: "GET",
-//         url: "https://simplkitchenapi.onrender.com/api/v1/search/ingredients",
-//         params: queryObject,
-//       };
-//       const response = await axios.request(options);
-//       console.log("API call success: ", response.data);
-//       // throw alert with api text
-//       alert(JSON.stringify(response.data.foodData));
-//       this.setState({ recipes: response.data.foodData });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
+  const sortedRecipes = recipes.sort((a, b) => {
+    if (sortBy === "asc") {
+      return a.pricePerServing - b.pricePerServing;
+    } else if (sortBy === "desc") {
+      return b.pricePerServing - a.pricePerServing;
+    } else {
+      return 0;
+    }
+  });
 
-//   // render food data response onto screen
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <View style={styles.searchContainer}>
-//           <TextInput
-//             style={styles.searchInput}
-//             placeholder="Search"
-//             onChangeText={(text) => this.setState({ search: text })}
-//           />
-//           <Button
-//             title="Search"
-//             onPress={() => {
-//               this.fetchData();
-//             }}
-//           />
-//         </View>
-//         <FlatList
-//           data={this.state.data}
-//           renderItem={({ item }) => (
-//             <TouchableHighlight
-//               onPress={() =>
-//                 this.props.navigation.navigate("Recipe", {
-//                   recipe: item,
-//                 })
-//               }
-//             >
-//               <View style={styles.container}>
-//                 <Image style={styles.photo} source={{ uri: item.image }} />
-//                 <Text style={styles.title}>{item.name}</Text>
-//                 <Text style={styles.category}>{item.category}</Text>
-//                 <Text style={styles.category}>
-//                   {item.ingredients.join(", ")}
-//                 </Text>
-//               </View>
-//             </TouchableHighlight>
-//           )}
-//           numColumns={2}
-//           keyExtractor={(item) => item.id.toString()}
-//         />
-//       </View>
-//     );
-//   }
-// }
+  return (
+    <SafeAreaView style={styles.container}>
+      <SearchBar
+        placeholder="Search for recipes..."
+        onChangeText={setSearch}
+        value={search}
+        onSubmitEditing={handleSearch}
+        containerStyle={styles.searchBarContainer}
+        inputContainerStyle={styles.searchBarInputContainer}
+        lightTheme
+      />
+      <FlatList
+        data={sortedRecipes}
+        renderItem={renderRecipe}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+        }
+      />
+    </SafeAreaView>
+  );
+};
 
 export default SearchScreen;
-// export default SearchScreen;
-
-// // creat classes for search screen
-// const SearchScreen = (props) => {
-//   // state
-//   const [search, setSearch] = useState("");
-//   const [recipes, setRecipes] = useState([]);
-
-//   // request data from api  when search term changes and only when enter is pressed
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const result = await axios(
-//         // simplkitchen api
-//         "https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=Cucumber"
-//       );
-//       setRecipes(result.data.meals);
-//     };
-//     fetchData();
-//   }, [search]);
-
-//   // render
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.searchContainer}>
-//         <TextInput
-//           style={styles.searchInput}
-//           placeholder="Search"
-//           onChangeText={(text) => setSearch(text)}
-//         />
-//       </View>
-//       <FlatList
-//         data={recipes}
-//         renderItem={({ item }) => (
-//           <TouchableHighlight
-//             onPress={() =>
-//               props.navigation.navigate("Recipe", {
-//                 recipe: item,
-//               })
-//             }
-//           >
-//             <View style={styles.container}>
-//               <Image style={styles.photo} source={{ uri: item.strMealThumb }} />
-//               <Text style={styles.title}>{item.strMeal}</Text>
-//               <Text style={styles.category}>{item.strCategory}</Text>
-//             </View>
-//           </TouchableHighlight>
-//         )}
-//         numColumns={2}
-//         keyExtractor={(index) => index.toString()}
-//       />
-//     </View>
-//   );
-// };
-
-// // styles
-// const styles = StyleSheet.create({
-//   btnIcon: {
-//     height: 14,
-//     width: 14,
-//   },
-//   searchContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     backgroundColor: "#9A1D1D",
-//     borderRadius: 100,
-//     width: 250,
-//     justifyContent: "space-around",
-//     marginVertical: 10,
-//     paddingHorizontal: 10,
-//   },
-//   searchIcon: {
-//     width: 20,
-//     height: 20,
-//     tintColor: "black",
-//   },
-//   searchInput: {
-//     backgroundColor: "#EDEDED",
-//     color: "black",
-//     width: 180,
-//     height: 50,
-//     paddingHorizontal: 10,
-//     borderRadius: 25,
-//   },
-// });
-
-// // export
-// export default SearchScreen;
-
-// //   useEffect(() => {
-// //     const fetchData = async () => {
-// //       const result = await axios(
-// //         // simplkitchen api
-// //         'https://simplkitchenapi.onrender.com/api/v1/search/ingredients?search=${searchTerm}'
-// //       );
-// //       setRecipes(result.data.meals);
-// //     };
-// //     fetchData();
-// //   }, [search]);
-
-// //   // render
-// //   return (
-// //     <View style={styles.container}>
-// //       <View style={styles.searchContainer}>
-// //         <TextInput
-// //           style={styles.searchInput}
-// //           placeholder="Search"
-// //           onChangeText={(text) => setSearch(text)}
-// //         />
-// //       </View>
-// //       <FlatList
-// //         data={recipes}
-// //         renderItem={({ item }) => (
-// //           <TouchableHighlight
-// //             onPress={() =>
-// //               props.navigation.navigate("Recipe", {
-// //                 recipe: item,
-// //               })
-// //             }
-// //           >
-// //             <View style={styles.container}>
-// //               <Image
-// //                 style={styles.photo}
-// //                 source={{ uri: item.strMealThumb }}
-// //               />
-// //               <Text style={styles.title}>{item.strMeal}</Text>
-// //               <Text style={styles.category}>{item.strCategory}</Text>
-// //             </View>
-// //           </TouchableHighlight>
-// //         )}
-// //         numColumns={2}
-// //         keyExtractor={(index) => index.toString()}
-// //       />
-// //     </View>
-// //   );
-// // };
-
-// // // styles
-// // const styles = StyleSheet.create({
-// //   btnIcon: {
-// //     height: 14,
-// //     width: 14,
-// //   },
-// //   searchContainer: {
-// //     flexDirection: "row",
-// //     alignItems: "center",
-// //     backgroundColor: "#9A1D1D",
-// //     borderRadius: 100,
-// //     width: 250,
-// //     justifyContent: "space-around",
-// //     marginVertical: 10,
-// //     paddingHorizontal: 10,
-// //   },
-// //   searchIcon: {
-// //     width: 20,
-// //     height: 20,
-// //     tintColor: "black",
-// //   },
-// //   searchInput: {
-// //     backgroundColor: "#EDEDED",
-// //     color: "black",
-// //     width: 180,
-// //     height: 50,
-// //     paddingHorizontal: 10,
-// //     borderRadius: 25,
-// //   },
-// // });
-
-// // // export
-// // export default SearchScreen;

@@ -1,42 +1,73 @@
-// style screen for a pantry of ingredients and items in the home that can be used to make a recipe
-// needs style for search bar, list of items, and buttons
-// needs style for barcode item next to search box 
-// needs style for list of items in pantry
-// needs style for categories of items in pantry
-
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    image: {
-        width: 200,
-        height: 200,
-        borderRadius: 100,
-        marginBottom: 20,
-    },
-    name: {
-        fontSize: 28,
-        fontWeight: "bold",
-    },
-    
-    button: {
-        backgroundColor: "#FF6347",
-        padding: 10,
-        borderRadius: 10,
-        alignItems: "center",
-        marginTop: 30,
-    },
-    buttonText: {
-        color: "#fff",
-        fontSize: 20,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#f8f8f8",
+  },
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 5,
+    marginHorizontal: 10,
+  },
+  photo: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  itemContent: {
+    flex: 1,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333333",
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  quantity: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333333",
+    marginHorizontal: 10,
+  },
+  removeButton: {
+    paddingHorizontal: 10,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#999999",
+  },
+  addButton: {
+    backgroundColor: "#A8DDA8",
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    margin: 20,
+    alignSelf: "center",
+  },
+  addButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#ffffff",
+  },
 });
 
 export default styles;
-
-

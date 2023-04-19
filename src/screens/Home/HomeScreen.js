@@ -1,145 +1,124 @@
-//create a recipe screen that uses uses edemam api to get recipes using login overlysolemn@gmail.com and password: 6LCg9nwJ9xZgvpP
-// to get the recipes from the api
-// use the data to render the recipes in the home screen
-// list the recipes using the flatlist component
-
 import React, { useState, useEffect } from "react";
-import { FlatList, Text, View, TouchableHighlight, Image } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  SafeAreaView,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
-import axios from "axios";
 
-export default function HomeScreen(props) {
-  const { navigation } = props;
-  const [recipeList, setRecipeList] = useState([]);
+const HomeScreen = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [sortBy, setSortBy] = useState(null);
+  const navigation = useNavigation();
 
-// login to edemam api using email oversolemn@gmail.com and password: 6LCg9nwJ9xZgvpP
- const APP_ID = "a1f1f9a2";
-
- useEffect(() => {
-    axios
-      .get("https://api.edamam.com/search?q=chicken&app_id=a1f1f9a2&app_key=6LCg9nwJ9xZgvpP")
-      .then((response) => {
-        setRecipeList(response.data);
+  const fetchData = () => {
+    setRefreshing(true);
+    fetch(
+      "https://api.spoonacular.com/recipes/random?number=10&apiKey=e44c9f0796b4400ab3a69f1354d139a9"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setRecipes(data.recipes);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setRefreshing(false);
       });
-  }, []);
-
-
-  const onPressRecipe = (item) => {
-    navigation.navigate("Recipe", { item });
   };
 
-  const renderRecipes = ({ item }) => (
-    <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
-      <View style={styles.container}>
-        <Image style={styles.photo} source={{ uri: item.image }} />
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
-      </View>
-    </TouchableHighlight>
-  );
+  useEffect(() => {
+    fetchData();
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            setSortBy((prevSortBy) => (prevSortBy === "asc" ? "desc" : "asc"));
+          }}
+        >
+          <Text style={styles.filterButtonText}>price ⇅</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, []); // Remove sortBy dependency
+
+  const handleAddToMealPlan = (recipe) => {
+    navigation.navigate("MealPlan", { recipe: recipe });
+  };
+
+  const renderRecipe = ({ item }) => {
+    return (
+      <TouchableOpacity
+        style={styles.recipe}
+        onPress={() => navigation.navigate("Recipe", { recipe: item })}
+      >
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={{ uri: item.image }} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.info}>Likes: {item.aggregateLikes} </Text>
+          <Text style={styles.info}>Servings: {item.servings}</Text>
+          <Text style={styles.info}>
+            Ready in: {item.readyInMinutes} minutes
+          </Text>
+          <Text style={styles.info}>
+            Price per serving: ${(item.pricePerServing / 100).toFixed(2)}
+          </Text>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => handleAddToMealPlan(item)}
+          >
+            <Text style={styles.buttonText}>Add to Meal Plan</Text>
+          </TouchableOpacity>
+          <Text style={styles.info}>
+            Gluten Free: {item.glutenFree ? "Yes" : "No"}
+          </Text>
+          <Text style={styles.info}>Vegan: {item.vegan ? "Yes" : "No"}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const sortedRecipes = recipes.sort((a, b) => {
+    if (sortBy === "asc") {
+      return a.pricePerServing - b.pricePerServing;
+    } else if (sortBy === "desc") {
+      return b.pricePerServing - a.pricePerServing;
+    } else {
+      return 0;
+    }
+  });
 
   return (
-    <View>
-      <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={recipeList} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={sortedRecipes}
+        renderItem={renderRecipe}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+        }
+      />
+    </SafeAreaView>
   );
-}
+};
 
-
-
-
-// // rednder recipes from simplkitchen api through axios get request
-// // use the data to render the recipes in the home screen
-// // list the recipes using the flatlist component
-
-// import React, { useState, useEffect } from "react";
-// import { FlatList, Text, View, TouchableHighlight, Image } from "react-native";
-// import styles from "./styles";
-// import axios from "axios";
-
-// export default function HomeScreen(props) {
-//   const { navigation } = props;
-//   const [recipeList, setRecipeList] = useState([]);
-
-//   useEffect(() => {
-//     axios
-//       .get("https://simplkitchen-api.onrender.com/api/v1/recipes")
-//       .then((response) => {
-//         setRecipeList(response.data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   }, []);
-
-//   const onPressRecipe = (item) => {
-//     navigation.navigate("Recipe", { item });
-//   };
-
-//   const renderRecipes = ({ item }) => (
-//     <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
-//       <View style={styles.container}>
-//         <Image style={styles.photo} source={{ uri: item.image }} />
-//         <Text style={styles.title}>{item.title}</Text>
-//         <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
-//       </View>
-//     </TouchableHighlight>
-//   );
-
-//   return (
-//     <View>
-//       <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={recipeList} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
-//     </View>
-//   );
-// }
-
-
-
-
-// // import React, { useLayoutEffect } from "react";
-// // import { FlatList, Text, View, TouchableHighlight, Image } from "react-native";
-// // import styles from "./styles";
-// // import { recipes } from "../../data/dataArrays";
-// // import MenuImage from "../../components/MenuImage/MenuImage";
-// // import { getCategoryName } from "../../data/MockDataAPI";
-
-// // export default function HomeScreen(props) {
-// //   const { navigation } = props;
-
-// //   useLayoutEffect(() => {
-// //     navigation.setOptions({
-// //       headerLeft: () => (
-// //         <MenuImage
-// //           onPress={() => {
-// //             navigation.openDrawer();
-// //           }}
-// //         />
-// //       ),
-// //       headerRight: () => <View />,
-// //     });
-// //   }, []);
-
-// //   const onPressRecipe = (item) => {
-// //     navigation.navigate("Recipe", { item });
-// //   };
-
-// //   const renderRecipes = ({ item }) => (
-// //     <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
-// //       <View style={styles.container}>
-// //         <Image style={styles.photo} source={{ uri: item.photo_url }} />
-// //         <Text style={styles.title}>{item.title}</Text>
-// //         <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
-// //       </View>
-// //     </TouchableHighlight>
-// //   );
-
-// //   return (
-// //     <View>
-// //       <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={recipes} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
-// //     </View>
-// //   );
-// // }
-
+export default HomeScreen;

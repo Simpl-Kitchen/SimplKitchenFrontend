@@ -1,89 +1,144 @@
-import { StyleSheet, Dimensions } from "react-native";
-
-const { width: viewportWidth } = Dimensions.get("window");
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
+    screen: {
     flex: 1,
-  },
-  carouselContainer: {
-    minHeight: 250,
-  },
-  carousel: {},
-
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    width: "100%",
-    height: 250,
-  },
-  imageContainer: {
-    flex: 1,
-    justifyContent: "center",
-    width: viewportWidth,
-    height: 250,
-  },
-  paginationContainer: {
-    flex: 1,
-    position: "absolute",
-    alignSelf: "center",
-    paddingVertical: 8,
-    marginTop: 200,
-  },
-  paginationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 0,
-  },
-  infoRecipeContainer: {
-    flex: 1,
-    margin: 25,
-    marginTop: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  infoContainer: {
-    flex: 1,
+    },
+    topBar: {
     flexDirection: "row",
+    justifyContent: "flex-end",
     alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
+    backgroundColor: "#FFF",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    },
+    editButton: {
+    backgroundColor: "#A8DDA8",
+    padding: 10,
+    borderRadius: 5,
     alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  infoPhoto: {
-    height: 20,
-    width: 20,
-    marginRight: 0,
-  },
-  infoRecipe: {
-    fontSize: 14,
+    marginLeft:90,
+    },
+    editButtonText: {
+    color: "#FFF",
     fontWeight: "bold",
-    marginLeft: 5,
-  },
-  category: {
-    fontSize: 14,
-    fontWeight: "bold",
-    margin: 10,
-    color: "#2cd18a",
-  },
-  infoDescriptionRecipe: {
-    textAlign: "left",
     fontSize: 16,
-    marginTop: 30,
-    margin: 15,
-  },
-  infoRecipeName: {
-    fontSize: 28,
-    margin: 10,
+    },
+    container: {
+    padding: 10,
+    paddingBottom: 30,
+    },
+    title: {
+    fontSize: 24,
     fontWeight: "bold",
-    color: "black",
+    marginBottom: 20,
+    },
+    image: {
+    width: "100%",
+    height: 200,
+    resizeMode: "cover",
+    marginBottom: 20,
+    borderRadius: 10,
+    },
+    servingsInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    width: 50,
     textAlign: "center",
-  },
-});
+    fontWeight: "bold",
+    },
+    servingsText: {
+    textDecorationLine: "underline",
+    fontWeight: "bold",
+    fontSize: 16,
+    },
+    servingsNumber: {
+    fontSize: 16,
+    },
+    shoppingListButton: {
+    backgroundColor: "#A8DDA8",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 20,
+    },
+    shoppingListButtonText: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16,
+    },
+    backButton: {
+    backgroundColor: "#FFF",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    },
+    backButtonText: {
+    color: "#333",
+    fontWeight: "bold",
+    fontSize: 16,
+    },
+    saveButton: {
+    backgroundColor: "#A8DDA8",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 20,
+    },
+    saveButtonText: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16,
+    },
+    ingredientContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 5,
+    },
+    ingredientInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    fontSize: 16,
+    },
+    instructionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 5,
+    },
+    instructionNumber: {
+    fontWeight: "bold",
+    marginRight: 10,
+    fontSize: 16,
+    },
+    instructionInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    fontSize: 16,
+    },
+    titleContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+      },
+      pencilIcon: {
+        marginRight: 5,
+      },
+    });
 
 export default styles;

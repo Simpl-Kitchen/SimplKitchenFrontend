@@ -3,43 +3,114 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#F0EFEF",
   },
-  searchContainer: {
-    flexDirection: "row-reverse",
-    alignItems: "center",
-    backgroundColor: "#FFFCFC",
-    borderRadius: 100,
-    width: 300,
-    justifyContent: "space-around",
+  recipe: {
+    flex: 1,
+    flexDirection: "column",
+    marginHorizontal: 20,
     marginVertical: 10,
-    paddingHorizontal: 10,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
-  searchInput: {
-    backgroundColor: "#EDEDED",
-    color: "black",
-    width: 180,
-    height: 50,
-    paddingHorizontal: 10,
-    borderRadius: 25,
+  imageContainer: {
+    alignItems: "center",
+    marginBottom: 10,
   },
-  photo: {
-    width: 150,
-    height: 150,
+  image: {
+    width: "100%",
+    height: 200,
     borderRadius: 10,
   },
+  textContainer: {},
   title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  info: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  summary: {
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  ingredientsTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  ingredients: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  instructionsTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  instructions: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  addButton: {
+    backgroundColor: "#22aa88",
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
+    alignSelf: "flex-start",
+  },
+  buttonContainer: {
+    alignSelf: "flex-end",
+    marginTop: 10,
+    backgroundColor: "#B0B4B33A",
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+  },  
+  addButtonText: {
+    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
-    color: "#9A1D1D",
-    marginTop: 10,
   },
-  category: {
-    fontSize: 14,
-    color: "#9A1D1D",
-    marginTop: 10,
+  filterButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    padding: 10,
+    borderRadius: 20,
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  filterButton:{
+    backgroundColor: "#A8DDA8",
+    borderRadius: 20,
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  searchBarContainer: {
+    backgroundColor: "transparent",
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    paddingHorizontal: 8,
+  },
+
+  searchBarInputContainer: {
+    backgroundColor: "#f0f0f0",
   },
 });
 
