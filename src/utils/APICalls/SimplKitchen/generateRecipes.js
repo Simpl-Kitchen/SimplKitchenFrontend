@@ -23,8 +23,22 @@ const generateUserRecipes = async () => {
 }
 
 const getGeneratedRecipes = async () => {
-    console.log("Getting generated recipes...")
-}
+    console.log("Getting generated recipes...");
+    try {
+      const response = await axios.get(`${SIMPLKITCHEN_API_URL}/generated-recipes`);
+      if (response.status === 200 && response.data) {
+        console.log("Generated recipes data:", response.data);
+        return response.data;
+      } else {
+        console.error("Failed to fetch generatedRecipes:", response.status, response.statusText);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching generatedRecipes:", error);
+      return null;
+    }
+  };
+  
 
 module.exports = {
     generateUserRecipes,
