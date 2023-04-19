@@ -1,110 +1,73 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "#F0EFEF",
-paddingHorizontal: 16,
-},
-itemContainer: {
-flexDirection: "row",
-alignItems: "center",
-marginBottom: 16,
-},
-itemContent: {
-flexDirection: "row",
-alignItems: "center",
-flex: 1,
-},
-photo: {
-width: 48,
-height: 48,
-borderRadius: 24,
-marginRight: 16,
-},
-itemTextContainer: {
-flex: 1,
-flexDirection: "row",
-alignItems: "center",
-justifyContent: "space-between",
-},
-title: {
-fontSize: 18,
-fontWeight: "bold",
-},
-amount: {
-fontSize: 16,
-color: "#888",
-},
-removeButtonContainer: {
-marginLeft: 16,
-},
-removeButton: {
-backgroundColor: "#70161E",
-paddingVertical: 8,
-paddingHorizontal: 16,
-borderRadius: 4,
-},
-removeButtonText: {
-color: "#fff",
-fontSize: 16,
-fontWeight: "bold",
-},
-addButton: {
-backgroundColor: "#98CBB0",
-position: "absolute",
-bottom: 24,
-left: 24,
-right: 24,
-paddingVertical: 16,
-borderRadius: 4,
-alignItems: "center",
-},
-addButtonText: {
-color: "#fff",
-fontSize: 18,
-fontWeight: "bold",
-},
-emptyContainer: {
-flex: 1,
-justifyContent: "center",
-alignItems: "center",
-},
-emptyText: {
-fontSize: 18,
-color: "#888",
-},
-flatlistContentContainer: {
-paddingBottom: 100,
-},
-quantityContainer: {
-flexDirection: "row",
-alignItems: "center",
-marginHorizontal: 16,
-marginVertical: 8,
-},
-minusButton: {
-backgroundColor: "#70161E",
-padding: 8,
-borderRadius: 4,
-marginRight: 8,
-},
-plusButton: {
-backgroundColor: "#98CBB0",
-padding: 8,
-borderRadius: 4,
-marginLeft: 8,
-},
-buttonText: {
-color: "#fff",
-fontSize: 16,
-fontWeight: "bold",
-},
-quantity: {
-fontSize: 16,
-fontWeight: "bold",
-marginHorizontal: 8,
-},
+  container: {
+    flex: 1,
+    backgroundColor: "#f8f8f8",
+  },
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 5,
+    marginHorizontal: 10,
+  },
+  photo: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  itemContent: {
+    flex: 1,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333333",
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  quantity: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333333",
+    marginHorizontal: 10,
+  },
+  removeButton: {
+    paddingHorizontal: 10,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#999999",
+  },
+  addButton: {
+    backgroundColor: "#A8DDA8",
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    margin: 20,
+    alignSelf: "center",
+  },
+  addButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#ffffff",
+  },
 });
 
 export default styles;

@@ -1,25 +1,23 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   View,
   Text,
   FlatList,
-  TextInput,
   TouchableOpacity,
   Image,
   StyleSheet,
 } from "react-native";
 import MenuButton from "../../components/MenuButton/MenuButton";
+import IconButton from "../../components/IconButton/IconButton";
 
 import styles from "./styles";
 
-// const {
-//   //getUsersIngredients,
-//   //removeIngredientFromPantry,
-//   //updateIngredientAmount,
-// } = require("../../utils/APICalls.js");
-
-const { getUsersIngredients, removeIngredientFromPantry, updateIngredientAmount } = require("../../utils/APICalls/SimplKitchen/pantry");
+const {
+  getUsersIngredients,
+  removeIngredientFromPantry,
+  updateIngredientAmount,
+} = require("../../utils/APICalls/SimplKitchen/pantry");
 
 const PantryScreen = ({ navigation, route }) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
@@ -79,39 +77,28 @@ const PantryScreen = ({ navigation, route }) => {
 
   const renderItem = ({ item, index }) => (
     <View style={styles.itemContainer}>
+      <Image
+        style={styles.photo}
+        source={{
+          uri: `https://spoonacular.com/cdn/ingredients_500x500/${item.pictureURL}`,
+        }}
+      />
       <View style={styles.itemContent}>
-        <Image style={styles.photo} source={{ uri: `https://spoonacular.com/cdn/ingredients_500x500/${item.pictureURL}` }} />
-        <View style={styles.itemTextContainer}>
-          <Text style={styles.title}>{item.ingredientName}</Text>
-          <View style={styles.quantityContainer}>
-            <TouchableOpacity
-              style={styles.minusButton}
-              onPress={() => {
-                onRemoveIngredient(index);
-              }}
-            >
-              <Text style={styles.buttonText}>-</Text>
-            </TouchableOpacity>
-            <Text style={styles.quantity}>{item.amount}</Text>
-            <TouchableOpacity
-              style={styles.plusButton}
-              onPress={() => {
-                onAddIngredient(index);
-              }}
-            >
-              <Text style={styles.buttonText}>+</Text>
-            </TouchableOpacity>
-          </View>
+        <Text style={styles.title}>{item.ingredientName}</Text>
+        <View style={styles.quantityContainer}>
+          <IconButton
+            iconName="minus"
+            onPress={() => onRemoveIngredient(index)}
+          />
+          <Text style={styles.quantity}>{item.amount}</Text>
+          <IconButton iconName="plus" onPress={() => onAddIngredient(index)} />
         </View>
       </View>
-      <View style={styles.removeButtonContainer}>
-        <TouchableOpacity
-          style={styles.removeButton}
-          onPress={() => onRemoveIngredient(index)}
-        >
-          <Text style={styles.removeButtonText}>Remove</Text>
-        </TouchableOpacity>
-      </View>
+      <IconButton
+        iconName="trash"
+        onPress={() => onRemoveIngredient(index)}
+        style={styles.removeButton}
+      />
     </View>
   );
 
@@ -129,7 +116,9 @@ const PantryScreen = ({ navigation, route }) => {
       />
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigation.navigate("IngredientSearch", { screen: "IngredientSearch" })}
+        onPress={() =>
+          navigation.navigate("IngredientSearch", { screen: "IngredientSearch" })
+        }
       >
         <Text style={styles.addButtonText}>Add Ingredient</Text>
       </TouchableOpacity>
@@ -137,4 +126,4 @@ const PantryScreen = ({ navigation, route }) => {
   );
 };
 
-export default PantryScreen;    
+export default PantryScreen; 
