@@ -10,7 +10,7 @@ const generateUserRecipes = async () => {
 
         const options = {
             method: "GET",
-            url: `${SIMPLKITCHEN_API_URL}/generate/recipes`,
+            url: `${SIMPLKITCHEN_API_URL}/queue/recipes/new`,
             //params: queryObject,
             headers: {
                 Authorization: `Bearer ${userToken}`,
@@ -18,6 +18,7 @@ const generateUserRecipes = async () => {
         };
 
         const response = await axios.request(options);
+        //console.log(response.data)
         return response.data;
 }
 

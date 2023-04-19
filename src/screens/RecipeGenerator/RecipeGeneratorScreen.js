@@ -2,21 +2,28 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import axios from "axios";
 
+import {generateUserRecipes} from '../../utils/APICalls/SimplKitchen/generateRecipes'
+
+
+
 const RecipeGeneratorScreen = () => {
   const [recipe, setRecipe] = useState(null);
 
   const generateRecipe = async () => {
-    const API_KEY = "YOUR_API_KEY";
-    const URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}`;
+    // const API_KEY = "YOUR_API_KEY";
+    // const URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}`;
 
-    try {
-      const response = await axios.get(URL);
-      const data = response.data.recipes[0];
-      setRecipe(data);
-      console.log("Recipe generated:", data);
-    } catch (error) {
-      console.error("Error fetching recipe:", error);
-    }
+    // try {
+    //   const response = await axios.get(URL);
+    //   const data = response.data.recipes[0];
+    //   setRecipe(data);
+    //   console.log("Recipe generated:", data);
+    // } catch (error) {
+    //   console.error("Error fetching recipe:", error);
+    // }
+      console.log("Hello")
+      const message = await generateUserRecipes();
+      console.log(message)
   };
 
   return (
