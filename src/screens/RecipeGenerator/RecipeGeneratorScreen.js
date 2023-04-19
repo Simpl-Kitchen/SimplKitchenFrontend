@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import axios from "axios";
 
+import GenerateStyles from "./styles";
+
 import { generateUserRecipes, getGeneratedRecipes } from "../../utils/APICalls/SimplKitchen/generateRecipes";
 
 const RecipeCard = ({ recipe }) => {
@@ -22,15 +24,15 @@ const RecipeGeneratorScreen = () => {
       const generatedRecipes = await getGeneratedRecipes();
       const userRecipes = await generateUserRecipes();
   
-      if (!generatedRecipes) {
-        console.error("Failed to fetch generatedRecipes");
+      if (!Array.isArray(generatedRecipes)) {
+        console.error("Failed to fetch generatedRecipes:", generatedRecipes);
       }
   
-      if (!userRecipes) {
-        console.error("Failed to fetch userRecipes");
+      if (!Array.isArray(userRecipes)) {
+        console.error("Failed to fetch userRecipes:", userRecipes);
       }
   
-      if (generatedRecipes && userRecipes) {
+      if (Array.isArray(generatedRecipes) && Array.isArray(userRecipes)) {
         const allRecipes = generatedRecipes.concat(userRecipes);
         setRecipes(allRecipes);
       }
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#97DF99",
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 4,
