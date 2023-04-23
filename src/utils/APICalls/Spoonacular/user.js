@@ -32,24 +32,32 @@ export const connectUserToSpoonacular = async () => {
 };
 
 export const getRecipeInformation = async (recipeId) => {
-    const limit = pLimit(1); // limit to 5 requests per second
-    const options = {
-      method: "GET",
-      url: `${BASE_URL}/recipes/${recipeId}/information`,
-      headers: {
-        "x-api-key": SPOONACULAR_API_KEY,
-      },
-    };
-    try {
-      const response = await limit(() => axios(options)); // limit the request with p-limit
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching recipe information: ", error);
-      throw error;
-    }
+  const limit = pLimit(1); // limit to 5 requests per second
+  const options = {
+    method: "GET",
+    url: `${BASE_URL}/recipes/${recipeId}/information`,
+    headers: {
+      "x-api-key": SPOONACULAR_API_KEY,
+    },
   };
+  try {
+    const response = await limit(() => axios(options)); // limit the request with p-limit
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching recipe information: ", error);
+    throw error;
+  }
+};
 
 export const generateMealPlanWeek = async () => {
+
+  const userData = await getUserInformation();
+  //console.log(userData)
+
+  let intolerances = userData.userResponse.intolerances.toString();
+  intolerances = intolerances.replace(/,/g, ", ");
+  //console.log(intolerances)
+
   const options = {
     method: "GET",
     url: "https://api.spoonacular.com/mealplanner/generate",
@@ -58,6 +66,8 @@ export const generateMealPlanWeek = async () => {
     },
     params: {
       timeFrame: "week",
+      exclude: intolerances,
+
     },
   };
 
