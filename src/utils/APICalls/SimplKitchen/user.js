@@ -91,7 +91,29 @@ const updateUserIntolerences = async (intolerances) => {
   }
 }
 const updateUserDiets = async (diets) => {
+
   console.log("Updating diets")
+  // try {
+  //   const userToken = await AsyncStorage.getItem("userToken");
+  //   const options = {
+  //     method: "POST",
+  //     url: `${SIMPLKITCHEN_API_URL}/user/`,
+  //     headers: {
+  //       Authorization: `Bearer ${userToken}`,
+  //     },
+  //     data: {
+  //       diets: diets,
+  //     },
+  //   };
+
+  //   console.log(options.data)
+
+  //   const response = await axios.request(options);
+
+  //   return response.data;
+  // } catch (error) {
+  //   console.error(error);
+  // }
 }
 
 module.exports =
