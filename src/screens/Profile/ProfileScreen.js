@@ -153,7 +153,7 @@ export default function ProfileScreen(props) {
         data={data2}
         save="value"
         onSelect={() => { }}
-        label="Options"
+        label="Diets"
       />
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
