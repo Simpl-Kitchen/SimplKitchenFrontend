@@ -102,10 +102,16 @@ export default function ProfileScreen(props) {
   ]
 
   const data2 = [
-    { key: '1', value: 'Vegetarian' },
-    { key: '2', value: 'Vegan' },
-    { key: '3', value: 'Pescetarian' }, 
-    { key: '4', value: 'Halal' },
+    { key: '1', value: 'Gluten Free' },
+    { key: '2', value: 'Ketogenic' },
+    { key: '3', value: 'Lacto-Vegetarian' },
+    { key: '4', value: 'Ovo-Vegetarian' },
+    { key: '5', value: 'Vegan' },
+    { key: '6', value: 'Pescetarian' },
+    { key: '7', value: 'Paleo' },
+    { key: '8', value: 'Primal' },
+    { key: '9', value: 'LowFODMAP' },
+    { key: '10', value: 'Whole30' },
   ]
 
   const handleSave = () => {
