@@ -71,8 +71,8 @@ const updateUserIntolerences = async (intolerances) => {
   try {
     const userToken = await AsyncStorage.getItem("userToken");
     const options = {
-      method: "POST",
-      url: `${SIMPLKITCHEN_API_URL}/user/intolerances`,
+      method: "PATCH",
+      url: `${SIMPLKITCHEN_API_URL}/user/`,
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
