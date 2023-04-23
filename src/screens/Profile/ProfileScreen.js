@@ -77,7 +77,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
-import { updateUserIntolerences, logoutSimplKitchen } from '../../utils/APICalls/SimplKitchen/user'
+import { updateUserIntolerences, updateUserDiets, logoutSimplKitchen } from '../../utils/APICalls/SimplKitchen/user'
 
 import styles from "./styles";
 
@@ -114,12 +114,14 @@ export default function ProfileScreen(props) {
     { key: '10', value: 'Whole30' },
   ]
 
-  const handleSave = () => {
-    console.log(selected1)
-    console.log(selected2)
+  const handleSave = async () => {
+    // console.log("Hello")
+    // console.log(selected1)
+    // console.log(selected2)
 
     try {
-      updateUserIntolerences(selected1.concat(selected2))
+      await updateUserIntolerences(selected1)
+      await updateUserDiets(selected2)
     } catch (error) {
       console.log(error)
     }
