@@ -90,6 +90,9 @@ const updateUserIntolerences = async (intolerances) => {
     console.error(error);
   }
 }
+const updateUserDiets = async (diets) => {
+  console.log("Updating diets")
+}
 
 module.exports =
 {
@@ -99,4 +102,5 @@ module.exports =
   logoutSimplKitchen,
   getUserInformation,
   updateUserIntolerences,
+  updateUserDiets,
 }
