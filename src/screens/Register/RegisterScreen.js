@@ -68,7 +68,7 @@ export default function RegisterScreen(props) {
       />
       <TextInput
         style={styles.input}
-        placeholder="Name"
+        placeholder="First and Last Name"
         onChangeText={(text) => setName(text)}
       />
       <TextInput
