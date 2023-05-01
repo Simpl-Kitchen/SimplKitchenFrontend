@@ -41,6 +41,9 @@ const addIngredientToPantry = async (ingredient) => {
                 ingredientId: ingredient.id,
                 ingredientName: ingredient.name,
                 pictureURL: ingredient.image,
+                amount: ingredient.amount,
+                unit: ingredient.unit,
+                // THIS MIGHT NOT WORK YET
             },
         };
 
