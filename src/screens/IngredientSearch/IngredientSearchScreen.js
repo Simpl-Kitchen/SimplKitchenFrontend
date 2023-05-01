@@ -23,6 +23,7 @@ const IngredientSearchScreen = ({ navigation }) => {
     try {
       const ingredientSearch = await searchIngredientsByName(search);
       const ingredients = ingredientSearch.results;
+      console.log(ingredients[0].possibleUnits)
       setIngredients(ingredients);
     } catch (error) {
       console.log(error);
