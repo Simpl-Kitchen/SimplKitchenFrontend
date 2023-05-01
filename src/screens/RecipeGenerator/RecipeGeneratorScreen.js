@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import axios from "axios";
 
@@ -10,8 +10,7 @@ const RecipeCard = ({ recipe }) => {
   return (
     <View style={styles.recipeCard}>
       <Text style={styles.recipeTitle}>{recipe.title}</Text>
-      <Text style={styles.recipeIngredients}>{recipe.ingredients.join(", ")}</Text>
-      <Text style={styles.recipeInstructions}>{recipe.instructions}</Text>
+      <Text style={styles.recipeIngredients}>{recipe.usedIngredients.join(", ")}</Text>
     </View>
   );
 };
@@ -19,32 +18,30 @@ const RecipeCard = ({ recipe }) => {
 const RecipeGeneratorScreen = () => {
   const [recipes, setRecipes] = useState([]);
 
-  const generateRecipes = async () => {
+  const fetchGeneratedRecipes = async () => {
     try {
-      const generatedRecipes = await getGeneratedRecipes();
-      const userRecipes = await generateUserRecipes();
-  
-      if (!Array.isArray(generatedRecipes)) {
-        console.error("Failed to fetch generatedRecipes:", generatedRecipes);
-      }
-  
-      if (!Array.isArray(userRecipes)) {
-        console.error("Failed to fetch userRecipes:", userRecipes);
-      }
-  
-      if (Array.isArray(generatedRecipes) && Array.isArray(userRecipes)) {
-        const allRecipes = generatedRecipes.concat(userRecipes);
-        setRecipes(allRecipes);
-      }
+      const generatedRecipes = await getGeneratedRecipes(); // Get generated recipes
+      setRecipes(generatedRecipes.queue); // Update the state with the fetched recipes
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
   };
-  
+
+  const handleGenerateRecipes = async () => {
+    try {
+      await generateUserRecipes(); // Generate user recipes
+    } catch (error) {
+      console.error("Error generating recipes:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGeneratedRecipes();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={generateRecipes}>
+      <TouchableOpacity style={styles.button} onPress={handleGenerateRecipes}>
         <Text style={styles.buttonText}>Generate Recipes</Text>
       </TouchableOpacity>
       {recipes.map((recipe, index) => (
@@ -83,10 +80,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   recipeIngredients: {
-    fontSize: 16,
-    marginTop: 10,
-  },
-  recipeInstructions: {
     fontSize: 16,
     marginTop: 10,
   },

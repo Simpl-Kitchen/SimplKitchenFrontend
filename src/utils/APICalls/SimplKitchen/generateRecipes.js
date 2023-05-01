@@ -23,6 +23,7 @@ const generateUserRecipes = async () => {
 }
 
 const getGeneratedRecipes = async () => {
+    
     console.log("Getting generated recipes...");
     const userToken = await getToken();
 
