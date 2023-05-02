@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Image, View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
-import axios from "axios";
-
-import GenerateStyles from "./styles";
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 
 import { generateUserRecipes, getGeneratedRecipes } from "../../utils/APICalls/SimplKitchen/generateRecipes";
 
@@ -11,7 +16,9 @@ const RecipeCard = ({ recipe }) => {
     <View style={styles.recipeCard}>
       <Image style={styles.recipeImage} source={{ uri: recipe.image }} />
       <Text style={styles.recipeTitle}>{recipe.title}</Text>
-      <Text style={styles.recipeIngredients}>{recipe.usedIngredients.join(", ")}</Text>
+      <Text style={styles.recipeIngredients}>
+        {recipe.usedIngredients.join(", ")}
+      </Text>
     </View>
   );
 };
@@ -20,21 +27,13 @@ const RecipeGeneratorScreen = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchGeneratedRecipes = async () => {
-    try {
-      const generatedRecipes = await getGeneratedRecipes();
-      setRecipes(generatedRecipes.queue);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    }
-  };
-
   const handleGenerateRecipes = async () => {
     setLoading(true);
     try {
       await generateUserRecipes();
-      fetchGeneratedRecipes();
+      const generatedRecipes = await getGeneratedRecipes();
+      setRecipes(generatedRecipes.queue);
+      setLoading(false);
     } catch (error) {
       console.error("Error generating recipes:", error);
       setLoading(false);
@@ -42,19 +41,28 @@ const RecipeGeneratorScreen = () => {
   };
 
   useEffect(() => {
-    fetchGeneratedRecipes();
+    handleGenerateRecipes();
   }, []);
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={handleGenerateRecipes}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleGenerateRecipes}
+        >
           <Text style={styles.buttonText}>Generate Recipes</Text>
         </TouchableOpacity>
         {loading ? (
-          <ActivityIndicator size="large" color="#97DF99" style={styles.loadingIndicator} />
+          <ActivityIndicator
+            size="large"
+            color="#97DF99"
+            style={styles.loadingIndicator}
+          />
         ) : (
-          recipes.map((recipe, index) => <RecipeCard key={index} recipe={recipe} />)
+          recipes.map((recipe, index) => (
+            <RecipeCard key={index} recipe={recipe} />
+          ))
         )}
       </View>
     </ScrollView>
@@ -85,16 +93,18 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
   },
-recipeImage: {
-  width: "100%",
-  height: 200,
-  resizeMode: "cover",
-  marginBottom: 10,
-},
-recipeTitle: {
-  fontSize: 24,
-  fontWeight: "bold",
-},
+  recipeImage: {
+    width: "100%",
+    height: 200,
+    resizeMode: "cover",
+    marginBottom: 10,
+    borderRadius: 4,
+  },
+  recipeTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
   recipeIngredients: {
     fontSize: 16,
     marginTop: 10,
