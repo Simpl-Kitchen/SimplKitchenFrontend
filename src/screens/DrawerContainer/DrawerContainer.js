@@ -5,8 +5,18 @@ import styles from "./styles";
 
 import MenuButton from "../../components/MenuButton/MenuButton";
 
+//DrawerContainer that takes in a props object. 
+//The function returns a View component that contains a View component with multiple MenuButton components.
+// Each MenuButton represents a menu item that when pressed, navigates to a specific screen and closes the drawer. 
+//The specific screen to navigate to is determined by the navigation object passed in through props. 
+//The styles object contains the styling information for the content and container components.
 export default function DrawerContainer(props) {
   const { navigation } = props;
+
+
+
+
+
   return (
     <View style={styles.content}>
       <View style={styles.container}>
@@ -77,7 +87,9 @@ DrawerContainer.propTypes = {
   }),
 };
 
-// Add drawer lock mode to screen options
+// Add drawer lock mode to screen options which prevents the drawer from being opened. 
+//It also adds a headerLeft button that opens the drawer when pressed. 
+//The menu button is created using a MenuButton component and an image file.
 DrawerContainer.navigationOptions = ({ navigation }) => ({
   drawerLockMode: "locked-closed",
   headerLeft: () => (

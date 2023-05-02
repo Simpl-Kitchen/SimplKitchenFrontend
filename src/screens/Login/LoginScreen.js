@@ -17,14 +17,27 @@ import styles from "./styles";
 
 import { loginSimplKitchen } from "../../utils/APICalls/SimplKitchen/user";
 
-// email and password are the state variables
-
+//email and password are the state variables
+//exports a default function that takes in a props object. 
+//The component uses the state hook to manage the email and password input fields. 
+//It also defines a handleLogin function that is called when the user clicks on the login button. 
+//This function attempts to log in the user by calling a loginSimplKitchen function with the email and password inputs. 
+//If the login is successful, an alert is displayed and the user is navigated to the Home screen.
+//If there is an error, it is caught and appropriate error messages are displayed. 
+//The component returns a KeyboardAvoidingView component that contains an image, email and password input fields, and login and 
+//register buttons that call the handleLogin function and navigate to the Register screen respectively.
 export default function LoginScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // handleLogin function is called when the user clicks the login button
 
+  
+//function called handleLogin that is an asynchronous function. 
+//It attempts to log in a user by calling the loginSimplKitchen function with an email and password. 
+//If the login is successful, it displays an alert saying "Login successful" and navigates to the "Home" screen. 
+//If there is an error, it logs the error to the console and displays an alert with the error message. 
+//The error handling code checks if there was a response from the server and logs the status and data, 
+//or if there was no response, logs that fact, or if there was an error setting up the request, logs the error message.
   const handleLogin = async () => {
 
     try {
