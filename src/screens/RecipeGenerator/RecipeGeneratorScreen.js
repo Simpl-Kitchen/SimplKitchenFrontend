@@ -9,17 +9,27 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import { generateUserRecipes, getGeneratedRecipes } from "../../utils/APICalls/SimplKitchen/generateRecipes";
+import {
+  generateUserRecipes,
+  getGeneratedRecipes,
+} from "../../utils/APICalls/SimplKitchen/generateRecipes";
 
 const RecipeCard = ({ recipe }) => {
   return (
-    <View style={styles.recipeCard}>
-      <Image style={styles.recipeImage} source={{ uri: recipe.image }} />
-      <Text style={styles.recipeTitle}>{recipe.title}</Text>
-      <Text style={styles.recipeIngredients}>
-        {recipe.usedIngredients.join(", ")}
-      </Text>
-    </View>
+    <TouchableOpacity style={styles.recipeCardContainer} onPress={() => {}}>
+      <View style={styles.recipeCard}>
+        <Image style={styles.recipeImage} source={{ uri: recipe.image }} />
+        <View style={styles.recipeContent}>
+          <Text style={styles.recipeTitle}>{recipe.title}</Text>
+          <View style={styles.recipeIngredientsContainer}>
+            <Text style={styles.recipeIngredientsText}>Ingredients:</Text>
+            <Text style={styles.recipeIngredients}>
+              {recipe.usedIngredientCount}/{recipe.usedIngredientCount + recipe.missedIngredientCount}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -40,17 +50,10 @@ const RecipeGeneratorScreen = () => {
     }
   };
 
-  useEffect(() => {
-    handleGenerateRecipes();
-  }, []);
-
   return (
     <ScrollView>
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleGenerateRecipes}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleGenerateRecipes}>
           <Text style={styles.buttonText}>Generate Recipes</Text>
         </TouchableOpacity>
         {loading ? (
@@ -60,9 +63,11 @@ const RecipeGeneratorScreen = () => {
             style={styles.loadingIndicator}
           />
         ) : (
-          recipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} />
-          ))
+          <View style={styles.recipeList}>
+            {recipes.map((recipe, index) => (
+              <RecipeCard key={index} recipe={recipe} />
+            ))}
+          </View>
         )}
       </View>
     </ScrollView>
@@ -86,28 +91,50 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 18,
   },
+  recipeList: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  recipeCardContainer: {
+    width: "48%",
+    marginBottom: 20,
+    borderRadius: 4,
+    overflow: "hidden",
+  },
   recipeCard: {
-    marginTop: 30,
+    flex: 1,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 4,
-    padding: 10,
+    backgroundColor: "#fff",
   },
   recipeImage: {
     width: "100%",
     height: 200,
     resizeMode: "cover",
-    marginBottom: 10,
-    borderRadius: 4,
+  },
+  recipeContent: {
+    padding: 10,
   },
   recipeTitle: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
   },
+  recipeIngredientsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  recipeIngredientsText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginRight: 5,
+  },
   recipeIngredients: {
     fontSize: 16,
-    marginTop: 10,
+    fontWeight: "bold",
   },
   loadingIndicator: {
     marginTop: 30,
