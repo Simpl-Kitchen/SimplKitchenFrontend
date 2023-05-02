@@ -1,23 +1,23 @@
 import React from "react";
-import { TouchableHighlight, Image, Text, View } from "react-native";
+import { TouchableOpacity, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import styles from "./styles";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function MenuButton(props) {
-  const { title, onPress, source } = props;
-
+  const { title, icon, onPress } = props;
   return (
-    <TouchableHighlight onPress={onPress} style={styles.btnClickContain} underlayColor="rgba(128, 128, 128, 0.1)">
-      <View style={styles.btnContainer}>
-        <Image source={source} style={styles.btnIcon} />
-        <Text style={styles.btnText}>{title}</Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+      <View style={styles.icon}>{icon}</View>
+        <Text style={styles.text}>{title}</Text>
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 }
 
 MenuButton.propTypes = {
-  onPress: PropTypes.func,
-  source: PropTypes.number,
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+  icon: PropTypes.element.isRequired,
 };
