@@ -65,7 +65,7 @@ const SearchScreen = () => {
   }, []);
 
 
-  
+
 //When handleSearch is called, it calls a function called fetchData with the value of a variable called search.
   const handleSearch = () => {
     fetchData(search);
@@ -97,10 +97,18 @@ const SearchScreen = () => {
     });
   }, []); // Remove sortBy dependency to disable sorting
 
+
+  //takes in a recipe object as an argument. 
+  //When called, it uses the navigation object to navigate to the "Recipe" screen, passing the recipe object as a parameter.
   const handleRecipePress = (recipe) => {
     navigation.navigate("Recipe", { recipe });
   };
 
+
+  //takes an object as an argument with a property called item. 
+  //The function returns a TouchableOpacity component with styling and an onPress event handler. 
+  //The component includes an image and several text components displaying information about a recipe, including its title, servings, cook time, and price per serving. 
+  //The data for the recipe is accessed through the item property of the argument passed to the renderRecipe function.
   const renderRecipe = ({ item }) => {
     return (
       <TouchableOpacity

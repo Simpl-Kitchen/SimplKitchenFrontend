@@ -8,6 +8,14 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
+//renders a screen with an input field to add items to a shopping list, a list of items with checkboxes, and a button to remove items. 
+//It uses the React hooks "useState" and "useEffect" to manage the state of the input text and the shopping list 
+//and store them in AsyncStorage, a local storage system. 
+//The "useEffect" hooks are used to load the saved items from AsyncStorage when the component mounts 
+//and save the items to AsyncStorage when the shoppingList state changes. 
+//The "handleAddItem", "handleRemoveItem", and "handleToggleCheck" functions handle adding, removing, and toggling the checked state of items in the shopping list. 
+//The "FlatList" component is used to render the list of items efficiently.
 const ShoppingListScreen = () => {
   const [inputText, setInputText] = useState("");
   const [shoppingList, setShoppingList] = useState([]);
@@ -31,6 +39,11 @@ const ShoppingListScreen = () => {
     saveItems();
   }, [shoppingList]);
 
+
+
+  // adds a new item to a shopping list stored in the shoppingList state variable. 
+  //It checks if the inputText variable is not empty and if so, adds a new object to the list with a unique id, 
+  //the text from the inputText variable, and a checked value of false. Finally, it clears the inputText variable.
   const handleAddItem = () => {
     if (inputText.trim() !== "") {
       setShoppingList([
@@ -41,11 +54,21 @@ const ShoppingListScreen = () => {
     }
   };
 
+
+  //takes an itemId as its argument. Inside the function, it creates a new array called updatedList by filtering the original 
+  //shoppingList array to remove the item with the matching itemId. 
+  //Finally, the setShoppingList function is called with the updated array to update the state. 
   const handleRemoveItem = (itemId) => {
     const updatedList = shoppingList.filter((item) => item.id !== itemId);
     setShoppingList(updatedList);
   };
 
+
+  //takes an itemId parameter. 
+  //It uses the map method to create a new array (updatedList) by iterating over each element in the shoppingList array. 
+  //If the id of the current element matches the itemId parameter, it creates a new object with the same properties as the 
+  //current element but with the checked property toggled to its opposite value. Otherwise, it returns the current element as is. 
+  //Finally, it updates the shoppingList state with the new updatedList.
   const handleToggleCheck = (itemId) => {
     const updatedList = shoppingList.map((item) => {
       if (item.id === itemId) {
