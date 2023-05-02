@@ -13,6 +13,14 @@ import { SearchBar } from "react-native-elements";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
+//displays a list of recipes fetched from an external API. 
+//It uses hooks such as useState and useEffect to manage state and perform side effects. 
+//The fetchData function fetches recipe data from the Spoonacular API and processes it to create a list of recipes.
+//The handleSearch function is called when the user inputs a search query and fetches new data based on the query. 
+//The sortedRecipes variable sorts the recipes based on the sortBy state, which is toggled by the user. 
+//The component also includes a search bar and a filter button to sort the recipes. 
+//Finally, the component renders a list of recipes using the FlatList component from React Native, 
+//and allows the user to refresh the list by pulling down on the screen.
 const SearchScreen = () => {
   const [recipes, setRecipes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -20,6 +28,16 @@ const SearchScreen = () => {
   const [search, setSearch] = useState("");
   const navigation = useNavigation();
 
+
+
+  //fetchData that takes in a searchParam parameter. 
+  //Within the function, it sets a state variable called refreshing to true 
+  //and then makes an API call to the Spoonacular recipe API using the fetch function. 
+  //It then converts the response to JSON and extracts an array of recipe objects from the results field.
+
+  //For each recipe, it then creates a promise that makes another API call to get more detailed information on that recipe. 
+  //It uses Promise.all to wait for all of these promises to resolve before mapping over the resulting data and combining it with the original recipe data.
+  //Finally, it sets the state variable recipes to this combined data and sets refreshing back to false.
   const fetchData = (searchParam) => {
     setRefreshing(true);
     fetch(
@@ -46,6 +64,9 @@ const SearchScreen = () => {
     fetchData(""); // Fetch all recipes initially
   }, []);
 
+
+  
+//When handleSearch is called, it calls a function called fetchData with the value of a variable called search.
   const handleSearch = () => {
     fetchData(search);
   };
