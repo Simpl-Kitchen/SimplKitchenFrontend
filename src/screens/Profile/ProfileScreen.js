@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import { updateUserIntolerences, updateUserDiets, logoutSimplKitchen } from '../../utils/APICalls/SimplKitchen/user'
-import { Header } from 'react-navigation';
 
 import styles from "./styles";
 
