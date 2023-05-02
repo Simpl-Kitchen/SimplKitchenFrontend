@@ -2,7 +2,6 @@ import React from "react";
 import { TouchableOpacity, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import styles from "./styles";
-import { MaterialIcons } from "@expo/vector-icons";
 
 export default function MenuButton(props) {
   const { title, icon, onPress } = props;

@@ -44,14 +44,6 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="Profile"
-          icon={<Icon name="user" size={20} />}
-          onPress={() => {
-            navigation.navigate("Profile");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
           title="Recipe Generator"
           icon={<Icon name="magic" size={20} />}
           onPress={() => {
@@ -64,6 +56,14 @@ export default function DrawerContainer(props) {
           icon={<Icon name="list" size={20} />}
           onPress={() => {
             navigation.navigate("ShoppingList");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Profile"
+          icon={<Icon name="user" size={20} />}
+          onPress={() => {
+            navigation.navigate("Profile");
             navigation.closeDrawer();
           }}
         />
@@ -89,4 +89,3 @@ DrawerContainer.navigationOptions = ({ navigation }) => ({
     />
   ),
 });
-
