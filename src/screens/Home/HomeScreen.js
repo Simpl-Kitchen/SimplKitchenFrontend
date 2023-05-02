@@ -12,6 +12,15 @@ import { useNavigation } from "@react-navigation/native";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
+
+
+//renders a screen with a list of recipes. 
+//It fetches 10 random recipes from an API, displays them in a FlatList component, 
+//and allows users to sort recipes by price per serving. 
+//When the screen mounts, it fetches the recipes and sets options for the navigation header.
+//When a recipe is selected, it navigates to a Recipe screen and passes the recipe as a parameter. 
+//The handleAddToMealPlan function is called when a user presses the "Add to Meal Plan" button, 
+//and it navigates to a MealPlan screen and passes the recipe as a parameter.
 const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -59,10 +68,21 @@ const HomeScreen = () => {
     });
   }, []); // Remove sortBy dependency
 
+
+
+
+  //defines a constant function called handleAddToMealPlan which takes a single argument recipe. 
+  //When called, the function navigates to the "MealPlan" screen and passes the recipe object as a parameter.
   const handleAddToMealPlan = (recipe) => {
     navigation.navigate("MealPlan", { recipe: recipe });
   };
 
+
+
+  // It takes an object with a property item as its argument and returns a TouchableOpacity component that displays recipe information, 
+  //including an image, title, likes, servings, time to prepare, price per serving, and whether the recipe is gluten-free or vegan. 
+  //The TouchableOpacity component also has a button that allows the user to add the recipe to their meal plan. 
+  //The navigation object used in this code is likely part of a React Native app.
   const renderRecipe = ({ item }) => {
     return (
       <TouchableOpacity
