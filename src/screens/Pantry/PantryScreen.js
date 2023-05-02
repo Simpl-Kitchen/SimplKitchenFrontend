@@ -19,6 +19,14 @@ const {
   updateIngredientAmount,
 } = require("../../utils/APICalls/SimplKitchen/pantry");
 
+
+
+//PantryScreen that fetches a list of ingredients from an API and displays them in a list. 
+//The component has two useEffect hooks, one of which sets options for the navigation drawer and header 
+//and the other of which fetches the data from the API. 
+//The component also has two functions, onRemoveIngredient and onAddIngredient, which handle updating the amount of an ingredient. 
+//Finally, the component returns a FlatList that renders the list of ingredients 
+//and a button that navigates to a screen for searching and adding new ingredients.
 const PantryScreen = ({ navigation, route }) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
 
@@ -42,6 +50,11 @@ const PantryScreen = ({ navigation, route }) => {
     });
   }, []);
 
+
+
+  // function fetchData that uses async/await to call a function called getUsersIngredients and 
+  //sets the result to a state variable called PantryIngredients. 
+  //If an error occurs, it logs the error to the console.
   const fetchData = async () => {
     try {
       const results = await getUsersIngredients();
@@ -51,6 +64,13 @@ const PantryScreen = ({ navigation, route }) => {
     }
   };
 
+
+
+  //an async function named onRemoveIngredient that takes an index parameter. 
+  //It first checks if the amount property of the pantryIngredients array at the specified index is greater than 1. 
+  //If it is, it decrements the amount property by 1 and calls an updateIngredientAmount function with the updated ingredient object. 
+  //If it is not greater than 1, it calls a removeIngredientFromPantry function with the ingredient object at the specified index. 
+  //Finally, it calls a fetchData function and catches any errors that occur, logging them to the console.
   const onRemoveIngredient = async (index) => {
     try {
       if (pantryIngredients[index].amount > 1) {
@@ -65,6 +85,12 @@ const PantryScreen = ({ navigation, route }) => {
     }
   };
 
+
+
+  //an asynchronous function called onAddIngredient that takes an index parameter. 
+  //Inside the function, the amount property of an element in the pantryIngredients array at the specified index is incremented by 1. 
+  //Then, the updated ingredient is passed to an updateIngredientAmount function and the fetchData function is called. 
+  //If any errors occur, they are logged to the console.
   const onAddIngredient = async (index) => {
     try {
       pantryIngredients[index].amount += 1;
@@ -75,6 +101,12 @@ const PantryScreen = ({ navigation, route }) => {
     }
   };
 
+
+
+  //function called renderItem that takes an object with two properties: item and index as an argument. 
+  //The function returns a JSX element that contains an image, text, and two buttons, styled with CSS. 
+  //The image is loaded from an API using the uri property of the source object. 
+  //The buttons have onPress functions that call onRemoveIngredient and onAddIngredient, passing the index property as an argument.
   const renderItem = ({ item, index }) => (
     <View style={styles.itemContainer}>
       <Image
