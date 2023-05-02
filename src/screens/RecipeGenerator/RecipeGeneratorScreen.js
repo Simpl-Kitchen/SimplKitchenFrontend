@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import axios from "axios";
 
 import GenerateStyles from "./styles";
@@ -40,6 +40,7 @@ const RecipeGeneratorScreen = () => {
   }, []);
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleGenerateRecipes}>
         <Text style={styles.buttonText}>Generate Recipes</Text>
@@ -48,6 +49,7 @@ const RecipeGeneratorScreen = () => {
         <RecipeCard key={index} recipe={recipe} />
       ))}
     </View>
+    </ScrollView>
   );
 };
 
