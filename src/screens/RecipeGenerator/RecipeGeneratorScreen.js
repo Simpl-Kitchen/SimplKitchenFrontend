@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     backgroundColor: "#fff",
+    borderRadius: 10,
   },
   recipeImage: {
     width: "100%",
