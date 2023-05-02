@@ -67,10 +67,6 @@ export default function ProfileScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Header
-        style={{backgroundColor: '#FFFFFF'}}
-        centerComponent={{ text: 'Intolerances', style: { color: '#000000', fontSize: 18 } }}
-      />
       <MultipleSelectList
         setSelected={(val) => setSelected1(val)}
         data={data1}
