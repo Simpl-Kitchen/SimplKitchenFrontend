@@ -28,27 +28,25 @@ const addRecipe = async (recipe) => {
 }
 // Use get recipes on the user recipe page
 const getRecipes = async () => {
-    try {
+  try {
+    const userToken = await getToken();
+    console.log("User token: " + JSON.stringify(userToken));
+    const options = {
+      method: "GET",
+      url: `${SIMPLKITCHEN_API_URL}/pantry/recipe`,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+    const response = await axios.request(options);
+    console.log("Successfully retrieved recipes:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting saved recipes:", error);
+    return [];
+  }
+};
 
-        const userToken = await getToken();
-
-        console.log("User token: " + JSON.stringify(userToken));
-
-        const options = {
-            method: "GET",
-            url: `${SIMPLKITCHEN_API_URL}/pantry/recipe`,
-            headers: {
-                Authorization: `Bearer ${userToken}`,
-            },
-            data: recipe,
-        };
-
-        const response = await axios.request(options);
-        console.log("Successfully added recipe:", response.data);
-    } catch (error) {
-        console.error("Error adding recipe to pantry:", error);
-    }
-}
 // Use delete recipe on the user recipe page to remove a recipe
 const deleteRecipe = async (recipe) => {
     id = recipe._id

@@ -9,15 +9,15 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   generateUserRecipes,
   getGeneratedRecipes,
 } from "../../utils/APICalls/SimplKitchen/generateRecipes";
 
-const RecipeCard = ({ recipe, onSaveRecipe }) => {
+import { addRecipe } from "../../utils/APICalls/SimplKitchen/userRecipes";
 
+const RecipeCard = ({ recipe, onSaveRecipe }) => {
   const handleSaveRecipe = () => {
     onSaveRecipe(recipe);
   };
@@ -31,10 +31,14 @@ const RecipeCard = ({ recipe, onSaveRecipe }) => {
           <View style={styles.recipeIngredientsContainer}>
             <Text style={styles.recipeIngredientsText}>Ingredients:</Text>
             <Text style={styles.recipeIngredients}>
-              {recipe.usedIngredientCount}/{recipe.usedIngredientCount + recipe.missedIngredientCount}
+              {recipe.usedIngredientCount}/
+              {recipe.usedIngredientCount + recipe.missedIngredientCount}
             </Text>
           </View>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSaveRecipe}>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={handleSaveRecipe}
+          >
             <Text style={styles.saveButtonText}>Save Recipe</Text>
           </TouchableOpacity>
         </View>
@@ -63,14 +67,12 @@ const RecipeGeneratorScreen = () => {
 
   const handleSaveRecipe = async (recipe) => {
     try {
-      const savedRecipes = JSON.parse(await AsyncStorage.getItem('savedRecipes')) || [];
-      savedRecipes.push(recipe);
-      await AsyncStorage.setItem('savedRecipes', JSON.stringify(savedRecipes));
-      navigation.navigate('SavedRecipes');
+      await addRecipe(recipe);
+      navigation.navigate("SavedRecipes");
     } catch (error) {
       console.error("Error saving recipe:", error);
     }
-  }
+  };
 
   return (
     <ScrollView>
@@ -87,7 +89,11 @@ const RecipeGeneratorScreen = () => {
         ) : (
           <View style={styles.recipeList}>
             {recipes.map((recipe, index) => (
-              <RecipeCard key={index} recipe={recipe} onSaveRecipe={handleSaveRecipe} />
+              <RecipeCard
+                key={index}
+                recipe={recipe}
+                onSaveRecipe={handleSaveRecipe}
+              />
             ))}
           </View>
         )}
@@ -139,13 +145,13 @@ const styles = StyleSheet.create({
   recipeTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   recipeIngredientsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   recipeIngredientsText: {
     fontSize: 16,
