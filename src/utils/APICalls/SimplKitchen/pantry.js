@@ -108,10 +108,9 @@ const updateIngredientAmount = async (ingredient) => {
     }
 }
 
-
 module.exports = {
     addIngredientToPantry,
     getUsersIngredients,
     removeIngredientFromPantry,
-    updateIngredientAmount
+    updateIngredientAmount,
 }
