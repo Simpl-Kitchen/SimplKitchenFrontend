@@ -63,8 +63,8 @@ const HomeScreen = () => {
 
   const showExpirationAlert = () => {
     Alert.alert(
-      "Check Expiration",
-      "Remember to check the pantry and fridge for expiration.",
+      "Check your fridge!",
+      "Remember to check the pantry and fridge for expired food.",
       [{ text: "OK", onPress: () => console.log("Alert acknowledged") }],
       { cancelable: false }
     );
