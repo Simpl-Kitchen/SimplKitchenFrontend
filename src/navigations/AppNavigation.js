@@ -16,6 +16,7 @@ import ProfileScreen from "../screens/Profile/ProfileScreen";
 import PantryScreen from "../screens/Pantry/PantryScreen";
 import MealPlanScreen from "../screens/MealPlan/MealPlanScreen";
 import ShoppingListScreen from "../screens/ShoppingList/ShoppingListScreen";
+import SavedRecipesScreen from "../screens/SavedRecipes/SavedRecipesScreen";
 
 const Stack = createStackNavigator();
 
@@ -53,6 +54,7 @@ function MainNavigator() {
       <Stack.Screen name="IngredientSearch" component={IngredientSearchScreen} />
       <Stack.Screen name="RecipeGenerator" component={RecipeGeneratorScreen} />
       <Stack.Screen name="ShoppingList" component={ShoppingListScreen} />
+      <Stack.Screen name="SavedRecipes" component={SavedRecipesScreen} />
     </Stack.Navigator>
   );
 }

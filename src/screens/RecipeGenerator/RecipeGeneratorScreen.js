@@ -8,13 +8,20 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   generateUserRecipes,
   getGeneratedRecipes,
 } from "../../utils/APICalls/SimplKitchen/generateRecipes";
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, onSaveRecipe }) => {
+
+  const handleSaveRecipe = () => {
+    onSaveRecipe(recipe);
+  };
+
   return (
     <TouchableOpacity style={styles.recipeCardContainer} onPress={() => {}}>
       <View style={styles.recipeCard}>
@@ -27,6 +34,9 @@ const RecipeCard = ({ recipe }) => {
               {recipe.usedIngredientCount}/{recipe.usedIngredientCount + recipe.missedIngredientCount}
             </Text>
           </View>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSaveRecipe}>
+            <Text style={styles.saveButtonText}>Save Recipe</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
@@ -36,6 +46,7 @@ const RecipeCard = ({ recipe }) => {
 const RecipeGeneratorScreen = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
   const handleGenerateRecipes = async () => {
     setLoading(true);
@@ -49,6 +60,17 @@ const RecipeGeneratorScreen = () => {
       setLoading(false);
     }
   };
+
+  const handleSaveRecipe = async (recipe) => {
+    try {
+      const savedRecipes = JSON.parse(await AsyncStorage.getItem('savedRecipes')) || [];
+      savedRecipes.push(recipe);
+      await AsyncStorage.setItem('savedRecipes', JSON.stringify(savedRecipes));
+      navigation.navigate('SavedRecipes');
+    } catch (error) {
+      console.error("Error saving recipe:", error);
+    }
+  }
 
   return (
     <ScrollView>
@@ -65,7 +87,7 @@ const RecipeGeneratorScreen = () => {
         ) : (
           <View style={styles.recipeList}>
             {recipes.map((recipe, index) => (
-              <RecipeCard key={index} recipe={recipe} />
+              <RecipeCard key={index} recipe={recipe} onSaveRecipe={handleSaveRecipe} />
             ))}
           </View>
         )}
@@ -101,44 +123,51 @@ const styles = StyleSheet.create({
   recipeCardContainer: {
     width: "48%",
     marginBottom: 20,
-    borderRadius: 4,
-    overflow: "hidden",
   },
   recipeCard: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    backgroundColor: "#fff",
-    borderRadius: 10,
+    backgroundColor: "#FFF",
+    borderRadius: 4,
+    overflow: "hidden",
   },
   recipeImage: {
     width: "100%",
     height: 200,
-    resizeMode: "cover",
   },
   recipeContent: {
     padding: 10,
   },
   recipeTitle: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
   },
   recipeIngredientsContainer: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 10,
   },
   recipeIngredientsText: {
     fontSize: 16,
     fontWeight: "bold",
-    marginRight: 5,
   },
   recipeIngredients: {
     fontSize: 16,
     fontWeight: "bold",
   },
+  saveButton: {
+    backgroundColor: "#97DF99",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 4,
+    marginTop: 10,
+  },
+  saveButtonText: {
+    color: "#FFF",
+    fontSize: 16,
+  },
   loadingIndicator: {
-    marginTop: 30,
+    marginTop: 20,
   },
 });
 
