@@ -108,10 +108,34 @@ const updateIngredientAmount = async (ingredient) => {
     }
 }
 
+const addRecipeToPantry = async (recipe) => {
+    try {
+
+        const userToken = await getToken();
+
+        console.log("User token: " + JSON.stringify(userToken));
+
+        const options = {
+            method: "POST",
+            url: `${SIMPLKITCHEN_API_URL}/pantry/recipe`,
+            headers: {
+                Authorization: `Bearer ${userToken}`,
+            },
+            data: recipe,
+        };
+
+        const response = await axios.request(options);
+        console.log("Successfully added recipe:", response.data);
+    } catch (error) {
+        console.error("Error adding recipe to pantry:", error);
+    }
+}
+
 
 module.exports = {
     addIngredientToPantry,
     getUsersIngredients,
     removeIngredientFromPantry,
-    updateIngredientAmount
+    updateIngredientAmount,
+    addRecipeToPantry,
 }
