@@ -1,35 +1,44 @@
-
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Modal,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { Image } from "react-native-elements";
-import { Dimensions } from "react-native";
 import styles from "./styles";
-import { Picker } from "@react-native-picker/picker";
+import UnitPicker from "../../components/UnitPicker/UnitPicker";
 
 const { width } = Dimensions.get("window");
-//The code defines a function component called IngredientScreen that takes in two props, route and navigation. 
-//The route prop contains information about the ingredient being displayed, while the navigation prop provides a way to navigate to other screens in the app.
-//The code uses the useState hook to define a state variable called selectedUnit, which is initially set to the first possible unit of the ingredient. 
-//The rest of the code defines a handleUnitChange function that updates the selectedUnit variable when the user selects a different unit from a Picker component. 
-//The component displays the name, image, description, serving size, and possible units of the ingredient using various Text, Image, and Picker components styled with CSS.
+
 const IngredientScreen = ({ route, navigation }) => {
   const { ingredient } = route.params;
   const baseImageUrl = "https://spoonacular.com/cdn/ingredients_250x250/";
   const [selectedUnit, setSelectedUnit] = useState(ingredient.possibleUnits[0]);
+  const [pickerModalVisible, setPickerModalVisible] = useState(false);
 
-
-
-
-  //function called handleUnitChange that takes in a parameter unit. 
-  //Within the function, it sets the value of a variable called 
-  //selectedUnit to the value of the unit parameter.
   const handleUnitChange = (unit) => {
     setSelectedUnit(unit);
   };
 
-
-
-  
+  const unitShorthand = (unit) => {
+    const unitMap = {
+      tablespoon: "tbsp",
+      teaspoon: "tsp",
+      ounce: "oz",
+      gram: "g",
+      milliliter: "mL",
+      liter: "L",
+      pound: "lb",
+      cup: "cup",
+      pint: "pt",
+      quart: "qt",
+      gallon: "gal",
+    };
+    return unitMap[unit] || unit;
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -46,21 +55,29 @@ const IngredientScreen = ({ route, navigation }) => {
         />
         <View style={styles.pickerContainer}>
           <Text style={styles.ingredientMeasurement}>Select Unit:</Text>
-          <Picker
-            selectedValue={selectedUnit}
-            onValueChange={handleUnitChange}
-            style={styles.picker}
+          <TouchableOpacity
+            style={styles.unitDisplay}
+            onPress={() => setPickerModalVisible(true)}
           >
-            {ingredient.possibleUnits.map((unit) => (
-              <Picker.Item key={unit} label={unit} value={unit} />
-            ))}
-          </Picker>
+            <Text>{unitShorthand(selectedUnit)}</Text>
+          </TouchableOpacity>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={pickerModalVisible}
+          >
+            <UnitPicker
+              units={ingredient.possibleUnits}
+              selectedUnit={selectedUnit}
+              onValueChange={handleUnitChange}
+              onRequestClose={() => setPickerModalVisible(false)}
+            />
+          </Modal>
         </View>
         <Text style={styles.ingredientDescription}>
           {ingredient.description} {"\n\n"}
           <Text style={styles.ingredientMeasurement}>
-            Typical Serving Size: {ingredient.servingSize} {"\n\n"}
-            Common Unit Sizes: {ingredient.possibleUnits.join(", ")}
+            Common Unit Sizes: {ingredient.possibleUnits.map(unitShorthand).join(", ")}
           </Text>
         </Text>
       </View>
@@ -69,6 +86,3 @@ const IngredientScreen = ({ route, navigation }) => {
 };
 
 export default IngredientScreen;
-
-
-
