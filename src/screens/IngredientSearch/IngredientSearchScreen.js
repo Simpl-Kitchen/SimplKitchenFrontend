@@ -43,6 +43,7 @@ const IngredientSearchScreen = ({ navigation }) => {
 
   const onPressIngredient = (ingredient) => {
     navigation.navigate("Ingredient", { ingredient });
+    
   };
 
   const renderIngredient = ({ item }) => (
