@@ -1,32 +1,25 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-
-import {
-  getRecipes,
-  deleteRecipe,
-} from "../../utils/APICalls/SimplKitchen/userRecipes";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import { getRecipes, deleteRecipe } from "../../utils/APICalls/SimplKitchen/userRecipes";
+import { useFocusEffect } from '@react-navigation/native';
 
 const SavedRecipesScreen = () => {
   const [savedRecipes, setSavedRecipes] = useState([]);
 
-  useEffect(() => {
-    getSavedRecipes();
-  }, []);
-
-  const getSavedRecipes = async () => {
+  const fetchSavedRecipes = async () => {
     try {
-      const recipes = await getRecipes();
-      setSavedRecipes(recipes || []);
-    } catch (e) {
-      console.error("Error getting saved recipes:", e);
+      const fetchedRecipes = await getRecipes();
+      setSavedRecipes(fetchedRecipes);
+    } catch (error) {
+      console.error("Error getting saved recipes:", error);
     }
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchSavedRecipes();
+    }, [])
+  );
 
   const handleDeleteRecipe = async (recipe) => {
     try {
@@ -40,29 +33,27 @@ const SavedRecipesScreen = () => {
     }
   };
 
-  const renderRecipe = ({ item }) =>
-    item && (
-      <View style={styles.recipeContainer} key={item._id}>
-        <View style={styles.recipeTitleContainer}>
-          <Text style={styles.recipeTitle}>{item.title}</Text>
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => handleDeleteRecipe(item)}
-          >
-            <Text style={styles.deleteButtonText}>Delete</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.recipeIngredients}>
-          {item.usedIngredientCount}/
-          {item.usedIngredientCount + item.missedIngredientCount} Ingredients
-          Used
-        </Text>
+  const renderRecipe = ({ item }) => (
+    <View style={styles.recipeContainer}>
+      <View style={styles.recipeTitleContainer}>
+        <Text style={styles.recipeTitle}>{item.title}</Text>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDeleteRecipe(item)}
+        >
+          <Text style={styles.deleteButtonText}>Delete</Text>
+        </TouchableOpacity>
       </View>
-    );
+      <Text style={styles.recipeIngredients}>
+        {item.usedIngredientCount}/
+        {item.usedIngredientCount + item.missedIngredientCount} Ingredients Used
+      </Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Saved Recipes</Text>
+
       {savedRecipes.length === 0 ? (
         <View style={styles.noRecipesContainer}>
           <Text style={styles.noRecipesText}>No saved recipes yet!</Text>
@@ -71,7 +62,7 @@ const SavedRecipesScreen = () => {
         <FlatList
           data={savedRecipes}
           renderItem={renderRecipe}
-          keyExtractor={(item) => item._id.toString()}
+          keyExtractor={(item) => item._id}
           style={styles.recipeList}
         />
       )}
@@ -128,9 +119,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   deleteButton: {
-    backgroundColor: "#FF5733",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    backgroundColor: "#97DF99",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 4,
   },
   deleteButtonText: {
