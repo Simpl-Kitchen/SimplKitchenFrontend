@@ -44,7 +44,8 @@ const SavedRecipesScreen = () => {
   };
 
   const renderRecipe = ({ item }) => {
-    const totalCost = item.totalCost?.amount;
+    console.log('Total cost object:', item.totalCost);
+    const totalCost = item.totalCost?.value / 100;
     return (
       <View style={styles.recipeContainer}>
         <View style={styles.recipeTitleContainer}>
@@ -67,7 +68,7 @@ const SavedRecipesScreen = () => {
             "Ingredients not available"
           }
         </Text>
-        <Text style={styles.totalCost}>Total Cost: {totalCost ? `$${totalCost.toFixed(2)}` : "Cost not available"}</Text>
+        <Text style={styles.totalCost}>Cost per Serving: {totalCost ? `$${totalCost.toFixed(2)}` : "Cost not available"}</Text>
       </View>
     );
   };
