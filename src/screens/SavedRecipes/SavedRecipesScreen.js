@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
-import { getRecipes, deleteRecipe } from "../../utils/APICalls/SimplKitchen/userRecipes";
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+  Image
+} from "react-native";
+import {
+  getRecipes,
+  deleteRecipe,
+} from "../../utils/APICalls/SimplKitchen/userRecipes";
+import { useFocusEffect } from "@react-navigation/native";
 
 const SavedRecipesScreen = () => {
-  const [savedRecipes, setSavedRecipes] = useState([]);
+  const [savedRecipes, setSavedRecipes] = useState(null);
+
+  useEffect(() => {
+    fetchSavedRecipes();
+  }, []);
 
   const fetchSavedRecipes = async () => {
     try {
       const fetchedRecipes = await getRecipes();
-      setSavedRecipes(fetchedRecipes);
+      console.log("Successfully retrieved recipes:", fetchedRecipes);
+      setSavedRecipes(fetchedRecipes.recipes);
     } catch (error) {
       console.error("Error getting saved recipes:", error);
     }
   };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchSavedRecipes();
-    }, [])
-  );
 
   const handleDeleteRecipe = async (recipe) => {
     try {
@@ -33,27 +43,46 @@ const SavedRecipesScreen = () => {
     }
   };
 
-  const renderRecipe = ({ item }) => (
-    <View style={styles.recipeContainer}>
-      <View style={styles.recipeTitleContainer}>
-        <Text style={styles.recipeTitle}>{item.title}</Text>
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => handleDeleteRecipe(item)}
-        >
-          <Text style={styles.deleteButtonText}>Delete</Text>
-        </TouchableOpacity>
+  const renderRecipe = ({ item }) => {
+    const totalCost = item.totalCost?.amount;
+    return (
+      <View style={styles.recipeContainer}>
+        <View style={styles.recipeTitleContainer}>
+          <Text style={styles.recipeTitle}>{item.recipeTitle}</Text>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => handleDeleteRecipe(item)}
+          >
+            <Text style={styles.deleteButtonText}>Delete</Text>
+          </TouchableOpacity>
+        </View>
+        <Image
+          source={{ uri: item.image }}
+          style={styles.recipeImage}
+          resizeMode="cover"
+        />
+        <Text style={styles.recipeIngredients}>
+          {item.usedIngredients && item.missedIngredients ?
+            `${item.usedIngredients.length}/${item.usedIngredients.length + item.missedIngredients.length} Ingredients in Pantry` :
+            "Ingredients not available"
+          }
+        </Text>
+        <Text style={styles.totalCost}>Total Cost: {totalCost ? `$${totalCost.toFixed(2)}` : "Cost not available"}</Text>
       </View>
-      <Text style={styles.recipeIngredients}>
-        {item.usedIngredientCount}/
-        {item.usedIngredientCount + item.missedIngredientCount} Ingredients Used
-      </Text>
-    </View>
-  );
+    );
+  };
+  
+
+  if (savedRecipes === null) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#97DF99" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-
       {savedRecipes.length === 0 ? (
         <View style={styles.noRecipesContainer}>
           <Text style={styles.noRecipesText}>No saved recipes yet!</Text>
@@ -113,11 +142,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  recipeIngredients: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginTop: 5,
-  },
   deleteButton: {
     backgroundColor: "#97DF99",
     paddingHorizontal: 20,
@@ -127,6 +151,22 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: "#FFF",
     fontSize: 16,
+  },
+  recipeIngredients: {
+    fontSize: 16,
+    marginVertical: 5,
+  },
+  recipePrice: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  recipeImage: {
+    height: 200,
+    marginVertical: 10,
+  },
+  totalCost: {
+    fontSize: 14,
+    marginTop: 5,
   },
 });
 
