@@ -52,9 +52,6 @@ const PantryScreen = ({ navigation, route }) => {
 
 
 
-  // function fetchData that uses async/await to call a function called getUsersIngredients and 
-  //sets the result to a state variable called PantryIngredients. 
-  //If an error occurs, it logs the error to the console.
   const fetchData = async () => {
     try {
       const results = await getUsersIngredients();
