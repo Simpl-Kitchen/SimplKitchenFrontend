@@ -4,31 +4,48 @@ import PropTypes from "prop-types";
 import styles from "./styles";
 
 import MenuButton from "../../components/MenuButton/MenuButton";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function DrawerContainer(props) {
   const { navigation } = props;
   return (
     <View style={styles.content}>
-      <View style={styles.container}>
-        <MenuButton
-          title="Search"
-          source={require("../../../assets/icons/search.png")}
-          onPress={() => {
-            navigation.navigate("Search");
-            navigation.closeDrawer();
-          }}
-        />
+      <View style={styles.content}>
         <MenuButton
           title="Home"
-          source={require("../../../assets/icons/home.png")}
+          icon={<Icon name="home" size={20} />}
           onPress={() => {
             navigation.navigate("Home");
             navigation.closeDrawer();
           }}
         />
         <MenuButton
+          title="Profile"
+          icon={<Icon name="user" size={20} />}
+          onPress={() => {
+            navigation.navigate("Profile");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Search"
+          icon={<Icon name="search" size={20} />}
+          onPress={() => {
+            navigation.navigate("Search");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Recipe Generator"
+          icon={<Icon name="magic" size={20} />}
+          onPress={() => {
+            navigation.navigate("RecipeGenerator");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
           title="Meal Plan"
-          source={require("../../../assets/icons/category.png")}
+          icon={<Icon name="cutlery" size={20} />}
           onPress={() => {
             navigation.navigate("MealPlan");
             navigation.closeDrawer();
@@ -36,33 +53,25 @@ export default function DrawerContainer(props) {
         />
         <MenuButton
           title="Pantry"
-          source={require("../../../assets/icons/pantry.png")}
+          icon={<Icon name="shopping-basket" size={20} />}
           onPress={() => {
             navigation.navigate("Pantry");
             navigation.closeDrawer();
           }}
         />
         <MenuButton
-          title="Profile"
-          source={require("../../../assets/icons/profile.png")}
-          onPress={() => {
-            navigation.navigate("Profile");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
-          title="Recipe Generator"
-          source={require("../../../assets/icons/RecipeGenerator.png")}
-          onPress={() => {
-            navigation.navigate("RecipeGenerator");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
           title="Shopping List"
-          source={require("../../../assets/icons/list.png")}
+          icon={<Icon name="list" size={20} />}
           onPress={() => {
             navigation.navigate("ShoppingList");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Saved Recipes"
+          icon={<Icon name="heart" size={20} />}
+          onPress={() => {
+            navigation.navigate("SavedRecipes");
             navigation.closeDrawer();
           }}
         />
@@ -77,13 +86,11 @@ DrawerContainer.propTypes = {
   }),
 };
 
-// Add drawer lock mode to screen options
 DrawerContainer.navigationOptions = ({ navigation }) => ({
   drawerLockMode: "locked-closed",
   headerLeft: () => (
     <MenuButton
-      title="Menu"
-      source={require("../../../assets/icons/menu.png")}
+      icon={<Icon name="bars" size={20} />}
       onPress={() => {
         navigation.openDrawer();
       }}

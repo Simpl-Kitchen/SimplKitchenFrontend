@@ -1,144 +1,117 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    screen: {
+  container: {
     flex: 1,
-    },
-    topBar: {
+  },
+  header: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#FFF",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    },
-    editButton: {
-    backgroundColor: "#A8DDA8",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginLeft:90,
-    },
-    editButtonText: {
-    color: "#FFF",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "white",
+  },
+  headerText: {
+    fontSize: 20,
     fontWeight: "bold",
-    fontSize: 16,
-    },
-    container: {
-    padding: 10,
-    paddingBottom: 30,
-    },
-    title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    },
-    image: {
-    width: "100%",
+  },
+  imageContainer: {
     height: 200,
+    width: "100%",
+    marginBottom: 16,
+  },
+  image: {
+    height: "100%",
+    width: "100%",
     resizeMode: "cover",
-    marginBottom: 20,
-    borderRadius: 10,
-    },
-    servingsInput: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 5,
-    paddingVertical: 2,
+  },
+  servingsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 16,
+    marginBottom: 12,
+  },
+  servingsText: {
+    fontSize: 18,
+    marginRight: 12,
+  },
+  servingsInput: {
     width: 50,
+    height: 30,
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 4,
     textAlign: "center",
-    fontWeight: "bold",
-    },
-    servingsText: {
-    textDecorationLine: "underline",
-    fontWeight: "bold",
-    fontSize: 16,
-    },
-    servingsNumber: {
-    fontSize: 16,
-    },
-    shoppingListButton: {
-    backgroundColor: "#A8DDA8",
-    padding: 10,
-    borderRadius: 5,
+  },
+  tabsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center",
-    marginTop: 20,
-    },
-    shoppingListButtonText: {
-    color: "#FFF",
+    marginHorizontal: 16,
+    marginBottom: 16,
+  },
+  tab: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: "white",
+  },
+  tabText: {
+    fontSize: 18,
     fontWeight: "bold",
-    fontSize: 16,
-    },
-    backButton: {
-    backgroundColor: "#FFF",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    position: "absolute",
-    bottom: 20,
-    left: 20,
-    },
-    backButtonText: {
-    color: "#333",
-    fontWeight: "bold",
-    fontSize: 16,
-    },
-    saveButton: {
-    backgroundColor: "#A8DDA8",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 20,
-    },
-    saveButtonText: {
-    color: "#FFF",
-    fontWeight: "bold",
-    fontSize: 16,
-    },
-    ingredientContainer: {
+  },
+  tabContent: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 16,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    borderRadius: 8,
+    backgroundColor: "white",
+    elevation: 4,
+  },
+  ingredientContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 5,
-    },
-    ingredientInput: {
+    marginBottom: 8,
+  },
+  ingredientText: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
     fontSize: 16,
-    },
-    instructionContainer: {
+  },
+  ingredientInput: {
+    flex: 1,
+    height: 30,
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 4,
+    marginRight: 8,
+  },
+  instructionContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 5,
-    },
-    instructionNumber: {
-    fontWeight: "bold",
-    marginRight: 10,
-    fontSize: 16,
-    },
-    instructionInput: {
+    marginBottom: 8,
+  },
+  instructionText: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
     fontSize: 16,
-    },
-    titleContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-      },
-      pencilIcon: {
-        marginRight: 5,
-      },
-    });
+  },
+  instructionInput: {
+    flex: 1,
+    height: 30,
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 4,
+    marginRight: 8,
+  },
+  card: {
+    borderRadius: 8,
+    backgroundColor: "white",
+    elevation: 4,
+    marginHorizontal: 16,
+    marginBottom: 16,
+  },
+});
 
 export default styles;

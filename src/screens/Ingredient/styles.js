@@ -1,24 +1,44 @@
-// styles.js
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
+    padding: 20,
     backgroundColor: "#fff",
-    paddingHorizontal: 16,
   },
   ingredientContainer: {
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
   },
   ingredientTitle: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
     textAlign: "center",
   },
-  // Add more styles here as needed
+  ingredientDescription: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: "justify",
+  },
+  ingredientMeasurement: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  pickerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  picker: {
+    height: 50,
+    width: 150,
+    marginLeft: 10,
+    borderWidth: 1,
+    borderColor: "#999",
+    borderRadius: 5,
+  },
 });
 
 export default styles;

@@ -71,13 +71,38 @@ const updateUserIntolerences = async (intolerances) => {
   try {
     const userToken = await AsyncStorage.getItem("userToken");
     const options = {
-      method: "POST",
-      url: `${SIMPLKITCHEN_API_URL}/user/intolerances`,
+      method: "PATCH",
+      url: `${SIMPLKITCHEN_API_URL}/user/`,
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
       data: {
         intolerances: intolerances,
+      },
+    };
+
+    console.log(options.data)
+
+    const response = await axios.request(options);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+const updateUserDiets = async (diets) => {
+
+  console.log("Updating diets")
+  try {
+    const userToken = await AsyncStorage.getItem("userToken");
+    const options = {
+      method: "PATCH",
+      url: `${SIMPLKITCHEN_API_URL}/user/`,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+      data: {
+        diets: diets,
       },
     };
 
@@ -99,4 +124,5 @@ module.exports =
   logoutSimplKitchen,
   getUserInformation,
   updateUserIntolerences,
+  updateUserDiets,
 }

@@ -1,4 +1,3 @@
-// SearchScreen.js
 import React, { useState, useEffect } from "react";
 import { View, FlatList} from "react-native";
 import { SearchBar } from "react-native-elements";
@@ -15,6 +14,7 @@ import MenuButton from "../../components/MenuButton/MenuButton";
 
 const { width } = Dimensions.get("window");
 
+
 const IngredientSearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [ingredients, setIngredients] = useState([]);
@@ -23,15 +23,19 @@ const IngredientSearchScreen = ({ navigation }) => {
     try {
       const ingredientSearch = await searchIngredientsByName(search);
       const ingredients = ingredientSearch.results;
+      console.log(ingredients[0].possibleUnits)
       setIngredients(ingredients);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleAddIngredient = (ingredient) => {
+  const handleAddIngredient = async (ingredient) => {
     try {
-      addIngredientToPantry(ingredient);
+      await addIngredientToPantry(ingredient);
+      navigation.navigate("Pantry", {
+        callback: fetchData // Pass the fetchData function as a callback
+      });
     } catch (error) {
       console.log(error);
     }
@@ -39,6 +43,7 @@ const IngredientSearchScreen = ({ navigation }) => {
 
   const onPressIngredient = (ingredient) => {
     navigation.navigate("Ingredient", { ingredient });
+    
   };
 
   const renderIngredient = ({ item }) => (
@@ -101,3 +106,4 @@ const IngredientImage = ({ uri }) => (
 );
 
 export default IngredientSearchScreen;
+

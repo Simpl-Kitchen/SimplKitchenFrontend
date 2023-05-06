@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FontAwesome } from "@expo/vector-icons"; // You need to install '@expo/vector-icons' if not already installed
+import { FontAwesome } from "@expo/vector-icons";
 
 import styles from "./styles";
 
@@ -37,17 +37,33 @@ const RecipeScreen = ({ route }) => {
       setRecipeDetails(data);
       setEditedIngredients(data.extendedIngredients);
       setEditedInstructions(data.analyzedInstructions?.[0]?.steps || []);
+  
+      // New API call to get recipe summary
+      const summaryResponse = await fetch(
+        `https://api.spoonacular.com/recipes/${recipe.id}/summary?apiKey=e44c9f0796b4400ab3a69f1354d139a9`
+      );
+      const summaryData = await summaryResponse.json();
+      setRecipeDetails((prev) => ({
+        ...prev,
+        summary: summaryData.summary,
+        cuisine: summaryData.cuisines?.[0] || "Unknown",
+        aggregateLikes: summaryData.aggregateLikes,
+      }));
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   useEffect(() => {
     fetchRecipeDetails();
   }, []);
 
   const handleServingsChange = (newServings) => {
-    setServings(parseInt(newServings, 10));
+    const parsedValue = parseInt(newServings, 10);
+    if (!isNaN(parsedValue)) {
+      setServings(parsedValue);
+    }
   };
 
   const toggleEditServings = () => {
@@ -87,148 +103,148 @@ const RecipeScreen = ({ route }) => {
     }
   };
 
-  return (
-    <View style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.container}>
-        {recipeDetails ? (
-          <>
-            <Text style={styles.title}>{recipeDetails.title}</Text>
-            {recipeDetails.image && (
-              <Image
-                source={{ uri: recipeDetails.image }}
-                style={styles.image}
-              />
-            )}
-            <Text style={styles.servingsText}>Servings: </Text>
-            {editServings ? (
+  const [activeTab, setActiveTab] = useState("ingredients");
+
+  const RecipeTab = ({ children }) => (
+    <View style={styles.tabContainer}>
+      <View style={styles.card}>
+        <ScrollView style={styles.tabContent}>{children}</ScrollView>
+      </View>
+    </View>
+  );
+
+  const ingredientsTab = (
+    <RecipeTab>
+      {editIngredients
+        ? editedIngredients.map((ingredient, index) => (
+            <View key={index} style={styles.ingredientContainer}>
               <TextInput
-                keyboardType="numeric"
-                value={editedServings ? editedServings.toString() : ""}
-                onChangeText={(value) => setEditedServings(parseInt(value, 10))}
-                style={styles.servingsInput}
-                onBlur={toggleEditServings}
+                style={styles.ingredientInput}
+                value={ingredient.original}
+                onChangeText={(value) =>
+                  setEditedIngredients((prev) =>
+                    prev.map((prevIngredient, prevIndex) =>
+                      prevIndex === index
+                        ? { ...prevIngredient, original: value }
+                        : prevIngredient
+                    )
+                  )
+                }
               />
-            ) : (
-              <TouchableOpacity onPress={toggleEditServings}>
-                <Text style={styles.servingsNumber}>
-                  {editedServings || recipeDetails.servings}
-                </Text>
-              </TouchableOpacity>
-            )}
-            <Text style={styles.servingsText}>
-              {"\n"}Prep Time: {recipeDetails.readyInMinutes} minutes {"\n"}
-              {"\n"}
-            </Text>
-            <View style={styles.titleContainer}>
-              <Text style={styles.title}>{"• "}Ingredients</Text>
-              <TouchableOpacity
-                onPress={() => setEditIngredients(!editIngredients)}
-              >
-                <FontAwesome
-                  name="pencil"
-                  size={20}
-                  color="black"
-                  style={styles.pencilIcon}
-                />
-              </TouchableOpacity>
+              <TextInput
+                style={styles.ingredientInput}
+                value={`${calculateNewAmount(ingredient)} ${ingredient.unit}`}
+                onChangeText={(value) =>
+                  setEditedIngredients((prev) =>
+                    prev.map((prevIngredient, prevIndex) =>
+                      prevIndex === index
+                        ? {
+                            ...prevIngredient,
+                            amount: parseFloat(value),
+                          }
+                        : prevIngredient
+                    )
+                  )
+                }
+              />
             </View>
-            {editIngredients
-              ? editedIngredients.map((ingredient, index) => (
-                  <View key={index} style={styles.ingredientContainer}>
-                    <TextInput
-                      style={styles.ingredientInput}
-                      value={ingredient.original}
-                      onChangeText={(value) =>
-                        setEditedIngredients((prev) =>
-                          prev.map((prevIngredient, prevIndex) =>
-                            prevIndex === index
-                              ? { ...prevIngredient, original: value }
-                              : prevIngredient
-                          )
-                        )
-                      }
-                    />
-                  </View>
-                ))
-              : recipeDetails.extendedIngredients &&
-                recipeDetails.extendedIngredients.length > 0 &&
-                recipeDetails.extendedIngredients.map((ingredient, index) => (
-                  <Text key={index}>
-                    {"‣"} {calculateNewAmount(ingredient)} {ingredient.unit}{" "}
-                    {ingredient.name} {"\n"}
-                  </Text>
-                ))}
-            <View style={styles.titleContainer}>
-              <Text style={styles.title}>{"• "}Instructions</Text>
-              <TouchableOpacity
-                onPress={() => setEditInstructions(!editInstructions)}
-              >
-                <FontAwesome
-                  name="pencil"
-                  size={20}
-                  color="black"
-                  style={styles.pencilIcon}
-                />
-              </TouchableOpacity>
-            </View>
-            {editInstructions ? (
-              editedInstructions.map((step, index) => (
-                <View key={index} style={styles.instructionContainer}>
-                  <Text style={styles.instructionNumber}>{index + 1}.</Text>
-                  <TextInput
-                    style={styles.instructionInput}
-                    value={step.step}
-                    onChangeText={(value) =>
-                      setEditedInstructions((prev) =>
-                        prev.map((prevStep, prevIndex) =>
-                          prevIndex === index
-                            ? { ...prevStep, step: value }
-                            : prevStep
-                        )
-                      )
-                    }
-                  />
-                </View>
-              ))
-            ) : recipeDetails.analyzedInstructions &&
-              recipeDetails.analyzedInstructions[0] &&
-              recipeDetails.analyzedInstructions[0].steps ? (
-              recipeDetails.analyzedInstructions[0].steps.map((step, index) => (
-                <Text key={index}>
-                  {index + 1}. {step.step} {"\n"}
-                </Text>
-              ))
-            ) : (
-              <Text>Instructions not available.</Text>
-            )}
-            <TouchableOpacity
-              style={styles.shoppingListButton}
-              onPress={() =>
-                navigation.navigate("ShoppingList", {
-                  username: "your_username",
-                  startDate: "2023-04-17",
-                  endDate: "2023-04-24",
-                })
-              }
-            >
-              <Text style={styles.shoppingListButtonText}>
-                Add To Shopping List
+          ))
+        : recipeDetails?.extendedIngredients?.map((ingredient, index) => (
+            <View key={index} style={styles.ingredientContainer}>
+              <Text style={styles.ingredientText}>{ingredient.original}</Text>
+              <Text style={styles.ingredientText}>
+                {`${calculateNewAmount(ingredient)} ${ingredient.unit}`}
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.saveButton} onPress={onSave}>
-              <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
-          </>
+            </View>
+          ))}
+    </RecipeTab>
+  );
+
+  const instructionsTab = (
+    <RecipeTab>
+      {editInstructions
+        ? editedInstructions.map((instruction, index) => (
+            <View key={index} style={styles.instructionContainer}>
+              <TextInput
+                style={styles.instructionInput}
+                value={instruction.step}
+                onChangeText={(value) =>
+                  setEditedInstructions((prev) =>
+                    prev.map((prevInstruction, prevIndex) =>
+                      prevIndex === index
+                        ? { ...prevInstruction, step: value }
+                        : prevInstruction
+                    )
+                  )
+                }
+              />
+            </View>
+          ))
+        : recipeDetails?.analyzedInstructions?.[0]?.steps?.map(
+            (instruction, index) => (
+              <View key={index} style={styles.instructionContainer}>
+                <Text style={styles.instructionText}>{instruction.step}</Text>
+              </View>
+            )
+          )}
+    </RecipeTab>
+  );
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <FontAwesome name="arrow-left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>{recipe.title}</Text>
+        <TouchableOpacity onPress={onSave}>
+          <FontAwesome name="save" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: recipeDetails?.image || recipe.image,
+          }}
+        />
+      </View>
+      <View style={styles.servingsContainer}>
+        <Text style={styles.servingsText}>Servings:</Text>
+        {editServings ? (
+          <TextInput
+            style={styles.servingsInput}
+            value={editedServings?.toString()}
+            onChangeText={(value) => setEditedServings(parseInt(value, 10))}
+          />
         ) : (
-          <Text>Loading recipe details...</Text>
+          <Text style={styles.servingsText}>
+            {editedServings || (servings ? servings : recipeDetails?.servings)}
+          </Text>
         )}
-      </ScrollView>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={toggleEditServings}>
+          <FontAwesome
+            name={editServings ? "check" : "edit"}
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.tabsContainer}>
+        <TouchableOpacity
+          style={styles.tab}
+          onPress={() => setActiveTab("ingredients")}
+        >
+          <Text style={styles.tabText}>Ingredients</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.tab}
+          onPress={() => setActiveTab("instructions")}
+        >
+          <Text style={styles.tabText}>Instructions</Text>
+        </TouchableOpacity>
+      </View>
+      {activeTab === "ingredients" ? ingredientsTab : instructionsTab}
     </View>
   );
 };

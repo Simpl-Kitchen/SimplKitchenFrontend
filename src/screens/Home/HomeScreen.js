@@ -7,6 +7,8 @@ import {
   SafeAreaView,
   RefreshControl,
   TouchableOpacity,
+  Alert,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MenuButton from "../../components/MenuButton/MenuButton";
@@ -57,7 +59,31 @@ const HomeScreen = () => {
         </TouchableOpacity>
       ),
     });
-  }, []); // Remove sortBy dependency
+  }, []);
+
+  const showExpirationAlert = () => {
+    Alert.alert(
+      "Check your fridge!",
+      "Remember to check the pantry and fridge for expired food.",
+      [{ text: "OK", onPress: () => console.log("Alert acknowledged") }],
+      { cancelable: false }
+    );
+  };
+
+  useEffect(() => {
+    const checkExpiration = () => {
+      const today = new Date();
+      if (today.getDay() === 0) {
+        showExpirationAlert();
+      }
+    };
+
+    if (Platform.OS !== "web") {
+      checkExpiration();
+      const interval = setInterval(checkExpiration, 86400000); // check every 24 hours
+      return () => clearInterval(interval);
+    }
+  }, []);
 
   const handleAddToMealPlan = (recipe) => {
     navigation.navigate("MealPlan", { recipe: recipe });

@@ -5,11 +5,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     backgroundColor: "#F0EFEF",
+    alignContent: "center",
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 20,
+    alignContent: "center",
   },
   button: {
     backgroundColor: "#98CBB0",
@@ -17,6 +19,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
     marginRight: 10,
+    justifyContent: "flex-end",
   },
   logoutButton: {
     backgroundColor: "#70161E",
