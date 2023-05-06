@@ -1,32 +1,22 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    flex : "flex-start",
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    margin: 10,
-    borderRadius: 10,
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,  
-    shadowRadius: 2.22,
-    width: "45%",
-    height: 150,
-  },
   container: {
     flex: 1,
-    alignItems: "flex-start",
-    paddingHorizontal: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 10,
+    borderRadius: 10,
+    overflow: "hidden",
+    backgroundColor: "#FFF",
+    elevation: 5,
   },
   imageContainer: {
-    width: "100%",
+    width: 60,
     height: 60,
     borderRadius: 30,
     overflow: "hidden",
     marginRight: 10,
-    marginTop: 10,
   },
   image: {
     flex: 1,
@@ -37,17 +27,12 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     paddingVertical: 10,
-    alignSelf: "flex-start",
-
   },
   name: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 5,
-    alignContent: "flex-start",
-    fontSize: 10,
-
   },
   addButtonContainer: {
     width: 30,
@@ -56,15 +41,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#A8DDA8",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: "auto", // Move the add button to the right side of the row
-    marginBottom: 10,
   },
   addButtonIcon: {
     fontSize: 20,
     color: "#FFF",
   },
   rowItem: {
-    flex: 1,
+    width: "50%",
+    padding: 10,
   },
 });
 

@@ -1,27 +1,35 @@
-// IngredientItem.js
 import React from "react";
-import { View, Text, Image, Button, TouchableHighlight } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
 
-
-
-
-  //component called IngredientItem which takes in three props: ingredient, onPress, and onAdd. 
-  //When the component is rendered, it displays an image of the ingredient, the name of the ingredient, 
-  //and a button to add the ingredient to a pantry. When the image or button is pressed, 
-  //it calls the appropriate callback function (onPress or onAdd) with the ingredient object as an argument.
-const IngredientItem = ({ ingredient, onPress, onAdd }) => (
-    <TouchableHighlight
-        underlayColor="rgba(73,182,77,0.9)"
+const IngredientItem = ({ ingredient, onPress, onAdd }) => {
+  return (
+    <View style={styles.cardContainer}>
+      <TouchableOpacity
+        activeOpacity={0.8}
         onPress={() => onPress(ingredient)}
         style={styles.rowItem}
-    >
+      >
         <View style={styles.container}>
-            <Image style={styles.photo} source={{ uri: `https://spoonacular.com/cdn/ingredients_500x500/${ingredient.image}` }} />
-            <Text style={styles.title}>{ingredient.name}</Text>
-            <Button title="⊕ Add To Pantry" color="#0D0C0C" onPress={() => onAdd(ingredient)} />
+          <View style={styles.imageContainer}>
+            <Image
+              style={styles.image}
+              source={{ uri: `https://spoonacular.com/cdn/ingredients_500x500/${ingredient.image}` }}
+            />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.name}>{ingredient.name}</Text>
+          </View>
+          <View style={styles.addButtonContainer}>
+            <TouchableOpacity onPress={() => onAdd(ingredient)}>
+              <AntDesign name="plus" style={styles.addButtonIcon} />
+            </TouchableOpacity>
+          </View>
         </View>
-    </TouchableHighlight>
-);
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 export default IngredientItem;
