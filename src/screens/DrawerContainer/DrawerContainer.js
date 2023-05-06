@@ -10,7 +10,23 @@ export default function DrawerContainer(props) {
   const { navigation } = props;
   return (
     <View style={styles.content}>
-      <View style={styles.container}>
+      <View style={styles.content}>
+        <MenuButton
+          title="Home"
+          icon={<Icon name="home" size={20} />}
+          onPress={() => {
+            navigation.navigate("Home");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
+          title="Profile"
+          icon={<Icon name="user" size={20} />}
+          onPress={() => {
+            navigation.navigate("Profile");
+            navigation.closeDrawer();
+          }}
+        />
         <MenuButton
           title="Search"
           icon={<Icon name="search" size={20} />}
@@ -20,10 +36,10 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="Home"
-          icon={<Icon name="home" size={20} />}
+          title="Recipe Generator"
+          icon={<Icon name="magic" size={20} />}
           onPress={() => {
-            navigation.navigate("Home");
+            navigation.navigate("RecipeGenerator");
             navigation.closeDrawer();
           }}
         />
@@ -44,14 +60,6 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="Recipe Generator"
-          icon={<Icon name="magic" size={20} />}
-          onPress={() => {
-            navigation.navigate("RecipeGenerator");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
           title="Shopping List"
           icon={<Icon name="list" size={20} />}
           onPress={() => {
@@ -60,10 +68,10 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="Profile"
-          icon={<Icon name="user" size={20} />}
+          title="Saved Recipes"
+          icon={<Icon name="heart" size={20} />}
           onPress={() => {
-            navigation.navigate("Profile");
+            navigation.navigate("SavedRecipes");
             navigation.closeDrawer();
           }}
         />

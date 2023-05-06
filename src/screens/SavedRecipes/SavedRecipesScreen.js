@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
-  Image
+  Image,
 } from "react-native";
 import {
   getRecipes,
@@ -44,8 +44,14 @@ const SavedRecipesScreen = () => {
   };
 
   const renderRecipe = ({ item }) => {
-    console.log('Total cost object:', item.totalCost);
     const totalCost = item.totalCost?.value / 100;
+    const ingredientsText =
+      item.usedIngredients && item.missedIngredients
+        ? `${item.usedIngredients.length}/${
+            item.usedIngredients.length + item.missedIngredients.length
+          } Ingredients in Pantry`
+        : "Ingredients not available";
+
     return (
       <View style={styles.recipeContainer}>
         <View style={styles.recipeTitleContainer}>
@@ -62,17 +68,14 @@ const SavedRecipesScreen = () => {
           style={styles.recipeImage}
           resizeMode="cover"
         />
-        <Text style={styles.recipeIngredients}>
-          {item.usedIngredients && item.missedIngredients ?
-            `${item.usedIngredients.length}/${item.usedIngredients.length + item.missedIngredients.length} Ingredients in Pantry` :
-            "Ingredients not available"
-          }
+        <Text style={styles.recipeIngredients}>{ingredientsText}</Text>
+        <Text style={styles.totalCost}>
+          Cost per Serving:{" "}
+          {totalCost ? `$${totalCost.toFixed(2)}` : "Cost not available"}
         </Text>
-        <Text style={styles.totalCost}>Cost per Serving: {totalCost ? `$${totalCost.toFixed(2)}` : "Cost not available"}</Text>
       </View>
     );
   };
-  
 
   if (savedRecipes === null) {
     return (
@@ -103,14 +106,8 @@ const SavedRecipesScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
     backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginVertical: 20,
+    padding: 10,
   },
   noRecipesContainer: {
     flex: 1,
@@ -138,6 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 10,
   },
   recipeTitle: {
     fontSize: 18,
@@ -164,10 +162,12 @@ const styles = StyleSheet.create({
   recipeImage: {
     height: 200,
     marginVertical: 10,
+    borderRadius: 10,
   },
   totalCost: {
     fontSize: 14,
     marginTop: 5,
+    color: "#666",
   },
 });
 

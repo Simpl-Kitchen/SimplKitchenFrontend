@@ -5,20 +5,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingTop: 20,
-    alignItems: "center", // center horizontally
-    justifyContent: "center", // center vertically
+    alignItems: "left",
+    justifyContent: "center",
   },
   container: {
+    flexDirection: "column",
     paddingHorizontal: 20,
     marginBottom: 20,
+    alignItems: "center",
   },
   button: {
-    flexDirection: "row", // align icon and text horizontally
-    alignItems: "center", // center vertically
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 10,
   },
   icon: {
-    marginRight: 10, // add spacing between icon and text
+    marginRight: 10,
+
   },
   text: {
     fontSize: 16,
