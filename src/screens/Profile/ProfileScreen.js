@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
+import { useNavigation } from "@react-navigation/native";
+import MenuButton from "../../components/MenuButton/MenuButton";
 import {
   updateUserIntolerences,
   updateUserDiets,
   logoutSimplKitchen,
 } from "../../utils/APICalls/SimplKitchen/user";
-import { useNavigation } from "@react-navigation/native";
-import MenuButton from "../../components/MenuButton/MenuButton";
+
 import styles from "./styles";
 
 export default function ProfileScreen(props) {
@@ -16,10 +17,10 @@ export default function ProfileScreen(props) {
   const navigation = useNavigation();
 
   const data1 = [
-    { key: "1", value: "Dairy" }, //, disabled: true },
+    { key: "1", value: "Dairy" },
     { key: "2", value: "Egg" },
     { key: "3", value: "Gluten" },
-    { key: "4", value: "Grain" }, //, disabled: true },
+    { key: "4", value: "Grain" },
     { key: "5", value: "Peanut" },
     { key: "6", value: "Seafood" },
     { key: "7", value: "Sesame" },
@@ -78,14 +79,14 @@ export default function ProfileScreen(props) {
   return (
     <View style={styles.container}>
       <MultipleSelectList
-        setSelected={(val) => setSelected1(val)}
+        setSelected={setSelected1}
         data={data1}
         save="value"
         onSelect={() => {}}
         label="Intolerances"
       />
       <MultipleSelectList
-        setSelected={(val) => setSelected2(val)}
+        setSelected={setSelected2}
         data={data2}
         save="value"
         onSelect={() => {}}
@@ -102,3 +103,4 @@ export default function ProfileScreen(props) {
     </View>
   );
 }
+
