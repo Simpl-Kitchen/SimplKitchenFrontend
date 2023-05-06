@@ -15,6 +15,8 @@ import {
   getGeneratedRecipes,
 } from "../../utils/APICalls/SimplKitchen/generateRecipes";
 
+import MenuButton from "../../components/MenuButton/MenuButton";
+
 import { addRecipe } from "../../utils/APICalls/SimplKitchen/userRecipes";
 
 const RecipeCard = ({ recipe, onSaveRecipe }) => {
@@ -73,6 +75,21 @@ const RecipeGeneratorScreen = () => {
       console.error("Error saving recipe:", error);
     }
   };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+      ),
+      drawerLockMode: "locked-closed",
+    });
+  }, [navigation]);
 
   return (
     <ScrollView>
