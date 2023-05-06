@@ -14,10 +14,9 @@ import {
   generateUserRecipes,
   getGeneratedRecipes,
 } from "../../utils/APICalls/SimplKitchen/generateRecipes";
-
 import MenuButton from "../../components/MenuButton/MenuButton";
-
 import { addRecipe } from "../../utils/APICalls/SimplKitchen/userRecipes";
+import styles from "./styles";
 
 const RecipeCard = ({ recipe, onSaveRecipe }) => {
   const handleSaveRecipe = () => {
@@ -77,6 +76,7 @@ const RecipeGeneratorScreen = () => {
   };
 
   useEffect(() => {
+    handleGenerateRecipes();
     navigation.setOptions({
       headerLeft: () => (
         <MenuButton
@@ -97,101 +97,28 @@ const RecipeGeneratorScreen = () => {
         <TouchableOpacity style={styles.button} onPress={handleGenerateRecipes}>
           <Text style={styles.buttonText}>Generate Recipes</Text>
         </TouchableOpacity>
-        {loading ? (
-          <ActivityIndicator
-            size="large"
-            color="#97DF99"
-            style={styles.loadingIndicator}
-          />
-        ) : (
-          <View style={styles.recipeList}>
-            {recipes.map((recipe, index) => (
-              <RecipeCard
-                key={index}
-                recipe={recipe}
-                onSaveRecipe={handleSaveRecipe}
-              />
-            ))}
-          </View>
-        )}
+        <View style={styles.recipeList}>
+          {loading ? (
+            <ActivityIndicator
+              size="large"
+              color="#97DF99"
+              style={styles.loadingIndicator}
+            />
+          ) : (
+            <>
+              {recipes.map((recipe, index) => (
+                <RecipeCard
+                  key={index}
+                  recipe={recipe}
+                  onSaveRecipe={handleSaveRecipe}
+                />
+              ))}
+            </>
+          )}
+        </View>
       </View>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  button: {
-    backgroundColor: "#97DF99",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 4,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 18,
-  },
-  recipeList: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  recipeCardContainer: {
-    width: "48%",
-    marginBottom: 20,
-  },
-  recipeCard: {
-    backgroundColor: "#FFF",
-    borderRadius: 4,
-    overflow: "hidden",
-  },
-  recipeImage: {
-    width: "100%",
-    height: 200,
-  },
-  recipeContent: {
-    padding: 10,
-  },
-  recipeTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    // marginBottom: 10,
-  },
-  recipeIngredientsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    // marginBottom: 10,
-  },
-  recipeIngredientsText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  recipeIngredients: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  saveButton: {
-    backgroundColor: "#97DF99",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 4,
-    marginTop: 10,
-  },
-  saveButtonText: {
-    color: "#FFF",
-    fontSize: 16,
-  },
-  loadingIndicator: {
-    marginTop: 20,
-  },
-});
 
 export default RecipeGeneratorScreen;
