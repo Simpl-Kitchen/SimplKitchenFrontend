@@ -13,8 +13,9 @@ import {
   deleteRecipe,
 } from "../../utils/APICalls/SimplKitchen/userRecipes";
 import { useFocusEffect } from "@react-navigation/native";
+import MenuButton from "../../components/MenuButton/MenuButton";
 
-const SavedRecipesScreen = () => {
+const SavedRecipesScreen = ({ navigation }) => {
   const [savedRecipes, setSavedRecipes] = useState(null);
 
   useEffect(() => {
@@ -47,11 +48,8 @@ const SavedRecipesScreen = () => {
     const totalCost = item.totalCost?.value / 100;
     const ingredientsText =
       item.usedIngredients && item.missedIngredients
-        ? `${item.usedIngredients.length}/${
-            item.usedIngredients.length + item.missedIngredients.length
-          } Ingredients in Pantry`
+        ? `${item.usedIngredients.length} used, ${item.missedIngredients.length} missing`
         : "Ingredients not available";
-
     return (
       <View style={styles.recipeContainer}>
         <View style={styles.recipeTitleContainer}>
@@ -75,6 +73,26 @@ const SavedRecipesScreen = () => {
         </Text>
       </View>
     );
+  };
+
+  useEffect(() => {
+    fetchData();
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+      ),
+    });
+  }, []);
+
+  const fetchData = async () => {
+    // Your fetchData function code here
   };
 
   if (savedRecipes === null) {
@@ -170,5 +188,12 @@ const styles = StyleSheet.create({
     color: "#666",
   },
 });
+
+SavedRecipesScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerTitle: "Saved Recs",
+    headerLeft: <MenuButton onPress={() => navigation.openDrawer()} />,
+  };
+};
 
 export default SavedRecipesScreen;
