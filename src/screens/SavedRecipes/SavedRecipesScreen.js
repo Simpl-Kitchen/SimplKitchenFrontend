@@ -49,7 +49,7 @@ const SavedRecipesScreen = ({ navigation }) => {
     const totalCost = item.totalCost?.value / 100;
     const ingredientsText =
       item.usedIngredients && item.missedIngredients
-        ? `${item.usedIngredients.length} used, ${item.missedIngredients.length} missing`
+        ? `${item.usedIngredients.length} / ${item.missedIngredients.length} ingredients available`
         : "Ingredients not available";
     return (
       <View style={styles.recipeContainer}>
