@@ -29,6 +29,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
+  userInfoContainer: {
+    position: "absolute",
+    bottom: 20,
+    alignSelf: "center",
+  },
+  userInfoText: {
+    fontSize: 16,
+    color: "#333",
+    textAlign: "center",
+  },
 });
 
 export default styles;

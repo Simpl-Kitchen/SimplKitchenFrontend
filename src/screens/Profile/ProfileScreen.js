@@ -7,6 +7,7 @@ import {
   updateUserIntolerences,
   updateUserDiets,
   logoutSimplKitchen,
+  getUserInformation,
 } from "../../utils/APICalls/SimplKitchen/user";
 
 import styles from "./styles";
@@ -14,6 +15,7 @@ import styles from "./styles";
 export default function ProfileScreen(props) {
   const [selected1, setSelected1] = useState([]);
   const [selected2, setSelected2] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
   const navigation = useNavigation();
 
   const data1 = [
@@ -62,19 +64,13 @@ export default function ProfileScreen(props) {
   };
 
   useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <MenuButton
-          title="Menu"
-          source={require("../../../assets/icons/menu.png")}
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
-      ),
-      drawerLockMode: "locked-closed",
-    });
-  }, [navigation]);
+    async function fetchUserInfo() {
+      const userInfo = await getUserInformation();
+      console.log(userInfo);
+      setUserInfo(userInfo);
+    }
+    fetchUserInfo();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -94,13 +90,21 @@ export default function ProfileScreen(props) {
       />
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
+          <Text
+      style={styles.buttonText}>Save</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
+    {userInfo && (
+      <View style={styles.userInfoContainer}>
+        <Text style={styles.userInfoText}>
+          Logged in as {userInfo.userResponse.username}
+        </Text>
+      </View>
+    )}
+  </View>
+  
   );
 }
-

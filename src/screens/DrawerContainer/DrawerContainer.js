@@ -28,14 +28,6 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="Search"
-          icon={<Icon name="search" size={20} />}
-          onPress={() => {
-            navigation.navigate("Search");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
           title="Recipe Generator"
           icon={<Icon name="magic" size={20} />}
           onPress={() => {
@@ -97,3 +89,19 @@ DrawerContainer.navigationOptions = ({ navigation }) => ({
     />
   ),
 });
+
+
+
+
+
+
+
+
+        {/* <MenuButton
+          title="Search"
+          icon={<Icon name="search" size={20} />}
+          onPress={() => {
+            navigation.navigate("Search");
+            navigation.closeDrawer();
+          }}
+        /> */}
