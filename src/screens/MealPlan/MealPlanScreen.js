@@ -10,10 +10,9 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
-
 import { Picker } from "@react-native-picker/picker";
-
-import { generateMealPlanWeek, getRecipeInformation } from "../../utils/APICalls/Spoonacular/user";
+import MenuButton from "../../components/MenuButton/MenuButton";
+import { generateMealPlanWeek } from "../../utils/APICalls/Spoonacular/user";
 
 const MealPlanScreen = () => {
   const [mealPlan, setMealPlan] = useState(null);
@@ -21,8 +20,29 @@ const MealPlanScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    loadMealPlans();
+    fetchData();
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+      ),
+    });
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const fetchedMealPlan = await generateMealPlanWeek();
+      setMealPlan(fetchedMealPlan);
+    } catch (error) {
+      console.error("Error fetching meal plan:", error);
+    }
+  };
 
   const saveMealPlans = async (meals) => {
     await AsyncStorage.setItem("mealPlans", JSON.stringify(meals));
@@ -36,15 +56,20 @@ const MealPlanScreen = () => {
   };
 
   const getMealPlans = async () => {
-    const fetchedMealPlan = await generateMealPlanWeek();
-    setMealPlan(fetchedMealPlan);
-    saveMealPlans(fetchedMealPlan);
+    try {
+      const fetchedMealPlan = await generateMealPlanWeek();
+      setMealPlan(fetchedMealPlan);
+      saveMealPlans(fetchedMealPlan);
+    } catch (error) {
+      console.error("Error getting meal plan:", error);
+    }
   };
 
   const renderMealPicker = () => {
     if (mealPlan === null) {
       return null;
-    } return (
+    }
+    return (
       <View>
         <Picker
           selectedValue={selectedDay}

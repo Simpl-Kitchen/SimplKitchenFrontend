@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
   ingredientContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 8,
+    justifyContent: "space-between",
+    marginBottom: 10,
   },
   ingredientText: {
     flex: 1,
@@ -82,11 +83,11 @@ const styles = StyleSheet.create({
   },
   ingredientInput: {
     flex: 1,
-    height: 30,
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 4,
-    marginRight: 8,
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    marginRight: 10,
+    padding: 5,
   },
   instructionContainer: {
     flexDirection: "row",
@@ -111,6 +112,52 @@ const styles = StyleSheet.create({
     elevation: 4,
     marginHorizontal: 16,
     marginBottom: 16,
+  },
+  tabContainer: {
+    flex: 1,
+    marginTop: 10,
+    marginHorizontal: 10,
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    padding: 10,
+  },
+  tabContent: {
+    flexGrow: 1,
+  },
+  instructionContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 10,
+  },
+  instructionNumber: {
+    marginRight: 5,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  instructionText: {
+    flex: 1,
+    fontSize: 16,
+  },
+  recipeInfoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  recipeInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  recipeInfoText: {
+    fontSize: 16,
+    marginRight: 5,
   },
 });
 

@@ -7,7 +7,7 @@ import CategoriesScreen from "../screens/Categories/CategoriesScreen";
 import RecipeScreen from "../screens/Recipe/RecipeScreen";
 import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 import IngredientScreen from "../screens/Ingredient/IngredientScreen";
-import SearchScreen from "../screens/Search/SearchScreen";
+// import SearchScreen from "../screens/Search/SearchScreen";
 import IngredientSearchScreen from "../screens/IngredientSearch/IngredientSearchScreen"
 import RecipeGeneratorScreen from "../screens/RecipeGenerator/RecipeGeneratorScreen";
 import LoginScreen from "../screens/Login/LoginScreen";
@@ -52,7 +52,7 @@ function MainNavigator() {
       <Stack.Screen name="MealPlan" component={MealPlanScreen} />
       <Stack.Screen name="RecipeScreen" component={RecipeScreen} />
       <Stack.Screen name="Ingredient" component={IngredientScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} />
+      {/* <Stack.Screen name="Search" component={SearchScreen} /> */}
       <Stack.Screen name="IngredientSearch" component={IngredientSearchScreen} />
       <Stack.Screen name="RecipeGenerator" component={RecipeGeneratorScreen} />
       <Stack.Screen name="ShoppingList" component={ShoppingListScreen} />

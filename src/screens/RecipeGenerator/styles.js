@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   recipeCard: {
-    backgroundColor: "#FFF",
+    backgroundColor:"#FFF",
     borderRadius: 4,
     overflow: "hidden",
     shadowColor: "#000",
@@ -41,51 +41,51 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
+    
     elevation: 5,
-  },
-  recipeImage: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
-  },
-  recipeContent: {
-    padding: 10,
-  },
-  recipeTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  recipeIngredientsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  recipeIngredientsText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  recipeIngredients: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  saveButton: {
-    backgroundColor: "#97DF99",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 4,
-    marginTop: 10,
-  },
-  saveButtonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  loadingIndicator: {
-    marginTop: 20,
-  },
+    },
+recipeImage: {
+width: "100%",
+height: 200,
+resizeMode: "cover",
+},
+recipeContent: {
+padding: 10,
+},
+recipeTitle: {
+fontSize: 18,
+fontWeight: "bold",
+marginBottom: 10,
+},
+recipeIngredientsContainer: {
+flexDirection: "row",
+justifyContent: "space-between",
+alignItems: "center",
+marginBottom: 10,
+},
+recipeIngredientsText: {
+fontSize: 16,
+fontWeight: "bold",
+},
+recipeIngredients: {
+fontSize: 16,
+fontWeight: "bold",
+},
+saveButton: {
+backgroundColor: "#97DF99",
+paddingHorizontal: 10,
+paddingVertical: 5,
+borderRadius: 4,
+marginTop: 10,
+},
+saveButtonText: {
+color: "#FFF",
+fontSize: 16,
+fontWeight: "bold",
+},
+loadingIndicator: {
+marginTop: 20,
+},
 });
 
 export default styles;

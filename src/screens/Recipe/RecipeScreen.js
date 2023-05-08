@@ -37,7 +37,7 @@ const RecipeScreen = ({ route }) => {
       setRecipeDetails(data);
       setEditedIngredients(data.extendedIngredients);
       setEditedInstructions(data.analyzedInstructions?.[0]?.steps || []);
-  
+
       // New API call to get recipe summary
       const summaryResponse = await fetch(
         `https://api.spoonacular.com/recipes/${recipe.id}/summary?apiKey=e44c9f0796b4400ab3a69f1354d139a9`
@@ -53,7 +53,6 @@ const RecipeScreen = ({ route }) => {
       console.error(error);
     }
   };
-  
 
   useEffect(() => {
     fetchRecipeDetails();
@@ -108,7 +107,12 @@ const RecipeScreen = ({ route }) => {
   const RecipeTab = ({ children }) => (
     <View style={styles.tabContainer}>
       <View style={styles.card}>
-        <ScrollView style={styles.tabContent}>{children}</ScrollView>
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 20 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.tabContent}>{children}</View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -120,7 +124,9 @@ const RecipeScreen = ({ route }) => {
             <View key={index} style={styles.ingredientContainer}>
               <TextInput
                 style={styles.ingredientInput}
-                value={ingredient.original}
+                value={`${ingredient.original} (${calculateNewAmount(
+                  ingredient
+                )} ${ingredient.unit})`}
                 onChangeText={(value) =>
                   setEditedIngredients((prev) =>
                     prev.map((prevIngredient, prevIndex) =>
@@ -131,29 +137,14 @@ const RecipeScreen = ({ route }) => {
                   )
                 }
               />
-              <TextInput
-                style={styles.ingredientInput}
-                value={`${calculateNewAmount(ingredient)} ${ingredient.unit}`}
-                onChangeText={(value) =>
-                  setEditedIngredients((prev) =>
-                    prev.map((prevIngredient, prevIndex) =>
-                      prevIndex === index
-                        ? {
-                            ...prevIngredient,
-                            amount: parseFloat(value),
-                          }
-                        : prevIngredient
-                    )
-                  )
-                }
-              />
             </View>
           ))
         : recipeDetails?.extendedIngredients?.map((ingredient, index) => (
             <View key={index} style={styles.ingredientContainer}>
-              <Text style={styles.ingredientText}>{ingredient.original}</Text>
               <Text style={styles.ingredientText}>
-                {`${calculateNewAmount(ingredient)} ${ingredient.unit}`}
+                {`${ingredient.original} (${calculateNewAmount(ingredient)} ${
+                  ingredient.unit
+                })`}
               </Text>
             </View>
           ))}
@@ -165,6 +156,7 @@ const RecipeScreen = ({ route }) => {
       {editInstructions
         ? editedInstructions.map((instruction, index) => (
             <View key={index} style={styles.instructionContainer}>
+              <Text style={styles.instructionNumber}>{index + 1}.</Text>
               <TextInput
                 style={styles.instructionInput}
                 value={instruction.step}
@@ -183,6 +175,7 @@ const RecipeScreen = ({ route }) => {
         : recipeDetails?.analyzedInstructions?.[0]?.steps?.map(
             (instruction, index) => (
               <View key={index} style={styles.instructionContainer}>
+                <Text style={styles.instructionNumber}>{index + 1}.</Text>
                 <Text style={styles.instructionText}>{instruction.step}</Text>
               </View>
             )
@@ -193,9 +186,6 @@ const RecipeScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FontAwesome name="arrow-left" size={24} color="black" />
-        </TouchableOpacity>
         <Text style={styles.headerText}>{recipe.title}</Text>
         <TouchableOpacity onPress={onSave}>
           <FontAwesome name="save" size={24} color="black" />
@@ -209,12 +199,31 @@ const RecipeScreen = ({ route }) => {
           }}
         />
       </View>
+      <View style={styles.recipeInfoContainer}>
+        {recipeDetails?.readyInMinutes && (
+          <View style={styles.recipeInfo}>
+            <Text style={styles.recipeInfoText}>Ready in:</Text>
+            <Text style={styles.recipeInfoText }>
+              {recipeDetails.readyInMinutes} minutes
+            </Text>
+          </View>
+        )}
+        {recipeDetails?.pricePerServing && (
+          <View style={styles.recipeInfo}>
+            <Text style={styles.recipeInfoText}>Price per serving:</Text>
+            <Text style={styles.recipeInfoText  }>
+              ${(recipeDetails.pricePerServing / 100).toFixed(2)}
+            </Text>
+          </View>
+        )}
+      </View>
       <View style={styles.servingsContainer}>
         <Text style={styles.servingsText}>Servings:</Text>
         {editServings ? (
           <TextInput
             style={styles.servingsInput}
             value={editedServings?.toString()}
+            keyboardType="numeric"
             onChangeText={(value) => setEditedServings(parseInt(value, 10))}
           />
         ) : (

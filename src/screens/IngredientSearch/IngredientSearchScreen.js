@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList} from "react-native";
+import { View, FlatList } from "react-native";
 import { SearchBar } from "react-native-elements";
 import IngredientItem from "./IngredientItem";
-import { Image } from "react-native-elements";
-import { Dimensions } from "react-native";
 import styles from "./styles";
-
-//import { getIngredientsByName, addIngredientToPantry } from "../../utils/APICalls";
 import { searchIngredientsByName } from "../../utils/APICalls/Spoonacular/ingredients";
 import { addIngredientToPantry } from "../../utils/APICalls/SimplKitchen/pantry";
-import MenuButton from "../../components/MenuButton/MenuButton";
-
-
-const { width } = Dimensions.get("window");
-
 
 const IngredientSearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
@@ -23,7 +14,7 @@ const IngredientSearchScreen = ({ navigation }) => {
     try {
       const ingredientSearch = await searchIngredientsByName(search);
       const ingredients = ingredientSearch.results;
-      console.log(ingredients[0].possibleUnits)
+      console.log(ingredients[0].possibleUnits);
       setIngredients(ingredients);
     } catch (error) {
       console.log(error);
@@ -34,7 +25,7 @@ const IngredientSearchScreen = ({ navigation }) => {
     try {
       await addIngredientToPantry(ingredient);
       navigation.navigate("Pantry", {
-        callback: fetchData // Pass the fetchData function as a callback
+        callback: fetchData, // Pass the fetchData function as a callback
       });
     } catch (error) {
       console.log(error);
@@ -43,7 +34,6 @@ const IngredientSearchScreen = ({ navigation }) => {
 
   const onPressIngredient = (ingredient) => {
     navigation.navigate("Ingredient", { ingredient });
-    
   };
 
   const renderIngredient = ({ item }) => (
@@ -55,31 +45,21 @@ const IngredientSearchScreen = ({ navigation }) => {
     />
   );
 
-  useEffect(() => {
-    fetchData();
-    navigation.setOptions({
-      drawerLockMode: "locked-closed",
-      headerLeft: () => (
-        <MenuButton
-          title="Menu"
-          source={require("../../../assets/icons/menu.png")}
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
-      ),
-    });
-  }, []);
 
   return (
     <View style={styles.container}>
-      <SearchBar
-        platform="ios"
-        placeholder="Search for ingredients..."
-        value={search}
-        onChangeText={setSearch}
-        onSubmitEditing={fetchData}
-      />
+      <View style={styles.searchBarContainer}>
+        <SearchBar
+          platform="ios"
+          placeholder="Search for ingredients..."
+          value={search}
+          onChangeText={setSearch}
+          onSubmitEditing={fetchData}
+          containerStyle={styles.searchBarInputContainer}
+          inputContainerStyle={styles.searchBarInputContainer}
+          inputStyle={styles.searchBarInput}
+        />
+      </View>
       <View style={styles.carouselContainer}>
         <FlatList
           data={ingredients}
@@ -93,17 +73,4 @@ const IngredientSearchScreen = ({ navigation }) => {
   );
 };
 
-const IngredientImage = ({ uri }) => (
-  <Image
-    source={{ uri }}
-    style={{
-      width: width / 2 - 20,
-      height: width / 2 - 20,
-      borderRadius: 10,
-      marginBottom: 10,
-    }}
-  />
-);
-
 export default IngredientSearchScreen;
-

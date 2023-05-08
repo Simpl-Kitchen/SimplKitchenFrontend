@@ -13,8 +13,10 @@ import {
   deleteRecipe,
 } from "../../utils/APICalls/SimplKitchen/userRecipes";
 import { useFocusEffect } from "@react-navigation/native";
+import MenuButton from "../../components/MenuButton/MenuButton";
+import styles from "./styles";
 
-const SavedRecipesScreen = () => {
+const SavedRecipesScreen = ({ navigation }) => {
   const [savedRecipes, setSavedRecipes] = useState(null);
 
   useEffect(() => {
@@ -47,11 +49,8 @@ const SavedRecipesScreen = () => {
     const totalCost = item.totalCost?.value / 100;
     const ingredientsText =
       item.usedIngredients && item.missedIngredients
-        ? `${item.usedIngredients.length}/${
-            item.usedIngredients.length + item.missedIngredients.length
-          } Ingredients in Pantry`
+        ? `${item.usedIngredients.length} / ${item.missedIngredients.length} ingredients available`
         : "Ingredients not available";
-
     return (
       <View style={styles.recipeContainer}>
         <View style={styles.recipeTitleContainer}>
@@ -75,6 +74,26 @@ const SavedRecipesScreen = () => {
         </Text>
       </View>
     );
+  };
+
+  useEffect(() => {
+    fetchData();
+    navigation.setOptions({
+      drawerLockMode: "locked-closed",
+      headerLeft: () => (
+        <MenuButton
+          title="Menu"
+          source={require("../../../assets/icons/menu.png")}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+      ),
+    });
+  }, []);
+
+  const fetchData = async () => {
+    // Your fetchData function code here
   };
 
   if (savedRecipes === null) {
@@ -102,73 +121,5 @@ const SavedRecipesScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 10,
-  },
-  noRecipesContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  noRecipesText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  recipeList: {
-    flex: 1,
-    width: "100%",
-  },
-  recipeContainer: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 10,
-    backgroundColor: "#fff",
-  },
-  recipeTitleContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  recipeTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  deleteButton: {
-    backgroundColor: "#97DF99",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 4,
-  },
-  deleteButtonText: {
-    color: "#FFF",
-    fontSize: 16,
-  },
-  recipeIngredients: {
-    fontSize: 16,
-    marginVertical: 5,
-  },
-  recipePrice: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  recipeImage: {
-    height: 200,
-    marginVertical: 10,
-    borderRadius: 10,
-  },
-  totalCost: {
-    fontSize: 14,
-    marginTop: 5,
-    color: "#666",
-  },
-});
 
 export default SavedRecipesScreen;
