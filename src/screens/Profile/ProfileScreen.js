@@ -12,6 +12,12 @@ import {
 
 import styles from "./styles";
 
+
+//component called ProfileScreen which renders a user profile page. 
+//The page has two multiple select lists of dietary preferences and intolerances. 
+//The component uses the useState and useEffect hooks to manage component state and fetch user information when the component mounts. 
+//The handleSave function is executed when the user saves their selections, and it calls two functions to update the user's preferences.
+//The handleLogout function logs the user out.
 export default function ProfileScreen(props) {
   const [selected1, setSelected1] = useState([]);
   const [selected2, setSelected2] = useState([]);
@@ -46,6 +52,11 @@ export default function ProfileScreen(props) {
     { key: "10", value: "Whole30" },
   ];
 
+
+
+  //function called handleSave that makes two API calls to update userIntolerances and userDiets with selected values. 
+  //If either API call fails, an error is logged to the console. After both API calls complete successfully, an alert message 
+  //is shown to the user indicating that the selected items have been saved.
   const handleSave = async () => {
     try {
       await updateUserIntolerences(selected1);
@@ -56,6 +67,13 @@ export default function ProfileScreen(props) {
     alert("Saved selected items");
   };
 
+
+
+  //defines a function called handleLogout. 
+  //The function is an asynchronous function, denoted by the async keyword. When the function is called, 
+  //it logs a message to the console saying "Logout clicked". Then it tries to call a function called logoutSimplKitchen() 
+  //using the await keyword, which means it will wait for that function to finish before continuing. 
+  //If an error occurs during the execution of logoutSimplKitchen(), the function catches the error and does nothing.
   const handleLogout = async () => {
     console.log("Logout clicked");
     try {

@@ -14,6 +14,14 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import styles from "./styles";
 
+
+
+// functional component called RecipeScreen that displays the details of a recipe. 
+//It receives a route prop that contains the recipe information. 
+//The component fetches additional recipe information using two API calls and updates the state variables accordingly. 
+//The component also allows the user to edit the servings, ingredients, and instructions of the recipe 
+//and save the changes to AsyncStorage. Finally, the component displays the recipe details and 
+//allows the user to switch between the ingredients and instructions tabs.
 const RecipeScreen = ({ route }) => {
   const { recipe } = route.params;
   const [recipeDetails, setRecipeDetails] = useState(null);
@@ -28,6 +36,13 @@ const RecipeScreen = ({ route }) => {
   const [editedInstructions, setEditedInstructions] = useState([]);
   const navigation = useNavigation();
 
+
+
+  //function called fetchRecipeDetails that makes two API calls using the fetch function. 
+  //The first call retrieves recipe information from the Spoonacular API using an API key and sets the recipe details, 
+  //edited ingredients, and edited instructions using the response data. The second call retrieves the recipe summary and 
+  //sets additional recipe details using the response data. If there is an error in either API call, it will be caught and
+  // logged to the console.
   const fetchRecipeDetails = async () => {
     try {
       const response = await fetch(
@@ -58,6 +73,10 @@ const RecipeScreen = ({ route }) => {
     fetchRecipeDetails();
   }, []);
 
+
+  // function called handleServingsChange that takes in a parameter called newServings. 
+  //It then parses newServings as an integer using parseInt() and checks if the result is not NaN. 
+  //If it is a valid integer, it sets the Servings state to the parsed value using setServings().
   const handleServingsChange = (newServings) => {
     const parsedValue = parseInt(newServings, 10);
     if (!isNaN(parsedValue)) {
@@ -65,10 +84,21 @@ const RecipeScreen = ({ route }) => {
     }
   };
 
+
+
+
   const toggleEditServings = () => {
     setEditServings(!editServings);
   };
 
+
+
+  //function called calculateNewAmount that takes an object ingredient as an argument. 
+  //It calculates the new amount of the ingredient needed based on the number of servings specified. 
+  //If no editedServings value is provided, it either uses the servings value or the default recipeDetails.servings value. 
+  //If the number of servings is the same as the default, it returns the original ingredient.amount. 
+  //Otherwise, it calculates the new amount by dividing the original amount by the default servings 
+  //and multiplying it by the new number of servings. The final result is rounded to two decimal places using the toFixed method.
   const calculateNewAmount = (ingredient) => {
     const servingsToUse =
       editedServings || (servings ? servings : recipeDetails.servings);
@@ -80,7 +110,13 @@ const RecipeScreen = ({ route }) => {
       (ingredient.amount / recipeDetails.servings) * servingsToUse;
     return newAmount.toFixed(2);
   };
+  
 
+  // function onSave that saves recipe information to local storage. 
+  //It retrieves existing recipe data from storage, parses it as JSON if it exists, 
+  //and then creates a new object with the edited servings, ingredients, and instructions. 
+  //It then saves the new object to storage and displays a success message using Alert.alert(). 
+  //If there is an error, it logs the error to the console and displays an error message.
   const onSave = async () => {
     try {
       const existingData = await AsyncStorage.getItem(`recipe-${recipe.id}`);
@@ -104,6 +140,11 @@ const RecipeScreen = ({ route }) => {
 
   const [activeTab, setActiveTab] = useState("ingredients");
 
+
+
+  //functional component called RecipeTab. 
+  //The component takes a single prop called children and returns a view that consists of a card with a scrollable tab content. 
+  //The view is styled using CSS-in-JS syntax.
   const RecipeTab = ({ children }) => (
     <View style={styles.tabContainer}>
       <View style={styles.card}>
