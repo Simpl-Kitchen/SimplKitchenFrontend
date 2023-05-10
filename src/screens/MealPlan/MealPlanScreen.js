@@ -14,6 +14,13 @@ import { Picker } from "@react-native-picker/picker";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import { generateMealPlanWeek } from "../../utils/APICalls/Spoonacular/user";
 
+
+//renders a screen called MealPlanScreen. 
+//The component uses the useState hook to manage the state of mealPlan and selectedDay, 
+//and the useEffect hook to fetch data when the component mounts and set some navigation options. 
+//The code also defines functions to save and load meal plans using AsyncStorage, and another function called getMealPlans 
+//that fetches a meal plan and saves it. Finally, the component defines a function called renderMealPicker 
+//that returns a Picker component and a FlatList component that render meal plan data based on the selected day.
 const MealPlanScreen = () => {
   const [mealPlan, setMealPlan] = useState(null);
   const [selectedDay, setSelectedDay] = useState("monday");
@@ -44,10 +51,17 @@ const MealPlanScreen = () => {
     }
   };
 
+
+  //function called saveMealPlans, which takes in a parameter called meals. 
+  //This function uses the AsyncStorage API to store the meals parameter as a JSON string in local storage. 
+  //The async keyword in the function signature means that the function returns a promise and can be awaited.
   const saveMealPlans = async (meals) => {
     await AsyncStorage.setItem("mealPlans", JSON.stringify(meals));
   };
 
+
+  //uses AsyncStorage to get stored meal plans. 
+  //If there are any stored meal plans, they are parsed into JSON and set with setMealPlan.
   const loadMealPlans = async () => {
     const storedMealPlans = await AsyncStorage.getItem("mealPlans");
     if (storedMealPlans !== null) {
@@ -55,6 +69,10 @@ const MealPlanScreen = () => {
     }
   };
 
+
+  // function called getMealPlans. It tries to generate a meal plan for a week using the generateMealPlanWeek() function 
+  //and sets the fetched meal plan using setMealPlan(). It also saves the meal plan using saveMealPlans(). 
+  //If an error occurs in fetching the meal plan, it logs the error message to the console using console.error().
   const getMealPlans = async () => {
     try {
       const fetchedMealPlan = await generateMealPlanWeek();
