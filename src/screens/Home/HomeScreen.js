@@ -81,10 +81,22 @@ const HomeScreen = () => {
     });
   }, []); // Remove sortBy dependency to disable sorting
 
+
+
+  //function called handleRecipePress that takes in a parameter recipe. 
+  //When this function is called, it navigates to a screen called "Recipe" and passes in the recipe parameter as a prop. 
+  //The navigation object is assumed to be available in the current context.
   const handleRecipePress = (recipe) => {
     navigation.navigate("Recipe", { recipe });
   };
 
+
+
+  //function called renderRecipe that takes an object as input with an item property. 
+  //The function returns a TouchableOpacity component with some styles and a callback function that is executed 
+  //when the component is pressed. Inside the TouchableOpacity, there is a View component that contains 
+  //an Image component and a Text component. The Text components display some information about the recipe item, 
+  //such as the recipe title, servings, and price per serving if available.
   const renderRecipe = ({ item }) => {
     return (
       <TouchableOpacity

@@ -3,6 +3,13 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
 
+
+
+//a functional component called IngredientItem that takes three props: ingredient, onPress, and onAdd. 
+//The component returns a View element with a TouchableOpacity child that contains an image, a text, and a button. 
+//When the image, text, or button are pressed, the corresponding onPress or onAdd function is called with the ingredient 
+//prop as an argument. 
+//The styles for the component are defined in a separate styles object. The code is likely written in React Native.
 const IngredientItem = ({ ingredient, onPress, onAdd }) => {
   return (
     <View style={styles.cardContainer}>

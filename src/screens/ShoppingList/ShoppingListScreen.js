@@ -13,6 +13,13 @@ import { useNavigation } from "@react-navigation/native";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import styles from "./styles";
 
+
+
+  //It sets up state for the input text and shopping list, 
+  //uses useEffect to load and save the shopping list to local storage
+  //defines functions to add, remove, and toggle items on the list. 
+  //It also sets up the navigation options for the screen and returns a view containing an input for adding items, 
+  //a list of items with checkboxes and remove buttons, and a button to add new items.
 const ShoppingListScreen = () => {
   const [inputText, setInputText] = useState("");
   const [shoppingList, setShoppingList] = useState([]);
@@ -35,6 +42,13 @@ const ShoppingListScreen = () => {
     saveItems();
   }, [shoppingList]);
 
+
+
+  //function called handleAddItem. 
+  //The function first checks if the inputText variable is not empty by removing any leading/trailing white 
+  //spaces with the trim() function. If it's not empty, the function adds a new item to the shoppingList state 
+  //variable using the spread operator (...) to copy the existing array and adding a new object with a unique id, 
+  //the inputText, and a checked property set to false. Finally, it clears the inputText variable by setting it to an empty string.
   const handleAddItem = () => {
     if (inputText.trim() !== "") {
       setShoppingList([
@@ -45,11 +59,23 @@ const ShoppingListScreen = () => {
     }
   };
 
+
+  //a function handleRemoveItem that takes in an itemId. 
+  //It then uses the filter method to create a new array updatedList that excludes the item with the matching itemId. 
+  //Finally, it calls the setShoppingList function with the updated list as an argument.
   const handleRemoveItem = (itemId) => {
     const updatedList = shoppingList.filter((item) => item.id !== itemId);
     setShoppingList(updatedList);
   };
 
+
+
+  //function handleToggleCheck that takes an itemId as an argument. 
+  //It then creates a new list called updatedList by mapping over the shoppingList array. 
+  //For each item in the shoppingList, if the item's id matches the itemId argument, 
+  //it returns a new object that is a copy of the original item with the checked property negated. 
+  //Otherwise, it returns the original item unchanged. Finally, the state of shoppingList is updated 
+  //with the updatedList using the setShoppingList function.
   const handleToggleCheck = (itemId) => {
     const updatedList = shoppingList.map((item) => {
       if (item.id === itemId) {
